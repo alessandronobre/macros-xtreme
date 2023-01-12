@@ -19,7 +19,7 @@ public class CalculatorController {
 	
 	@GetMapping("/form")
 	public ModelAndView form(UserDTO userDTO) {
-		ModelAndView modelAndView = new ModelAndView("calculator/form");
+		ModelAndView modelAndView = new ModelAndView("calculator/form2");
 		modelAndView.addObject("genero", calculatorService.typeGenre());
 		modelAndView.addObject("nivelA", calculatorService.levelActivity());
 		modelAndView.addObject("obj", calculatorService.goal());
@@ -29,7 +29,7 @@ public class CalculatorController {
 
 	@PostMapping("/result")
 	public ModelAndView form2(UserDTO userDTO) {
-		ModelAndView modelAndView = new ModelAndView("calculator/result");
+		ModelAndView modelAndView = new ModelAndView("calculator/result2");
 		modelAndView.addObject("tmbM", calculatorService.calculatorM(userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso()));
 		modelAndView.addObject("tmbF", calculatorService.calculatorF(userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso()));
 		modelAndView.addObject("gastoT", calculatorService.calculatorGT(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getNivelAtividadeFisica()));

@@ -1,83 +1,107 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
-	<title>Formulario</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+	<!--<link rel="stylesheet" type="text/css" th:href="@{/css/style-global.css}">-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+	<title>Macros Xtreme</title>
 </head>
 
-<body id="body">
-	<div class="container">
-		<div class="conteudo">
-			<form id="form" method="POST" th:action="result" th:object="${user}">
-				<div id="header">
-					<header>
-						<a id="logo">Macros Xtreme</a>
-					</header>
+<body>
+	<main id="container">
+		<form id="login_form" method="POST" th:action="result" th:object="${userDTO}">
+			<!-- FORM HEADER -->
+			<div id="form_header">
+				<h2>Macros Xtreme</h2>
+			</div>
+
+			<div id="check">
+				<!-- GÊNERO -->
+				<div class="input-box">
+					<label for="genero">
+						Gênero
+						<div class="form-check">
+							<input class="form-check-input" type="radio" th:field="*{genero}" th:value="Homem" id="flexRadioDefault1">
+							<label class="form-check-label" for="flexRadioDefault1">
+								Homem
+							</label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio" th:field="*{genero}" th:value="Mulher" id="flexRadioDefault2">
+							<label class="form-check-label" for="flexRadioDefault2">
+								Mulher
+							</label>
+						</div>
+					</label>
 				</div>
-				<div class="card-body">
-					<fieldset>
-						<legend>Macros Xtreme</legend>
-						<div class="row">
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<select name="genero" class="form-select me-2" aria-label="Default select example">
-										<option selected disabled>Gênero</option>
-										<option th:each="genero : ${genero}" 
-										th:text="${genero}"></option>
-									
-										
-									</select><br>
-								</div>
-							</div>
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<input type="text" name="idade" class="form-control" placeholder="Idade" />
-								</div>
-							</div>
-						</div>
 
-						<div class="row">
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<input type="text" name="altura" class="form-control"
-										placeholder="Altura"><br>
-								</div>
-							</div>
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<input type="text" name="peso" class="form-control" placeholder="Peso">
-								</div>
-							</div>
+				<div class="input-box">
+					<!-- OBJETIVO -->
+					<label for="name">
+						Objetivo
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="cutting" th:field="*{objetivo}" th:value="Cutting" id="inlineRadio1">
+							<label class="form-check-label" for="inlineRadio1">Cutting</label>
 						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="buking" th:field="*{objetivo}" th:value="Buking" id="inlineRadio2">
+							<label class="form-check-label" for="inlineRadio2">Buking</label>
+						</div>
+					</label>
+				</div>
+			</div>
 
-						<div class="row">
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<input type="text" name="objetivo" class="form-control"
-										placeholder="Objetivo">
-								</div>
-							</div>
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<input type="text" name="nivelAtividadeFisica" class="form-control"
-										placeholder="Nivel de Atividade Fisica">
-								</div>
-							</div>
-						</div>
-					</fieldset>
-					<div id="div">
-						<button id="btn" type="submit" class="btn">Calcular</button>
+			<!-- INPUTS -->
+			<div id="inputs">
+				<!-- IDADE -->
+				<div class="input-box">
+					<input type="text" name="idade" id="idade" class="inputUser" required>
+					<label for="endereco" class="labelInput">Idade</label>
+				</div>
+
+				<!-- PESO -->
+				<div class="input-box">
+					<input type="text" name="peso" id="peso" class="inputUser" required>
+					<label for="peso" class="labelInput">Peso</label>
+				</div>
+
+				<!-- ALTURA -->
+				<div class="input-box">
+					<input type="text" name="altura" id="altura" class="inputUser" required>
+					<label for="altura" class="labelInput">Altura</label>
+				</div>
+			</div>
+
+			<!-- NIVEL DE ATIVIDADE FISICA -->
+			<div class="input-box" id="atividadeFisica">
+				<div class="col-md-6 col-sm-12">
+					<div class="form-group">
+						<select name="nivelAtividadeFisica" id="selectAtividade" class="form-select me-2"
+							aria-label="Default select example">
+							<option selected disabled>Nivel de Atividade Fisica</option>
+							<option th:each="nivelA : ${nivelA}" th:text="${nivelA}"></option>
+						</select>
 					</div>
 				</div>
-			</form>
-		</div>
-	</div>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+			</div>
+
+			<!-- LOGIN BUTTON -->
+			<button type="submit" id="login_button">
+				Calcular
+			</button>
+		</form>
+	</main>
+
+	<!-- JAVASCRIPT -->
+	<script type="text/javascript" src="js/bootstrap.min.js.js"></script>
 </body>
 
 </html>

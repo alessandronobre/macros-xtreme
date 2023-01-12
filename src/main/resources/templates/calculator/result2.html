@@ -1,37 +1,86 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
-	<title>Formulario</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style-global.css}">
+
+	<title>Macros Xtreme</title>
 </head>
 
-<body id="body">
-	<div class="container">
-		<div class="conteudo">
-			<div id="header">
-				<header>
-					<a id="logo">Macros Xtreme</a>
-				</header>
-			</div>
-			<div class="card-body">
-				<p>SUA TAXA METABOLICA BASAL</p>
-				<a th:text="${tmbM}"></a>
-				<p>SUA TAXA METABOLICA BASAL</p>
-				<a th:text="${tmbF}"></a>
-				<p>SEU GASTO TOTAL</p>
-				<a th:text="${gastoT}"></a>
-				<p>CALORIAS PARA SEU OBJETIVO</p>
-				<a th:text="${obj}"></a>
+<body>
+	<main id="container">
+		<div id="login_form">
+			<!-- FORM HEADER -->
+			<div id="form_header">
+				<h2>Macros Xtreme</h2>
+				<h3>Result</h3>
 			</div>
 
+			<div id="check">
+				<!-- GÊNERO -->
+				<div class="input-box">
+					<label for="genero">Macros</label>
+
+					<p th:text="'TAXA METABOLICA BASAL: ' + ${tmbF}"></p>
+					<p th:text="'GASTO TOTAL: ' + ${gastoT}"></p>
+					<p th:text=" 'CALORIAS PARA SEU OBJETIVO: ' + ${obj}"></p>
+					<p th:text=" 'Proteina: ' + ${macros[0]}"></p>
+					<p th:text=" 'Carboidrato: ' + ${macros[1]}">:</p>
+					<p th:text=" 'Gordura: ' + ${macros[2]}">:</p>
+					<p th:text=" 'Fibras: ' + ${macros[3]}">:</p>
+				</div>
+			</div>
+
+			<!-- INPUTS -->
+			<div id="inputs">
+				<!-- IDADE -->
+				<div class="input-box">
+					<input type="text" name="idade" id="idade" class="inputUser" required>
+					<label for="endereco" class="labelInput">Idade</label>
+				</div>
+
+				<!-- PESO -->
+				<div class="input-box">
+					<input type="text" name="peso" id="peso" class="inputUser" required>
+					<label for="peso" class="labelInput">Peso</label>
+				</div>
+
+				<!-- ALTURA -->
+				<div class="input-box">
+					<input type="text" name="altura" id="altura" class="inputUser" required>
+					<label for="altura" class="labelInput">Altura</label>
+				</div>
+			</div>
+
+			<!-- NIVEL DE ATIVIDADE FISICA -->
+			<div class="input-box" id="atividadeFisica">
+				<div class="col-md-6 col-sm-12">
+					<div class="form-group">
+						<select name="nivelAtividadeFisica" id="selectAtividade" class="form-select me-2"
+							aria-label="Default select example">
+							<option selected disabled>Nivel de Atividade Fisica</option>
+							<option th:each="nivelA : ${nivelA}" th:text="${nivelA}"></option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<!-- LOGIN BUTTON -->
+			<a th:href="@{/calculo/form}" id="login_button">
+				Voltar
+			</a>
 		</div>
-	</div>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+	</main>
+
+	<!-- JAVASCRIPT -->
+	<script type="text/javascript" src="js/bootstrap.min.js.js"></script>
 </body>
 
 </html>
