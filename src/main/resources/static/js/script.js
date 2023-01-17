@@ -1,23 +1,18 @@
-'use strict'
+const mode = document.getElementById('mode_icon');
 
-let photo = document.getElementById('imgPhoto');
-let file = document.getElementById('user-img');
+mode.addEventListener('click', () => {
+    const form = document.getElementById('login_form');
 
-photo.addEventListener('click', () => {
-    file.click();
-});
+    if(mode.classList.contains('fa-moon')) {
+        mode.classList.remove('fa-moon');
+        mode.classList.add('fa-sun');
 
-file.addEventListener('change', () => {
-
-    if (file.files.length <= 0) {
-        return;
+        form.classList.add('dark');
+        return ;
     }
+    
+    mode.classList.remove('fa-sun');
+    mode.classList.add('fa-moon');
 
-    let reader = new FileReader();
-
-    reader.onload = () => {
-        photo.src = reader.result;
-    }
-
-    reader.readAsDataURL(file.files[0]);
+    form.classList.remove('dark');
 });

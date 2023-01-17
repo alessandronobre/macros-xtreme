@@ -9,14 +9,13 @@
     --color-dark-50: #797984;
     --color-dark-100: #312d37;
     --color-dark-900: #000;
-
-    /* Purple */
-    --color-purple-50: #7c3aed;
-    --color-purple-100: #a855f7;
-    --color-purple-200: #bf46ef;
+    
+        /* Blue */
+    --color-blue-50: #36a9e1;
+    --color-blue-100: #195488;
 
     /* Gradient */
-    --color-gradient: linear-gradient(90deg, var(--color-purple-50), var(--color-purple-100), var(--color-purple-200));
+    --color-gradient: linear-gradient(90deg, var(--color-blue-50), var(--color-blue-100));
 }
 
 /* General */
@@ -65,14 +64,26 @@
     content: '';
     width: 40%;
     height: 3px;
-    background-color: var(--color-purple-50);
+    color: var(--color-dark-900);
     bottom: 10px;
     border-radius: 5px;
 }
 
+#form_header img {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 45px;
+}
+
 #mode_icon {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 30px;
+    color: var(--color-dark-900);
+}
+
+#mode_icon:hover {
+    transform: scale(1.05);
 }
 
 #check{
@@ -98,7 +109,7 @@
 .inputUser{
 	background: none;
 	border: none;
-	border-bottom: 1px solid var(--color-purple-50);
+	border-bottom: 1px solid var(--color-blue-50);
 	outline: none;
 	color: black;
 	font-size: 15px;
@@ -149,29 +160,4 @@
 
 #login_button:hover {
     transform: scale(1.05);
-}
-
-/* Dark Mode */
-.dark#login_form {
-    color: var(--color-light-50);
-    background-color: var(--color-dark-100);
-    animation: light-to-dark-background 0.3s ease-in-out;
-}
-
-@keyframes dark-to-light-background {
-    0% {
-        background-color:var(--color-dark-100);
-    }
-    100.0% {
-        background-color:var(--color-light-50);
-    }
-}
-
-@keyframes light-to-dark-background {
-    0% {
-        background-color:var(--color-light-50);
-    }
-    100.0% {
-        background-color:var(--color-dark-100); 
-    }
 }

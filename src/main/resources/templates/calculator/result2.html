@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
 	<meta charset="UTF-8">
@@ -26,15 +26,21 @@
 			<div id="check">
 				<!-- GÊNERO -->
 				<div class="input-box">
-					<label for="genero">Macros</label>
-
-					<p th:text="'TAXA METABOLICA BASAL: ' + ${tmbF}"></p>
-					<p th:text="'GASTO TOTAL: ' + ${gastoT}"></p>
-					<p th:text=" 'CALORIAS PARA SEU OBJETIVO: ' + ${obj}"></p>
-					<p th:text=" 'Proteina: ' + ${macros[0]}"></p>
-					<p th:text=" 'Carboidrato: ' + ${macros[1]}">:</p>
-					<p th:text=" 'Gordura: ' + ${macros[2]}">:</p>
-					<p th:text=" 'Fibras: ' + ${macros[3]}">:</p>
+					<div class="info-basic">
+					<p th:text="'Taxa Metabólica Basal (TMB): ' + ${tmb} + ' kcal'"></p>
+					<p th:text="'Gasto Calórico Total: ' + ${gastoT} + ' kcal'"></p>
+					</div><br>
+					<div class="info-kcal">
+					<p th:text=" 'Meta de Calórias em dias de Treino: ' + ${objT} + ' kcal'"></p>
+					<p th:text=" 'Meta de Calórias em dias de Descanso: ' + ${objOff} + ' kcal'"></p>
+					</div><br>
+					<div class="info-macros">
+					<label for="macros">Macros</label>
+					<p th:text=" 'Proteina: ' + ${macros[0]} + 'g'"></p>
+					<p th:text=" 'Carboidrato: ' + ${macros[1]} + 'g'">:</p>
+					<p th:text=" 'Gordura: ' + ${macros[2]} + 'g'">:</p>
+					<p th:text=" 'Fibras: ' + ${macros[3]} + 'g'">:</p>
+					</div>
 				</div>
 			</div>
 

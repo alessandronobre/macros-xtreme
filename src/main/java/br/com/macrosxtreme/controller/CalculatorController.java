@@ -19,22 +19,23 @@ public class CalculatorController {
 	
 	@GetMapping("/form")
 	public ModelAndView form(UserDTO userDTO) {
-		ModelAndView modelAndView = new ModelAndView("calculator/form2");
-		modelAndView.addObject("genero", calculatorService.typeGenre());
+		ModelAndView modelAndView = new ModelAndView("calculator/form");
 		modelAndView.addObject("nivelA", calculatorService.levelActivity());
-		modelAndView.addObject("obj", calculatorService.goal());
+		
 		return modelAndView;
 
 	}
 
 	@PostMapping("/result")
 	public ModelAndView form2(UserDTO userDTO) {
-		ModelAndView modelAndView = new ModelAndView("calculator/result2");
-		modelAndView.addObject("tmbM", calculatorService.calculatorM(userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso()));
-		modelAndView.addObject("tmbF", calculatorService.calculatorF(userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso()));
+		ModelAndView modelAndView = new ModelAndView("calculator/result");
+		modelAndView.addObject("tmb", calculatorService.calculatorTBM(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso()));
 		modelAndView.addObject("gastoT", calculatorService.calculatorGT(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getNivelAtividadeFisica()));
-		modelAndView.addObject("obj", calculatorService.calculatorObj(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getObjetivo(), userDTO.getNivelAtividadeFisica()));
-		modelAndView.addObject("macros", calculatorService.macros(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getObjetivo(), userDTO.getNivelAtividadeFisica()));
+		modelAndView.addObject("objT", calculatorService.calculatorObjTraining(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getObjetivo(), userDTO.getNivelAtividadeFisica()));
+		modelAndView.addObject("objOff", calculatorService.calculatorObjOff(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getObjetivo(), userDTO.getNivelAtividadeFisica()));
+		modelAndView.addObject("macrosT", calculatorService.macrosTraining(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getObjetivo(), userDTO.getNivelAtividadeFisica()));
+		modelAndView.addObject("macrosOff", calculatorService.macrosOff(userDTO.getGenero(), userDTO.getIdade(), userDTO.getAltura(), userDTO.getPeso(), userDTO.getObjetivo(), userDTO.getNivelAtividadeFisica()));
+		
 		return modelAndView;
 
 	}
