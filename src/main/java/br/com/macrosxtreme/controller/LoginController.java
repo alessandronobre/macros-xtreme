@@ -30,15 +30,16 @@ public class LoginController {
 	}
 	
 	@PostMapping("/access")
-	public String login(User user) {
-		ModelAndView modelAndView = new ModelAndView("/home");
+	public ModelAndView login(User user) {
+		ModelAndView modelAndView = new ModelAndView("login/login");
+		ModelAndView modelAndView2 = new ModelAndView("home");
 		
 			if (loginService.login(user) == true){
 				System.out.println("Usuario Logado");
-				return "redirect:/home";
+				return modelAndView2;
 			}
 			modelAndView.addObject("erro", "Usuario ou senha invalido");
-		return "redirect:/login/access";
+		return modelAndView;
 		
 	}
 	

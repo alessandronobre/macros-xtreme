@@ -75,12 +75,12 @@
 							Criar Conta
 						</a>
 					</div>
-					<div th:text="${erro}" class="alert alert-danger" role="alert"></div>
+					
+					<div th:if="${erro != null}" th:text="${erro}" id="erro" class="alert alert-danger" role="alert"></div>
+					
 				</div>
 			</div>
-			
-			<div th:if="${erro != null}" th:text="${erro}" class="alert alert-danger" role="alert"></div>
-			
+
 			<!-- LOGIN BUTTON -->
 			<button type="submit" id="login_button">
 				Login

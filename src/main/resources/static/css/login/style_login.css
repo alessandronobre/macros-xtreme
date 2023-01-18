@@ -159,6 +159,13 @@
     color: var(--color-blue-50);
 }
 
+#erro{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	color: red;
+}
+
 /* Login Button */
 #login_button {
     background: var(--color-gradient);
