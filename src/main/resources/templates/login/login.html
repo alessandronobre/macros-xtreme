@@ -9,14 +9,14 @@
 		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-	<link rel="stylesheet" href="/css/style_login.css">
+	<link rel="stylesheet" href="/css/login/style_login.css">
 
 	<title>Macros Xtreme</title>
 </head>
 
 <body>
 	<main id="container">
-		<form id="login_form">
+		<form id="login_form" method="POST" th:action="access" th:object="${user}">
 			<!-- FORM HEADER -->
 			<div id="form_header">
 				<h1>Login</h1>
@@ -31,28 +31,19 @@
 				</a>
 
 				<!-- GOOGLE -->
-				<a href="#">
-					<img src="/img/google.png" alt="Google logo">
+				<a href="https://www.youtube.com/channel/UCOKd531dsb_CD6G8zyWNIIA" target="_blank">
+					<i class="fa-brands fa-youtube"></i>
+					<!-- <img src="/img/google.png" alt="Google logo"> -->
 				</a>
 
 				<!-- GITHUB -->
-				<a href="#">
+				<a href="https://github.com/alessandronobre" target="_blank">
 					<img src="/img/github.png" alt="">
 				</a>
 			</div>
 
 			<!-- INPUTS -->
 			<div id="inputs">
-				<!-- NAME -->
-				<div class="input-box">
-					<label for="name">
-						Name
-						<div class="input-field">
-							<i class="fa-solid fa-user"></i>
-							<input type="text" id="name" name="name">
-						</div>
-					</label>
-				</div>
 
 				<!-- EMAIL -->
 				<div class="input-box">
@@ -77,16 +68,19 @@
 
 					<!-- FORGOT PASSWORD -->
 					<div id="forgot_password">
-						<a href="@{/calculo/form}">
+						<a th:href="@{/login/forgot}">
 							Esqueceu sua senha?
 						</a>
-						<a href="@{/calculo/form}">
+						<a th:href="@{/login/create}">
 							Criar Conta
 						</a>
 					</div>
+					<div th:text="${erro}" class="alert alert-danger" role="alert"></div>
 				</div>
 			</div>
-
+			
+			<div th:if="${erro != null}" th:text="${erro}" class="alert alert-danger" role="alert"></div>
+			
 			<!-- LOGIN BUTTON -->
 			<button type="submit" id="login_button">
 				Login
@@ -95,7 +89,7 @@
 	</main>
 
 	<!-- JAVASCRIPT -->
-	<script type="text/javascript" src="/js/script.js"></script>
+	<!--<script type="text/javascript" src="/js/script.js"></script>-->
 </body>
 
 </html>

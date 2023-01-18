@@ -35,7 +35,7 @@
     background: var(--color-gradient);
 }
 
-#login_form {
+#forgot_form {
     display: flex;
     flex-direction: column;
     height: fit-content;
@@ -88,6 +88,16 @@
     transform: scale(1.2);
 }
 
+#social_media i {
+	font-size: 40px;
+    width: 35px;
+    color: red;
+}
+
+#social_media i:hover {
+    transform: scale(1.2);
+}
+
 /* Inputs */
 #inputs {
     display: flex;
@@ -129,28 +139,8 @@
     outline: none;
 }
 
-/* Forgot password */
-#forgot_password {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    gap: 33%;
-}
-
-#forgot_password a {
-    text-decoration: none;
-    color: var(--color-dark-50);
-    font-size: 12px;
-    padding: 0px;
-}
-
-#forgot_password a:hover {
-    color: var(--color-blue-50);
-}
-
 /* Login Button */
-#login_button {
+#send_button {
     background: var(--color-gradient);
     padding: 7px;
     border-radius: 10px;
@@ -160,7 +150,7 @@
     cursor: pointer;
 }
 
-#login_button:hover {
+#send_button:hover {
     transform: scale(1.05);
 }
 
