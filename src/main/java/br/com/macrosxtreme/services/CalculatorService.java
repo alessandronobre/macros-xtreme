@@ -8,14 +8,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CalculatorService {
 
-	public List<String> typeGenre() {
-		List<String> genero = new ArrayList<>();
-		genero.add("Homem");
-		genero.add("Mulher");
-		return genero;
-
-	}
-
 	public List<String> levelActivity() {
 		List<String> nivelA = new ArrayList<>();
 		nivelA.add("Sedentário (Exercicio minimo)");
@@ -27,31 +19,23 @@ public class CalculatorService {
 
 	}
 
-	public List<String> goal() {
-		List<String> obj = new ArrayList<>();
-		obj.add("Cutting");
-		obj.add("Buking");
-		return obj;
+	public int calculatorTBM(String genero, int idade, int altura, int peso) {
+		int tmb = 0;
+		if (genero.equals("Homem")) {
+			double i = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
+			tmb = (int) Math.round(i);
+			return tmb;
+		} else if (genero.equals("Mulher")) {
+			double i = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
+			tmb = (int) Math.round(i);
+			return tmb;
 
-	}
-
-	public int calculatorM(int idade, int altura, int peso) {
-		double i = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
-		int tmbM = (int) Math.round(i);
-		return tmbM;
-
-	}
-
-	public int calculatorF(int idade, int altura, int peso) {
-		double i = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
-		int tmbF = (int) Math.round(i);
-		return tmbF;
-
+		}
+		return tmb;
 	}
 
 	public int calculatorGT(String genero, int idade, int altura, int peso, String nivelAtividadeFisica) {
-		double tmbM = calculatorM(idade, altura, peso);
-		double tmbF = calculatorF(idade, altura, peso);
+		double tmb = calculatorTBM(genero, idade, altura, peso);
 		double i;
 		int gastoTotal;
 
@@ -59,23 +43,23 @@ public class CalculatorService {
 		case "Homem": {
 			switch (nivelAtividadeFisica) {
 			case "Sedentário (Exercicio minimo)": {
-				i = tmbM * 1.2;
+				i = tmb * 1.2;
 			}
 				break;
 			case "Exercicio Leve (1-3 dias por semana)": {
-				i = tmbM * 1.375;
+				i = tmb * 1.375;
 			}
 				break;
 			case "Exercicio Moderado (3-5 dias por semana)": {
-				i = tmbM * 1.55;
+				i = tmb * 1.55;
 			}
 				break;
 			case "Exercicio Intenso (6-7 dias por semana)": {
-				i = tmbM * 1.725;
+				i = tmb * 1.725;
 			}
 				break;
 			case "Exercicio Muito Intenso (Atleta, 2x por dia)": {
-				i = tmbF * 1.9;
+				i = tmb * 1.9;
 			}
 				break;
 			default:
@@ -86,23 +70,23 @@ public class CalculatorService {
 		case "Mulher": {
 			switch (nivelAtividadeFisica) {
 			case "Sedentário (Exercicio minimo)": {
-				i = tmbF * 1.2;
+				i = tmb * 1.2;
 			}
 				break;
 			case "Exercicio Leve (1-3 dias por semana)": {
-				i = tmbF * 1.375;
+				i = tmb * 1.375;
 			}
 				break;
 			case "Exercicio Moderado (3-5 dias por semana)": {
-				i = tmbF * 1.55;
+				i = tmb * 1.55;
 			}
 				break;
 			case "Exercicio Intenso (6-7 dias por semana)": {
-				i = tmbF * 1.725;
+				i = tmb * 1.725;
 			}
 				break;
 			case "Exercicio Muito Intenso (Atleta, 2x por dia)": {
-				i = tmbF * 1.9;
+				i = tmb * 1.9;
 			}
 				break;
 			default:
@@ -116,7 +100,8 @@ public class CalculatorService {
 		return gastoTotal = (int) Math.round(i);
 	}
 
-	public int calculatorObj(String genero, int idade, int altura, int peso, String objetivo, String nivelAtividadeFisica) {
+	public int calculatorObjTraining(String genero, int idade, int altura, int peso, String objetivo,
+			String nivelAtividadeFisica) {
 		double i, gastoTotal;
 		int obj;
 		gastoTotal = calculatorGT(genero, idade, altura, peso, nivelAtividadeFisica);
@@ -136,15 +121,26 @@ public class CalculatorService {
 		return obj = (int) Math.round(i);
 
 	}
+	
+	public int calculatorObjOff(String genero, int idade, int altura, int peso, String objetivo,
+			String nivelAtividadeFisica) {
+		int ObjOff;
+		double x = 0;
+		int i = calculatorObjTraining(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
+		double y = i - (10 * i / 100);
+		return ObjOff = (int) Math.round(y);
 
-	public List<Integer> macros(String genero, int idade, int altura, int peso, String objetivo, String nivelAtividadeFisica) {
-		int obj = calculatorObj(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
+	}
+
+	public List<Integer> macrosTraining(String genero, int idade, int altura, int peso, String objetivo,
+			String nivelAtividadeFisica) {
+		int obj = calculatorObjTraining(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
 		int proteina;
 		int gordura;
 		int carbo;
 		int fibras = 0;
-		double x = peso * 2.2;
-		double i = peso * 0.8;
+		double x = peso * 2.240;
+		double i = peso * 0.760;
 		double CaloriasP = x * 4;
 		double CaloriasG = i * 9;
 		double y = (obj - CaloriasP - CaloriasG) / 4;
@@ -160,7 +156,7 @@ public class CalculatorService {
 		if (obj > 3200 && obj <= 4200) {
 			fibras = 40;
 		}
-		
+
 		proteina = (int) Math.round(x);
 		gordura = (int) Math.round(i);
 		carbo = (int) Math.round(y);
@@ -169,8 +165,27 @@ public class CalculatorService {
 		macro.add(carbo);
 		macro.add(gordura);
 		macro.add(fibras);
-		
+
 		return macro;
 	}
 	
+	public List<Integer> macrosOff(String genero, int idade, int altura, int peso, String objetivo,
+			String nivelAtividadeFisica) {
+		List <Integer> macros = macrosTraining(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
+		int i = macros.get(2);
+		int y = macros.get(1);
+		int proteina = macros.get(0);
+		int gordura = i - (9 * i / 100);
+		int carbo = y - (20 * y / 100);
+		int fibras = macros.get(3);
+
+		List<Integer> macro = new ArrayList<>();
+		macro.add(proteina);
+		macro.add(carbo);
+		macro.add(gordura);
+		macro.add(fibras);
+
+		return macro;
+	}
+
 }
