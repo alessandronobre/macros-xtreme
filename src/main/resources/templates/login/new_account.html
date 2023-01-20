@@ -16,29 +16,11 @@
 
 <body>
 	<main id="container">
-		<form id="new_account_form" method="POST" th:action="create" th:object="${user}">
+		<form method="POST" th:action="create" th:object="${userDTO}" onsubmit="return newAccount(this);">
 			<!-- FORM HEADER -->
 			<div id="form_header">
-				<h1>Login</h1>
-				<i id="mode_icon" class="fa-solid fa-moon"></i>
-			</div>
-
-			<!-- SOCIAL MEDIA LINKS -->
-			<div id="social_media">
-				<!-- FACEBOOK -->
-				<a href="#">
-					<img src="/img/facebook.png" alt="">
-				</a>
-
-				<!-- GOOGLE -->
-				<a href="#">
-					<img src="/img/google.png" alt="Google logo">
-				</a>
-
-				<!-- GITHUB -->
-				<a href="#">
-					<img src="/img/github.png" alt="">
-				</a>
+				<img src="/img/logo.png" alt="">
+				<h2>Macros Xtreme</h2>
 			</div>
 
 			<!-- INPUTS -->
@@ -78,14 +60,15 @@
 			</div>
 
 			<!-- LOGIN BUTTON -->
-			<button type="submit" id="create_button">
+			<button type="submit">
 				Criar
 			</button>
 		</form>
 	</main>
 
 	<!-- JAVASCRIPT -->
-	<script type="text/javascript" src="/js/script.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script type="text/javascript" src="/js/login/script.js"></script>
 </body>
 
 </html>

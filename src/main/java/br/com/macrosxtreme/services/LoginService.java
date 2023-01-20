@@ -3,6 +3,8 @@ package br.com.macrosxtreme.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.macrosxtreme.dto.LoginDTO;
+import br.com.macrosxtreme.dto.UserDTO;
 import br.com.macrosxtreme.model.User;
 import br.com.macrosxtreme.repositories.UserRepository;
 
@@ -12,14 +14,22 @@ public class LoginService {
 	@Autowired
 	UserRepository userRepository;
 
-	public Boolean login(User user) {
+	public LoginDTO login(LoginDTO loginDTO) {
 
-		User userToCheck = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-		if (userToCheck == null) {
-			return false;
+		User toCheck = userRepository.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
+		if(toCheck == null) {
+			return null;
 		}
-		return true;
+		LoginDTO userToCheck = new LoginDTO(toCheck);
+		return userToCheck;
 
 	}
+	
+	public void save(UserDTO userDTO) {
+		User user = new User(userDTO);
+		userRepository.save(user);
+
+	}
+	
 
 }

@@ -1,11 +1,19 @@
 package br.com.macrosxtreme.model;
 
+import br.com.macrosxtreme.dto.LoginDTO;
+import br.com.macrosxtreme.dto.UserDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table
+@Getter
+@Setter
+@NoArgsConstructor
 public class User extends Entityy {
 
 	@Column(nullable = false, length = 50)
@@ -17,27 +25,15 @@ public class User extends Entityy {
 	@Column(nullable = false, length = 20)
 	private String password;
 
-	public String getName() {
-		return name;
+	public User(LoginDTO loginDTO) {
+		email = loginDTO.getEmail();
+		password = loginDTO.getPassword();
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public User(UserDTO userDTO) {
+		name = userDTO.getName();
+		email = userDTO.getEmail();
+		password = userDTO.getPassword();
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }

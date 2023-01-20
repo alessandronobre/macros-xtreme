@@ -16,30 +16,11 @@
 
 <body>
 	<main id="container">
-		<form id="login_form" method="POST" th:action="access" th:object="${user}">
+		<form method="POST" th:action="access" th:object="${loginDTO}">
 			<!-- FORM HEADER -->
 			<div id="form_header">
-				<h1>Login</h1>
-				<i id="mode_icon" class="fa-solid fa-moon"></i>
-			</div>
-
-			<!-- SOCIAL MEDIA LINKS -->
-			<div id="social_media">
-				<!-- FACEBOOK -->
-				<a href="#">
-					<img src="/img/facebook.png" alt="">
-				</a>
-
-				<!-- GOOGLE -->
-				<a href="https://www.youtube.com/channel/UCOKd531dsb_CD6G8zyWNIIA" target="_blank">
-					<i class="fa-brands fa-youtube"></i>
-					<!-- <img src="/img/google.png" alt="Google logo"> -->
-				</a>
-
-				<!-- GITHUB -->
-				<a href="https://github.com/alessandronobre" target="_blank">
-					<img src="/img/github.png" alt="">
-				</a>
+				<img src="/img/logo.png" alt="">
+				<h2>Macros Xtreme</h2>
 			</div>
 
 			<!-- INPUTS -->
@@ -75,9 +56,10 @@
 							Criar Conta
 						</a>
 					</div>
-					
-					<div th:if="${erro != null}" th:text="${erro}" id="erro" class="alert alert-danger" role="alert"></div>
-					
+
+					<div th:if="${erro != null}" th:text="${erro}" id="erro" class="alert alert-danger" role="alert">
+					</div>
+
 				</div>
 			</div>
 
@@ -85,6 +67,24 @@
 			<button type="submit" id="login_button">
 				Login
 			</button>
+
+			<!-- SOCIAL MEDIA LINKS -->
+			<div id="social_media">
+				<!-- INSTAGRAM -->
+				<a href="#">
+					<i class="fa-brands fa-instagram"></i>
+				</a>
+
+				<!-- YOUTUBE -->
+				<a href="https://www.youtube.com/channel/UCOKd531dsb_CD6G8zyWNIIA" target="_blank">
+					<i class="fa-brands fa-youtube"></i>
+				</a>
+
+				<!-- GITHUB -->
+				<a href="https://github.com/alessandronobre" target="_blank">
+					<i class="fa-brands fa-github"></i>
+				</a>
+			</div>
 		</form>
 	</main>
 
