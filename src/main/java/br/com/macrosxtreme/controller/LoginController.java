@@ -18,7 +18,7 @@ public class LoginController {
 	
 
 //	Access Aplication
-	@GetMapping("/logins")
+	@GetMapping("/login")
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView("login/login");
 		return modelAndView;
