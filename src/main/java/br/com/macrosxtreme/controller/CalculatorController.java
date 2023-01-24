@@ -15,7 +15,7 @@ public class CalculatorController {
 	@Autowired
 	private CalculatorService calculatorService;
 	
-	@GetMapping("/calculo")
+	@GetMapping("/calculation")
 	public ModelAndView formCalculo(UserFreeDTO userFreeDTO) {
 		ModelAndView modelAndView = new ModelAndView("calculator/form");
 		modelAndView.addObject("nivelA", calculatorService.levelActivity());

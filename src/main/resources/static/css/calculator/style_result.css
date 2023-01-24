@@ -111,6 +111,12 @@ p{
     color: var(--color-dark-50);
 }
 
+.buttons {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Login Button */
 #back_button {
 	text-decoration: none;
@@ -119,11 +125,11 @@ p{
     justify-content: center;
     background: var(--color-gradient);
     color: var(--color-light-50);
-    padding: 7px;
+    padding: 5px;
     border-radius: 10px;
     border: 2px solid black;
-    font-weight: bold;
     font-size: 15px;
+    width: 250px;
     cursor: pointer;
 }
 
