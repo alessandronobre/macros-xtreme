@@ -147,14 +147,20 @@
 	
 }
 
+.buttons {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Login Button */
 #login_button {
     background: var(--color-gradient);
-    padding: 7px;
+    padding: 5px;
     border-radius: 10px;
     color: var(--color-light-50);
-    font-weight: bold;
     font-size: 15px;
+    width: 250px;
     cursor: pointer;
 }
 

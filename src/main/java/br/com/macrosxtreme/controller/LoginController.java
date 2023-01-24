@@ -3,43 +3,49 @@ package br.com.macrosxtreme.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UserDTO;
 import br.com.macrosxtreme.services.LoginService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/login")
 public class LoginController {
 
 	@Autowired
 	LoginService loginService;
 
 //	Access Aplication
-	@GetMapping("/access")
-	public ModelAndView login() {
-		ModelAndView modelAndView = new ModelAndView("login/login");
-		return modelAndView;
-
+	@GetMapping("/login")
+	public String showLoginPage() {
+		return "login/login";
 	}
 
-	@PostMapping("/access")
-	public ModelAndView login(LoginDTO loginDTO) {
+	@PostMapping("/login")
+	public ModelAndView doLogin(HttpServletRequest request, @ModelAttribute LoginDTO loginDTO) {
 		ModelAndView modelAndView = new ModelAndView("login/login");
 		LoginDTO userLogin = loginService.login(loginDTO);
-
 		if (userLogin == null) {
 			modelAndView.addObject("erro", "Usuario ou senha invalido");
 			return modelAndView;
 		}
-//		session.setAttribute("usuarioLogado", userLogin);
+		request.getSession().setAttribute("user", loginDTO);
 		return logued();
-
 	}
 	
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        return "redirect:/login";
+    }
+    
+//    <a href="/logout">Logout</a>
+
 	@GetMapping("/logued")
 	public ModelAndView logued() {
 		ModelAndView modelAndView = new ModelAndView("home");
@@ -61,7 +67,7 @@ public class LoginController {
 	public String createAccount(UserDTO userDTO) {
 		loginService.save(userDTO);
 
-		return "redirect:/login/access";
+		return "redirect:/login";
 
 	}
 

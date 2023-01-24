@@ -144,18 +144,45 @@ form {
 	color: red;
 }
 
+.buttons {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
 /* Login Button */
 #login_button {
     background: var(--color-gradient);
-    padding: 7px;
+    padding: 5px;
     border-radius: 10px;
     color: var(--color-light-50);
-    font-weight: bold;
     font-size: 18px;
+    width: 250px;
     cursor: pointer;
 }
 
 #login_button:hover {
+    transform: scale(1.05);
+}
+
+#calculation_button {
+	text-decoration: none;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-gradient);
+    color: var(--color-light-50);
+    width: 160px;
+    padding: 3px;
+    border-radius: 10px;
+    border: 2px solid black;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#calculation_button:hover {
     transform: scale(1.05);
 }
 

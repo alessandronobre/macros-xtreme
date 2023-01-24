@@ -4,21 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.UserFreeDTO;
 import br.com.macrosxtreme.services.CalculatorService;
 
 @Controller
-@RequestMapping("/calculo")
 public class CalculatorController {
 
 	@Autowired
 	private CalculatorService calculatorService;
 	
-	@GetMapping("/form")
-	public ModelAndView form(UserFreeDTO userFreeDTO) {
+	@GetMapping("/calculation")
+	public ModelAndView formCalculo(UserFreeDTO userFreeDTO) {
 		ModelAndView modelAndView = new ModelAndView("calculator/form");
 		modelAndView.addObject("nivelA", calculatorService.levelActivity());
 		
@@ -27,7 +25,7 @@ public class CalculatorController {
 	}
 
 	@PostMapping("/result")
-	public ModelAndView form2(UserFreeDTO userFreeDTO) {
+	public ModelAndView formResult(UserFreeDTO userFreeDTO) {
 		ModelAndView modelAndView = new ModelAndView("calculator/result");
 		modelAndView.addObject("tmb", calculatorService.calculatorTBM(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso()));
 		modelAndView.addObject("gastoT", calculatorService.calculatorGT(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso(), userFreeDTO.getNivelAtividadeFisica()));
