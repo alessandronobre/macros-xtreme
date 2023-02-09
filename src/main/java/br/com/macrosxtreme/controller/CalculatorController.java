@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.UserFreeDTO;
 import br.com.macrosxtreme.services.CalculatorService;
 
 @Controller
+@RequestMapping("/")
 public class CalculatorController {
 
 	@Autowired
 	private CalculatorService calculatorService;
+	
 	
 	@GetMapping("/calculation")
 	public ModelAndView formCalculo(UserFreeDTO userFreeDTO) {

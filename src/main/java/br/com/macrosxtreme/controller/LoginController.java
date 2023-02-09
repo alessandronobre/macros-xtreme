@@ -1,5 +1,7 @@
 package br.com.macrosxtreme.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UserDTO;
 import br.com.macrosxtreme.services.LoginService;
+import freemarker.template.TemplateException;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -19,10 +23,13 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 
+
 //	Access Aplication
 	@GetMapping("/login")
-	public String showLoginPage() {
-		return "login/login";
+	public ModelAndView showLoginPage() {
+		ModelAndView modelAndView = new ModelAndView("login/login");
+
+		return modelAndView;
 	}
 
 	@PostMapping("/login")
@@ -36,14 +43,14 @@ public class LoginController {
 		request.getSession().setAttribute("user", loginDTO);
 		return logued();
 	}
-	
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.removeAttribute("user");
-        return "redirect:/login";
-    }
-    
+
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("user");
+		return "redirect:/login";
+	}
+
 //    <a href="/logout">Logout</a>
 
 	@GetMapping("/logued")
@@ -64,10 +71,16 @@ public class LoginController {
 	}
 
 	@PostMapping("/create")
-	public String createAccount(UserDTO userDTO) {
+	public ModelAndView createAccount(UserDTO userDTO) {
+		ModelAndView modelAndView = new ModelAndView("login/new_account");
+		if (userDTO.getName().equals("") || userDTO.getEmail().equals("") || userDTO.getPassword().equals("")
+				|| userDTO == null) {
+			modelAndView.addObject("erro", "Preencha os campos por favor");
+			return modelAndView;
+		}
 		loginService.save(userDTO);
 
-		return "redirect:/login";
+		return showLoginPage();
 
 	}
 
@@ -81,9 +94,9 @@ public class LoginController {
 	}
 
 	@PostMapping("/forgot")
-	public String forgotPasswords() {
-		ModelAndView modelAndView = new ModelAndView("/home");
-
+	public String forgotPasswords(UserDTO userDTO) throws MessagingException, TemplateException, IOException {
+		loginService.sendMailForgotPassword(userDTO);
+		
 		return "redirect:/login";
 
 	}
