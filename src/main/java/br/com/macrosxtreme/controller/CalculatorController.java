@@ -21,7 +21,6 @@ public class CalculatorController {
 	@GetMapping("/calculation")
 	public ModelAndView formCalculo(UserFreeDTO userFreeDTO) {
 		ModelAndView modelAndView = new ModelAndView("calculator/form");
-		modelAndView.addObject("nivelA", calculatorService.levelActivity());
 		
 		return modelAndView;
 
@@ -30,13 +29,15 @@ public class CalculatorController {
 	@PostMapping("/result")
 	public ModelAndView formResult(UserFreeDTO userFreeDTO) {
 		ModelAndView modelAndView = new ModelAndView("calculator/result");
+
 		modelAndView.addObject("tmb", calculatorService.calculatorTBM(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso()));
 		modelAndView.addObject("gastoT", calculatorService.calculatorGT(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso(), userFreeDTO.getNivelAtividadeFisica()));
 		modelAndView.addObject("objT", calculatorService.calculatorObjTraining(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso(), userFreeDTO.getObjetivo(), userFreeDTO.getNivelAtividadeFisica()));
 		modelAndView.addObject("objOff", calculatorService.calculatorObjOff(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso(), userFreeDTO.getObjetivo(), userFreeDTO.getNivelAtividadeFisica()));
 		modelAndView.addObject("macrosT", calculatorService.macrosTraining(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso(), userFreeDTO.getObjetivo(), userFreeDTO.getNivelAtividadeFisica()));
 		modelAndView.addObject("macrosOff", calculatorService.macrosOff(userFreeDTO.getGenero(), userFreeDTO.getIdade(), userFreeDTO.getAltura(), userFreeDTO.getPeso(), userFreeDTO.getObjetivo(), userFreeDTO.getNivelAtividadeFisica()));
-		
+		modelAndView.addObject("imc", calculatorService.imc(userFreeDTO.getAltura(), userFreeDTO.getPeso()));
+
 		return modelAndView;
 
 	}

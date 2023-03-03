@@ -1,7 +1,5 @@
 package br.com.macrosxtreme.repositories;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,18 +9,11 @@ import br.com.macrosxtreme.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	
-//	Duas formas de fazer a mesma consulta
-	
-	@Query(value="SELECT * FROM USER U WHERE  U.NAME = :name U.EMAIL = :email AND U.PASSWORD = :password", nativeQuery = true)
-	User toCheckLogin(String email, String password);
-	
-	User findByEmailAndPassword(String email, String password);
-	
 	@Query(value="SELECT * FROM USER U WHERE  U.email = ?1", nativeQuery = true)
 	User findByUser(String email);
 	
-	@Query(value="SELECT * FROM USER U WHERE  U.id in ?1", nativeQuery = true)
-	List<User> teste2(List<Long> ids);
+	@Query(value="SELECT U.EMAIL FROM USER U WHERE  U.email = ?1", nativeQuery = true)
+	String findByEmail(String email);
 	
     
 	

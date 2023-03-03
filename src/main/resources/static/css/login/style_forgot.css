@@ -26,13 +26,19 @@
     box-sizing: border-box;
 }
 
-#container {
+body {
     height: 100vh;
     width: 100%;
+    background: var(--color-gradient);
+}
+
+#container{
+	height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: var(--color-gradient);
+
 }
 
 form {
@@ -51,6 +57,7 @@ form {
 #form_header {
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: space-between;
 }
 

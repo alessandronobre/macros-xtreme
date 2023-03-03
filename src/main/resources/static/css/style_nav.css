@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
+
+/** Variables - colors **/
+:root {
+    /* Light */
+    --color-light-50: #f8fafc;
+
+    /* Dark */
+    --color-dark-50: #797984;
+    --color-dark-100: #312d37;
+    --color-dark-900: #000;
+    
+        /* Blue */
+    --color-blue-50: #36a9e1;
+    --color-blue-100: #195488;
+
+    /* Gradient */
+    --color-gradient: linear-gradient(90deg, var(--color-blue-50), var(--color-blue-100));
+}
+
+/* General */
+* {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+nav{
+	width: 100%;
+	background: var(--color-gradient);
+    border-radius: 10px;
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.336);
+
+}
+
+#login {
+	text-decoration: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+}
+
+#login:hover {
+    transform: scale(1.05);
+}
+

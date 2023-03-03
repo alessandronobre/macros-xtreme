@@ -5,10 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-		crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/calculator/style_result.css}">
 
 	<title>Macros Xtreme</title>
@@ -19,39 +16,43 @@
 		<div id="result">
 			<!-- FORM HEADER -->
 			<div id="result_header">
+				<img src="/img/logo.png" alt="">
 				<h2>Macros Xtreme</h2>
-				<h3>Result</h3>
 			</div>
 
 			<div id="check">
 				<!-- GÊNERO -->
 				<div class="input-box">
 					<div class="info-basic">
-						<label>Gasto Energético </label>
-						<p th:text="'Taxa Metabólica Basal (TMB): ' + ${tmb} + ' kcal'"></p>
-						<p th:text="'Gasto Calórico Total: ' + ${gastoT} + ' kcal'"></p>
+						<label>Percentual de Gordura (IMC)</label>
+						<p th:text="${imc}"></p>
+					</div><br>
+					<div class="info-basic">
+						<label>Gasto Energetico</label>
+						<p th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${tmb} + ' kcal'"></p>
+						<p th:text="'Gasto Calorico Total: ' + ' ' + ${gastoT} + ' kcal'"></p>
 					</div><br>
 					<div class="info-kcal-title">
-						<label for="macros">Metas de Calórias</label>
+						<label for="macros">Metas de Calorias</label>
 					</div>
 					<div class="info-kcal">
-						<p th:text=" 'Dias de Treino: ' + ${objT} + ' kcal'"></p>
-						<p th:text=" 'Dias de Descanso: ' + ${objOff} + ' kcal'"></p>
+						<p th:text="'Dias de Treino: ' + ' ' + ${objT} + ' kcal'"></p>
+						<p th:text="'Dias de Descanso: ' + ' ' + ${objOff} + ' kcal'"></p>
 					</div><br>
 					<div class="info-macros">
 						<div class="info-macro">
 							<label for="macros">Macros - Treino</label>
-							<p th:text=" 'Proteina: ' + ${macrosT[0]} + 'g'"></p>
-							<p th:text=" 'Carboidrato: ' + ${macrosT[1]} + 'g'">:</p>
-							<p th:text=" 'Gordura: ' + ${macrosT[2]} + 'g'">:</p>
-							<p th:text=" 'Fibras: ' + ${macrosT[3]} + 'g'">:</p>
+							<p th:text="'Proteina: ' + ' ' + ${macrosT[0]} + 'g'"></p>
+							<p th:text="'Carboidrato: ' + ' ' + ${macrosT[1]} + 'g'"></p>
+							<p th:text="'Gordura: ' + ' ' + ${macrosT[2]} + 'g'"></p>
+							<p th:text="'Fibras: ' + ' ' + ${macrosT[3]} + 'g'"></p>
 						</div>
 						<div class="info-macro">
 							<label for="macros">Macros - Descanso</label>
-							<p th:text=" 'Proteina: ' + ${macrosOff[0]} + 'g'"></p>
-							<p th:text=" 'Carboidrato: ' + ${macrosOff[1]} + 'g'">:</p>
-							<p th:text=" 'Gordura: ' + ${macrosOff[2]} + 'g'">:</p>
-							<p th:text=" 'Fibras: ' + ${macrosOff[3]} + 'g'">:</p>
+							<p th:text="'Proteina: ' + ' ' + ${macrosOff[0]} + 'g'"></p>
+							<p th:text="'Carboidrato: ' + ' ' + ${macrosOff[1]} + 'g'"></p>
+							<p th:text="'Gordura: ' + ' ' + ${macrosOff[2]} + 'g'"></p>
+							<p th:text="'Fibras: ' + ' ' + ${macrosOff[3]} + 'g'"></p>
 						</div>
 
 					</div>
@@ -61,15 +62,13 @@
 
 			<!-- BACK BUTTON -->
 			<div class="buttons">
-				<a th:href="@{/calculo}" id="back_button">
-					Voltar
-				</a>
+				<a th:href="@{/calculation}" id="back_button">Voltar</a>
 			</div>
 		</div>
 	</main>
 
 	<!-- JAVASCRIPT -->
-	<script type="text/javascript" src="js/calculator/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 </body>
 
 </html>

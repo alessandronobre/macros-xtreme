@@ -1,5 +1,6 @@
 package br.com.macrosxtreme.services;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,17 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CalculatorService {
-
-	public List<String> levelActivity() {
-		List<String> nivelA = new ArrayList<>();
-		nivelA.add("Sedentário (Exercicio minimo)");
-		nivelA.add("Exercicio Leve (1-3 dias por semana)");
-		nivelA.add("Exercicio Moderado (3-5 dias por semana)");
-		nivelA.add("Exercicio Intenso (6-7 dias por semana)");
-		nivelA.add("Exercicio Muito Intenso (Atleta, 2x por dia)");
-		return nivelA;
-
-	}
 
 	public int calculatorTBM(String genero, int idade, int altura, int peso) {
 		int tmb = 0;
@@ -37,55 +27,54 @@ public class CalculatorService {
 	public int calculatorGT(String genero, int idade, int altura, int peso, String nivelAtividadeFisica) {
 		double tmb = calculatorTBM(genero, idade, altura, peso);
 		double i;
-		int gastoTotal;
 
 		switch (genero) {
 		case "Homem": {
 			switch (nivelAtividadeFisica) {
-			case "Sedentário (Exercicio minimo)": {
+			case "nivel1": {
 				i = tmb * 1.2;
 			}
 				break;
-			case "Exercicio Leve (1-3 dias por semana)": {
+			case "nivel2": {
 				i = tmb * 1.375;
 			}
 				break;
-			case "Exercicio Moderado (3-5 dias por semana)": {
+			case "nivel3": {
 				i = tmb * 1.55;
 			}
 				break;
-			case "Exercicio Intenso (6-7 dias por semana)": {
+			case "nivel4": {
 				i = tmb * 1.725;
 			}
 				break;
-			case "Exercicio Muito Intenso (Atleta, 2x por dia)": {
+			case "nivel5": {
 				i = tmb * 1.9;
 			}
 				break;
 			default:
-				throw new IllegalArgumentException("Unexpected value: ");
+				throw new IllegalArgumentException("Unexpected value: Valor não existe");
 			}
 		}
 			break;
 		case "Mulher": {
 			switch (nivelAtividadeFisica) {
-			case "Sedentário (Exercicio minimo)": {
+			case "nivel1": {
 				i = tmb * 1.2;
 			}
 				break;
-			case "Exercicio Leve (1-3 dias por semana)": {
+			case "nivel2": {
 				i = tmb * 1.375;
 			}
 				break;
-			case "Exercicio Moderado (3-5 dias por semana)": {
+			case "nivel3": {
 				i = tmb * 1.55;
 			}
 				break;
-			case "Exercicio Intenso (6-7 dias por semana)": {
+			case "nivel4": {
 				i = tmb * 1.725;
 			}
 				break;
-			case "Exercicio Muito Intenso (Atleta, 2x por dia)": {
+			case "nivel5": {
 				i = tmb * 1.9;
 			}
 				break;
@@ -97,13 +86,14 @@ public class CalculatorService {
 		default:
 			throw new IllegalArgumentException("Unexpected value: ");
 		}
-		return gastoTotal = (int) Math.round(i);
+
+		int gastoTotal = (int) Math.round(i);
+		return gastoTotal;
 	}
 
 	public int calculatorObjTraining(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		double i, gastoTotal;
-		int obj;
 		gastoTotal = calculatorGT(genero, idade, altura, peso, nivelAtividadeFisica);
 
 		switch (objetivo) {
@@ -118,17 +108,18 @@ public class CalculatorService {
 		default:
 			throw new IllegalArgumentException("Unexpected value: ");
 		}
-		return obj = (int) Math.round(i);
+		int obj = (int) Math.round(i);
+		return obj;
 
 	}
-	
+
 	public int calculatorObjOff(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
-		int ObjOff;
-		double x = 0;
+
 		int i = calculatorObjTraining(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
 		double y = i - (10 * i / 100);
-		return ObjOff = (int) Math.round(y);
+		int ObjOff = (int) Math.round(y);
+		return ObjOff;
 
 	}
 
@@ -168,10 +159,10 @@ public class CalculatorService {
 
 		return macro;
 	}
-	
+
 	public List<Integer> macrosOff(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
-		List <Integer> macros = macrosTraining(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
+		List<Integer> macros = macrosTraining(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
 		int i = macros.get(2);
 		int y = macros.get(1);
 		int proteina = macros.get(0);
@@ -186,6 +177,39 @@ public class CalculatorService {
 		macro.add(fibras);
 
 		return macro;
+	}
+
+	public String imc(int altura, int peso) {
+		DecimalFormat converter = new DecimalFormat("#,##");
+		DecimalFormat convertImc = new DecimalFormat("#,##");
+
+		String formatAltura = converter.format(altura);
+		double converterAltura = Double.parseDouble(formatAltura);
+
+		double imc = peso / (converterAltura * converterAltura);
+
+		String formatImc = convertImc.format(imc);
+		double imcFormatted = Double.parseDouble(formatImc);
+
+		String situacao = null;
+
+		if (imcFormatted < 17) {
+			situacao = "Muito abaixo do peso";
+		} else if (imcFormatted >= 17 && imcFormatted <= 18.5) {
+			situacao = "Abaixo do peso";
+		} else if (imcFormatted >= 18.6 && imcFormatted <= 24.9) {
+			situacao = "Peso normal";
+		} else if (imcFormatted >= 25 && imcFormatted <= 29.9) {
+			situacao = "Acima do peso";
+		} else if (imcFormatted >= 30 && imcFormatted <= 34.9) {
+			situacao = "Obesidade 1";
+		} else if (imcFormatted >= 35 && imcFormatted <= 39.9) {
+			situacao = "Obesidade 2 (Severa)";
+		} else if (imcFormatted >= 40) {
+			situacao = "Obesidade 3 (Mórbida)";
+		}
+
+		return imcFormatted + "%" + " (" + situacao+ ")";
 	}
 
 }

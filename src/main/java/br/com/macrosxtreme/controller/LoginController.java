@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UserDTO;
 import br.com.macrosxtreme.services.LoginService;
-import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -23,8 +22,16 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 
+//	@PostMapping("/teste")
+//	public String a(@RequestBody LoginDTO loginDTO) {
+//		System.out.println(loginDTO.getEmail());
+//		System.out.println(loginDTO.getPassword());
+//		System.out.println("asddddddddddddddddddddddddddddddddddddddasdasd");
+//		
+//
+//		return "redirect:/loginasd";
+//	}
 
-//	Access Aplication
 	@GetMapping("/login")
 	public ModelAndView showLoginPage() {
 		ModelAndView modelAndView = new ModelAndView("login/login");
@@ -35,11 +42,14 @@ public class LoginController {
 	@PostMapping("/login")
 	public ModelAndView doLogin(HttpServletRequest request, @ModelAttribute LoginDTO loginDTO) {
 		ModelAndView modelAndView = new ModelAndView("login/login");
-		LoginDTO userLogin = loginService.login(loginDTO);
-		if (userLogin == null) {
+
+		Boolean userLogin = loginService.login(loginDTO);
+		if (userLogin == false) {
 			modelAndView.addObject("erro", "Usuario ou senha invalido");
+
 			return modelAndView;
 		}
+
 		request.getSession().setAttribute("user", loginDTO);
 		return logued();
 	}
@@ -48,43 +58,47 @@ public class LoginController {
 	public String logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
+
 		return "redirect:/login";
 	}
-
-//    <a href="/logout">Logout</a>
 
 	@GetMapping("/logued")
 	public ModelAndView logued() {
 		ModelAndView modelAndView = new ModelAndView("home");
-		return modelAndView;
 
+		return modelAndView;
 	}
 
-//	Create Account
+	@GetMapping("/popup")
+	public ModelAndView popup(String popup) {
+		ModelAndView modelAndView = new ModelAndView("login/popup");
+		modelAndView.addObject("popup", popup);
+
+		return modelAndView;
+	}
+
 	@GetMapping("/create")
 	public ModelAndView newAccount() {
 		ModelAndView modelAndView = new ModelAndView("login/new_account");
 		modelAndView.addObject("userDTO", new UserDTO());
 
 		return modelAndView;
-
 	}
 
 	@PostMapping("/create")
 	public ModelAndView createAccount(UserDTO userDTO) {
 		ModelAndView modelAndView = new ModelAndView("login/new_account");
-		if (userDTO.getName().equals("") || userDTO.getEmail().equals("") || userDTO.getPassword().equals("")
-				|| userDTO == null) {
-			modelAndView.addObject("erro", "Preencha os campos por favor");
+		
+		if (loginService.validEmail(userDTO.getEmail())) {
+			modelAndView.addObject("invalidEmail", "Email ja cadastrado");
+
 			return modelAndView;
 		}
+		String popup = "Parabéns, sua conta foi criada com sucesso !";
 		loginService.save(userDTO);
-
-		return showLoginPage();
-
+		return popup(popup);
 	}
 
-//	Forgot Password
 	@GetMapping("/forgot")
 	public ModelAndView forgotPassword() {
 		ModelAndView modelAndView = new ModelAndView("login/forgot _password");
@@ -94,10 +108,18 @@ public class LoginController {
 	}
 
 	@PostMapping("/forgot")
-	public String forgotPasswords(UserDTO userDTO) throws MessagingException, TemplateException, IOException {
-		loginService.sendMailForgotPassword(userDTO);
-		
-		return "redirect:/login";
+	public ModelAndView forgotPasswords(String email) throws MessagingException, IOException {
+		ModelAndView modelAndView = new ModelAndView("login/forgot _password");
+
+		if (loginService.validEmail(email) == false) {
+			modelAndView.addObject("invalidEmail", "Não existe conta para esse email");
+
+			return modelAndView;
+
+		}
+		String popup = "Senha enviada com sucesso, verifique sua caixa de email.";
+		loginService.sendMailForgotPassword(email);
+		return popup(popup);
 
 	}
 

@@ -5,14 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UserDTO;
 import br.com.macrosxtreme.model.User;
 import br.com.macrosxtreme.repositories.UserRepository;
-import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
+
 
 @Service
 public class LoginService {
@@ -22,41 +23,48 @@ public class LoginService {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-	public UserDTO findByUser(String email) {
-		User user = userRepository.findByUser(email);
-		UserDTO userdto = new UserDTO(user);
+	public Boolean login(LoginDTO loginDTO) {
 
-		return userdto;
+		User user = userRepository.findByUser(loginDTO.getEmail());
+		Boolean validPassword = passwordEncoder.matches(loginDTO.getPassword(), user.getPassword());
+		if (user != null) {
+			if (validPassword) {
+				return true;
+			}
+			
+		}
+		return false;
 
 	}
-
-	public LoginDTO login(LoginDTO loginDTO) {
-
-		User toCheck = userRepository.findByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
-		if (toCheck == null) {
-			return null;
+	
+	public Boolean validEmail(String email) {
+		String emails = userRepository.findByEmail(email);
+		if (emails != null) {
+			return true;
 		}
-		LoginDTO userToCheck = new LoginDTO(toCheck);
-		return userToCheck;
+		return false;
 
 	}
 
 	public void save(UserDTO userDTO) {
+		String encoder = passwordEncoder.encode(userDTO.getPassword());
+		userDTO.setPassword(encoder);
 		User user = new User(userDTO);
 		userRepository.save(user);
 
 	}
+	
+	public void sendMailForgotPassword(String email) throws MessagingException, IOException {
 
-
-	public void sendMailForgotPassword(UserDTO userDTO) throws MessagingException, TemplateException, IOException {
-
-		UserDTO user = findByUser(userDTO.getEmail());
-		Map<String, Object> conteudo = new HashMap<>();
-		conteudo.put("sucesso", "TESTE SUCESSO");
-		conteudo.put("falha", "TESTE FALHA");
+		User user = userRepository.findByUser(email);
 		String assunto = "Ola, " + user.getName();
-		emailService.sendMail("remetente@gmail.com", user.getEmail(), assunto, conteudo, "temp.ftl");
+		Map<String, Object> conteudo = new HashMap<>();
+		conteudo.put("sucesso", "Sua senha: " + user.getPassword());
+		emailService.sendMail(user.getEmail(), assunto, conteudo);
 
 	}
 

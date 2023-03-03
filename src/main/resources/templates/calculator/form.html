@@ -5,63 +5,56 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/calculator/style_form.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
 		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-	<!--<link rel="stylesheet" type="text/css" th:href="@{/css/style-global.css}">-->
-	<link rel="stylesheet" type="text/css" th:href="@{/css/calculator/style_form.css}">
 
 	<title>Macros Xtreme</title>
 </head>
 
 <body>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<main id="container">
+
 		<form id="login_form" method="POST" th:action="result" th:object="${userFreeDTO}">
 			<!-- FORM HEADER -->
 			<div id="form_header">
 				<img src="/img/logo.png" alt="">
 				<h2>Macros Xtreme</h2>
-				<a id="mode_icon" class="fa-solid fa-user" th:href="@{/login}"></a>
 			</div>
 
 			<div id="check">
 				<!-- GÊNERO -->
-				<div class="input-box">
-					<label for="genero">
-						Gênero
-						<div class="form-check">
-							<input class="form-check-input" type="radio" th:field="*{genero}" th:value="Homem"
-								id="homem">
-							<label class="form-check-label" for="homem">
-								Homem
-							</label>
-						</div>
-						<div class="form-check">
-							<input class="form-check-input" type="radio" th:field="*{genero}" th:value="Mulher"
-								id="mulher">
-							<label class="form-check-label" for="mulher">
-								Mulher
-							</label>
-						</div>
-					</label>
+				<div class="input-boxx">
+					<label for="genero">Genero</label>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{genero}" th:value="Homem" id="homem"
+							required>
+						<label class="form-check-label" for="homem" id="homem">Homem</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{genero}" th:value="Mulher" id="mulher"
+							required>
+						<label class="form-check-label" for="mulher" id="mulher">Mulher</label>
+					</div>
 				</div>
 
-				<div class="input-box">
+				<div class="input-boxx">
 					<!-- OBJETIVO -->
-					<label for="name">
-						Objetivo
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="cutting" th:field="*{objetivo}"
-								th:value="Cutting" id="cutting">
-							<label class="form-check-label" for="cutting">Cutting</label>
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="buking" th:field="*{objetivo}"
-								th:value="Buking" id="buking">
-							<label class="form-check-label" for="buking">Buking</label>
-						</div>
-					</label>
+					<label for="name">Objetivo</label>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="cutting" th:field="*{objetivo}"
+							th:value="Cutting" id="cutting" required>
+						<label class="form-check-label" for="cutting" id="cutting">Emagrecimento</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="buking" th:field="*{objetivo}"
+							th:value="Buking" id="buking" required>
+						<label ass="form-check-label" for="buking" id="buking">Ganho de Massa</label>
+					</div>
 				</div>
 			</div>
 
@@ -69,47 +62,62 @@
 			<div id="inputs">
 				<!-- IDADE -->
 				<div class="input-box">
-					<input type="text" name="idade" id="idade" class="inputUser" required>
 					<label for="idade" class="labelInput">Idade</label>
+					<input type="text" name="idade" id="idade" class="inputUser" required>
 				</div>
 
 				<!-- PESO -->
 				<div class="input-box">
-					<input type="text" name="peso" id="peso" class="inputUser" required>
 					<label for="peso" class="labelInput">Peso</label>
+					<input type="text" name="peso" id="peso" class="inputUser" required>
+
 				</div>
 
 				<!-- ALTURA -->
 				<div class="input-box">
-					<input type="text" name="altura" id="altura" class="inputUser" required>
 					<label for="altura" class="labelInput">Altura</label>
+					<input type="text" name="altura" id="altura" class="inputUser" required>
 				</div>
 			</div>
-
-			<!-- NIVEL DE ATIVIDADE FISICA -->
-			<div class="input-box" id="atividadeFisica">
-				<div class="col-md-6 col-sm-12">
-					<div class="form-group">
-						<select name="nivelAtividadeFisica" id="selectAtividade" class="form-select me-2"
-							aria-label="Default select example">
-							<option selected disabled>Nivel de Atividade Fisica</option>
-							<option th:each="nivelA : ${nivelA}" th:text="${nivelA}"></option>
-						</select>
+			
+			<div id="check">
+				<!-- NIVEL DE ATIVIDADE FISICA -->
+				<div class="input-boxx">
+					<label for="nivelAtividadeFisica">NIVEL DE ATIVIDADE FISICA</label>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{nivelAtividadeFisica}" th:value="nivel1" id="nivel1"
+							required>
+						<label class="form-check-label" for="nivel1" id="nivel">Sedentário (Exercicio minimo)</label>
+					</div>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{nivelAtividadeFisica}" th:value="nivel2" id="nivel2"
+							required>
+						<label class="form-check-label" for="nivel2" id="nivel">Exercicio Leve (1-3 dias por semana)</label>
+					</div>
+										<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{nivelAtividadeFisica}" th:value="nivel3" id="nivel3"
+							required>
+						<label class="form-check-label" for="nivel3" id="nivel">Exercicio Moderado (3-5 dias por semana)</label>
+					</div>
+										<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{nivelAtividadeFisica}" th:value="nivel4" id="nivel4"
+							required>
+						<label class="form-check-label" for="nivel4" id="nivel">Exercicio Intenso (6-7 dias por semana)</label>
+					</div>
+										<div class="form-check">
+						<input class="form-check-input" type="radio" th:field="*{nivelAtividadeFisica}" th:value="nivel5" id="nivel5"
+							required>
+						<label class="form-check-label" for="nivel5" id="nivel">Exercicio Muito Intenso (Atleta, 2x por dia)</label>
 					</div>
 				</div>
 			</div>
 
 			<!-- LOGIN BUTTON -->
 			<div class="buttons">
-				<button type="submit" id="login_button">
-					Calcular
-				</button>
+				<button type="submit" id="login_button">Calcular</button>
 			</div>
 		</form>
 	</main>
-
-	<!-- JAVASCRIPT -->
-	<script type="text/javascript" src="js/calculator/bootstrap.min.js.js"></script>
 </body>
 
 </html>
