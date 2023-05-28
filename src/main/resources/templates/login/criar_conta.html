@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-	<link rel="stylesheet" th:href="@{/css/login/style_forgot.css}">
+	<link rel="stylesheet" th:href="@{/css/login/style_new_account.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
 		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
@@ -19,7 +19,7 @@
 <body>
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<main id="container">
-		<form method="POST" th:action="forgot">
+		<form method="POST" th:action="@{/api/criar}" th:object="${user}">
 			<!-- FORM HEADER -->
 			<div id="form_header">
 				<img src="/img/logo.png" alt="">
@@ -28,6 +28,16 @@
 
 			<!-- INPUTS -->
 			<div id="inputs">
+				<!-- NAME -->
+				<div class="input-box">
+					<label for="name">
+						Name
+						<div class="input-field">
+							<i class="fa-solid fa-user"></i>
+							<input type="text" id="name" name="name" required>
+						</div>
+					</label>
+				</div>
 
 				<!-- EMAIL -->
 				<div class="input-box">
@@ -39,13 +49,24 @@
 						</div>
 					</label>
 				</div>
+
+				<!-- PASSWORD -->
+				<div class="input-box">
+					<label for="password">
+						Password
+						<div class="input-field">
+							<i class="fa-solid fa-key"></i>
+							<input type="password" id="password" name="password" required>
+						</div>
+					</label>
+				</div>
 				<div th:if="${invalidEmail != null}" th:text="${invalidEmail}" id="erro" class="alert alert-danger" role="alert"></div>
 			</div>
 
 			<!-- LOGIN BUTTON -->
 			<div class="buttons">
 				<button type="submit">
-					Enviar
+					Criar
 				</button>
 			</div>
 		</form>

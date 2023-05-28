@@ -9,9 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.macrosxtreme.dto.LoginDTO;
-import br.com.macrosxtreme.dto.UserDTO;
-import br.com.macrosxtreme.model.User;
-import br.com.macrosxtreme.repositories.UserRepository;
+import br.com.macrosxtreme.dto.UsuarioDTO;
+import br.com.macrosxtreme.model.Usuario;
+import br.com.macrosxtreme.repository.UsuarioRepository;
 import jakarta.mail.MessagingException;
 
 
@@ -19,7 +19,7 @@ import jakarta.mail.MessagingException;
 public class LoginService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UsuarioRepository usuarioRepository;
 
 	@Autowired
 	private EmailService emailService;
@@ -27,12 +27,12 @@ public class LoginService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Boolean login(LoginDTO loginDTO) {
+	public Boolean login(LoginDTO login) {
 
-		User user = userRepository.findByUser(loginDTO.getEmail());
-		Boolean validPassword = passwordEncoder.matches(loginDTO.getPassword(), user.getPassword());
-		if (user != null) {
-			if (validPassword) {
+		Usuario usuario = usuarioRepository.findByUser(login.getEmail());
+		Boolean validaPassword = passwordEncoder.matches(login.getPassword(), usuario.getPassword());
+		if (usuario != null) {
+			if (validaPassword) {
 				return true;
 			}
 			
@@ -41,8 +41,8 @@ public class LoginService {
 
 	}
 	
-	public Boolean validEmail(String email) {
-		String emails = userRepository.findByEmail(email);
+	public Boolean validaEmail(String email) {
+		String emails = usuarioRepository.findByEmail(email);
 		if (emails != null) {
 			return true;
 		}
@@ -50,21 +50,21 @@ public class LoginService {
 
 	}
 
-	public void save(UserDTO userDTO) {
-		String encoder = passwordEncoder.encode(userDTO.getPassword());
-		userDTO.setPassword(encoder);
-		User user = new User(userDTO);
-		userRepository.save(user);
+	public void save(UsuarioDTO usuario) {
+		String encoder = passwordEncoder.encode(usuario.getPassword());
+		usuario.setPassword(encoder);
+		Usuario user = new Usuario(usuario);
+		usuarioRepository.save(user);
 
 	}
 	
 	public void sendMailForgotPassword(String email) throws MessagingException, IOException {
 
-		User user = userRepository.findByUser(email);
-		String assunto = "Ola, " + user.getName();
+		Usuario usuario = usuarioRepository.findByUser(email);
+		String assunto = "Ola, " + usuario.getName();
 		Map<String, Object> conteudo = new HashMap<>();
-		conteudo.put("sucesso", "Sua senha: " + user.getPassword());
-		emailService.sendMail(user.getEmail(), assunto, conteudo);
+		conteudo.put("sucesso", "Sua senha: " + usuario.getPassword());
+		emailService.sendMail(usuario.getEmail(), assunto, conteudo);
 
 	}
 

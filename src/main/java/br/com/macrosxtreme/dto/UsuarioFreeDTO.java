@@ -1,14 +1,13 @@
 package br.com.macrosxtreme.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-public class UserFreeDTO {
+public class UsuarioFreeDTO {
 	
+	private String nome;
 	private String genero;
 	private int idade;
 	private int altura;

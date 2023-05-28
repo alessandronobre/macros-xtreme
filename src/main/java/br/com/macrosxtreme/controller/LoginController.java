@@ -3,55 +3,47 @@ package br.com.macrosxtreme.controller;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.LoginDTO;
-import br.com.macrosxtreme.dto.UserDTO;
+import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.services.LoginService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@RestController
+@RequestMapping("/api")
 public class LoginController {
 
 	@Autowired
 	LoginService loginService;
 
-//	@PostMapping("/teste")
-//	public String a(@RequestBody LoginDTO loginDTO) {
-//		System.out.println(loginDTO.getEmail());
-//		System.out.println(loginDTO.getPassword());
-//		System.out.println("asddddddddddddddddddddddddddddddddddddddasdasd");
-//		
-//
-//		return "redirect:/loginasd";
-//	}
-
 	@GetMapping("/login")
-	public ModelAndView showLoginPage() {
+	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView("login/login");
 
 		return modelAndView;
 	}
 
 	@PostMapping("/login")
-	public ModelAndView doLogin(HttpServletRequest request, @ModelAttribute LoginDTO loginDTO) {
+	public ModelAndView login(HttpServletRequest request, @ModelAttribute LoginDTO login) {
 		ModelAndView modelAndView = new ModelAndView("login/login");
 
-		Boolean userLogin = loginService.login(loginDTO);
+		Boolean userLogin = loginService.login(login);
 		if (userLogin == false) {
 			modelAndView.addObject("erro", "Usuario ou senha invalido");
 
 			return modelAndView;
 		}
 
-		request.getSession().setAttribute("user", loginDTO);
-		return logued();
+		request.getSession().setAttribute("user", login);
+		return home();
 	}
 
 	@GetMapping("/logout")
@@ -62,8 +54,8 @@ public class LoginController {
 		return "redirect:/login";
 	}
 
-	@GetMapping("/logued")
-	public ModelAndView logued() {
+	@GetMapping("/home")
+	public ModelAndView home() {
 		ModelAndView modelAndView = new ModelAndView("home");
 
 		return modelAndView;
@@ -77,41 +69,41 @@ public class LoginController {
 		return modelAndView;
 	}
 
-	@GetMapping("/create")
-	public ModelAndView newAccount() {
-		ModelAndView modelAndView = new ModelAndView("login/new_account");
-		modelAndView.addObject("userDTO", new UserDTO());
+	@GetMapping("/criar")
+	public ModelAndView criarConta() {
+		ModelAndView modelAndView = new ModelAndView("login/criar_conta");
+		modelAndView.addObject("user", new UsuarioDTO());
 
 		return modelAndView;
 	}
 
-	@PostMapping("/create")
-	public ModelAndView createAccount(UserDTO userDTO) {
-		ModelAndView modelAndView = new ModelAndView("login/new_account");
+	@PostMapping("/criar")
+	public ModelAndView criarConta(UsuarioDTO usuario) {
+		ModelAndView modelAndView = new ModelAndView("login/criar_conta");
 		
-		if (loginService.validEmail(userDTO.getEmail())) {
+		if (loginService.validaEmail(usuario.getEmail())) {
 			modelAndView.addObject("invalidEmail", "Email ja cadastrado");
 
 			return modelAndView;
 		}
 		String popup = "Parabéns, sua conta foi criada com sucesso !";
-		loginService.save(userDTO);
+		loginService.save(usuario);
 		return popup(popup);
 	}
 
-	@GetMapping("/forgot")
-	public ModelAndView forgotPassword() {
-		ModelAndView modelAndView = new ModelAndView("login/forgot _password");
+	@GetMapping("/recupera/senha")
+	public ModelAndView recuperarSenha() {
+		ModelAndView modelAndView = new ModelAndView("login/recupera_senha");
 
 		return modelAndView;
 
 	}
 
-	@PostMapping("/forgot")
-	public ModelAndView forgotPasswords(String email) throws MessagingException, IOException {
-		ModelAndView modelAndView = new ModelAndView("login/forgot _password");
+	@PostMapping("/recupera/senha")
+	public ModelAndView recuperaSenha(String email) throws MessagingException, IOException {
+		ModelAndView modelAndView = new ModelAndView("login/recupera_senha");
 
-		if (loginService.validEmail(email) == false) {
+		if (loginService.validaEmail(email) == false) {
 			modelAndView.addObject("invalidEmail", "Não existe conta para esse email");
 
 			return modelAndView;

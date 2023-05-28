@@ -1,19 +1,17 @@
 package br.com.macrosxtreme.dto;
 
-import br.com.macrosxtreme.model.User;
-import lombok.Getter;
+import br.com.macrosxtreme.model.Usuario;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class LoginDTO {
 	
 	private String email;
 	private String password;
 	
-	public LoginDTO(User user) {
+	public LoginDTO(Usuario user) {
 		email = user.getEmail();
 		password = user.getPassword();
 	}

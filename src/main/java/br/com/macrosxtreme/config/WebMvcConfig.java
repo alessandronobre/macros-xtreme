@@ -19,15 +19,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authInterceptor)
 				.addPathPatterns("/**")
-				.excludePathPatterns("/css/calculator/**", "/css/login/**", "/css/**")
+				.excludePathPatterns("/css/**")
 				.excludePathPatterns("/img/**")
-				.excludePathPatterns("/js/calculator/**", "/js/login/**")
-				.excludePathPatterns("/calculation")
-				.excludePathPatterns("/result")
-				.excludePathPatterns("/login")
-				.excludePathPatterns("/create")
-//				.excludePathPatterns("/teste")
-				.excludePathPatterns("/forgot");
+				.excludePathPatterns("/js/**")
+				.excludePathPatterns("/api/calculador/calcular")
+				.excludePathPatterns("/api/calculador/macros")
+				.excludePathPatterns("/api/login")
+				.excludePathPatterns("/api/criar")
+				.excludePathPatterns("/api/recupera/senha");
 	}
 	
 	@Bean
