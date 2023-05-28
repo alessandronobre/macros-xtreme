@@ -1,4 +1,4 @@
-package br.com.macrosxtreme.services;
+package br.com.macrosxtreme.service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

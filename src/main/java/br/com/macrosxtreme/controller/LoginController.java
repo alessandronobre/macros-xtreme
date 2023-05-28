@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
-import br.com.macrosxtreme.services.LoginService;
+import br.com.macrosxtreme.service.LoginService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

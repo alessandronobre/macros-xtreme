@@ -1,4 +1,4 @@
-package br.com.macrosxtreme.services;
+package br.com.macrosxtreme.service;
 
 import java.io.IOException;
 import java.util.HashMap;

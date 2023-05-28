@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.macrosxtreme.dto.HistoricoMacrosDTO;
 import br.com.macrosxtreme.dto.UsuarioFreeDTO;
 import br.com.macrosxtreme.model.HistoricoMacros;
-import br.com.macrosxtreme.services.CalculadorService;
-import br.com.macrosxtreme.services.HistoricoMacrosService;
+import br.com.macrosxtreme.service.CalculadorService;
+import br.com.macrosxtreme.service.HistoricoMacrosService;
 
 @RestController
 @RequestMapping("/api/calculador")
