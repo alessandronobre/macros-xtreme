@@ -22,6 +22,13 @@ public class EmailController {
 
 	private final MsEmailClient msEmailClient;
 	
+	@GetMapping("/teste")
+	public ModelAndView teste() {
+		ModelAndView modelAndView = new ModelAndView("inicio/index");
+
+		return modelAndView;
+	}
+	
 	@GetMapping("/login")
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView("login/login");

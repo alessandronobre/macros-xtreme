@@ -20,12 +20,6 @@
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<main id="container">
 		<form method="POST" th:action="@{/api/criar}" th:object="${user}">
-			<!-- FORM HEADER -->
-			<div id="form_header">
-				<img src="/img/logo.png" alt="">
-				<h2>Macros Xtreme</h2>
-			</div>
-
 			<!-- INPUTS -->
 			<div id="inputs">
 				<!-- NAME -->
@@ -60,7 +54,8 @@
 						</div>
 					</label>
 				</div>
-				<div th:if="${invalidEmail != null}" th:text="${invalidEmail}" id="erro" class="alert alert-danger" role="alert"></div>
+				<div th:if="${invalidEmail != null}" th:text="${invalidEmail}" id="erro" class="alert alert-danger"
+					role="alert"></div>
 			</div>
 
 			<!-- LOGIN BUTTON -->

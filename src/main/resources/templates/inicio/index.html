@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<script src="https://kit.fontawesome.com/6dda5f6271.js" crossorigin="anonymous"></script>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+
+	<title>Menu personalizado</title>
+</head>
+
+<body>
+	<main>
+		<div id="container">
+			<form method="GET" th:action="@{/api/email/}" th:object="${usuario}">
+
+				<!-- INPUTS -->
+				<div id="inputs">
+					<div class="input-box">
+						<label for="name">
+							Nome
+							<div class="input-field">
+								<i class="fa-solid fa-envelope"></i>
+								<input type="text" name="name" required>
+							</div>
+						</label>
+					</div>
+				</div>
+
+				<div class="buttons">
+					<!-- LOGIN BUTTON -->
+					<button type="submit" id="login_button">
+						Buscar Historico de Emails
+					</button>
+				</div>
+			</form>
+		</div>
+		<main>
+</body>
+
+</html>

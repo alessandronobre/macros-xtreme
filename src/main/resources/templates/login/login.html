@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 	<link rel="stylesheet" th:href="@{/css/login/style_login.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
 		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -17,11 +18,6 @@
 <body>
 	<main id="container">
 		<form method="POST" th:action="login" th:object="${loginDTO}">
-			<!-- FORM HEADER -->
-			<div id="form_header">
-				<img src="/img/logo.png" alt="">
-				<h2>Macros Xtreme</h2>
-			</div>
 
 			<!-- INPUTS -->
 			<div id="inputs">
@@ -116,6 +112,9 @@
 			</div>
 
 		</form>
+		<a th:href="@{/api/email/teste}" id="calculation_button">
+			BOTÃO
+		</a>
 	</main>
 
 </body>
