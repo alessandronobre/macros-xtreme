@@ -1,5 +1,7 @@
 package br.com.macrosxtreme.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,6 +44,13 @@ public class LoginController {
 		request.getSession().setAttribute("user", login);
 		return home();
 	}
+	
+	@GetMapping("/home")
+	public ModelAndView home() {
+		ModelAndView modelAndView = new ModelAndView("inicio/index");
+
+		return modelAndView;
+	}
 
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request) {
@@ -49,21 +58,6 @@ public class LoginController {
 		session.removeAttribute("user");
 
 		return "redirect:/login";
-	}
-
-	@GetMapping("/home")
-	public ModelAndView home() {
-		ModelAndView modelAndView = new ModelAndView("home");
-
-		return modelAndView;
-	}
-
-	@GetMapping("/popup")
-	public ModelAndView popup(String popup) {
-		ModelAndView modelAndView = new ModelAndView("login/popup");
-		modelAndView.addObject("popup", popup);
-
-		return modelAndView;
 	}
 
 	@GetMapping("/criar")
@@ -83,9 +77,8 @@ public class LoginController {
 
 			return modelAndView;
 		}
-		String popup = "Parabéns, sua conta foi criada com sucesso !";
 		loginService.save(usuario);
-		return popup(popup);
+		return modelAndView;
 	}
 
 	@GetMapping("/recupera/senha")
@@ -96,19 +89,18 @@ public class LoginController {
 
 	}
 
-//	@PostMapping("/recupera/senha")
-//	public ModelAndView recuperaSenha(String email) throws MessagingException, IOException {
-//		ModelAndView modelAndView = new ModelAndView("login/recupera_senha");
-//
-////		if (loginService.validaEmail(email) == false) {
-////			modelAndView.addObject("invalidEmail", "Não existe conta para esse email");
-//
-//			return modelAndView;
-//
-//		}
-//		String popup = "Senha enviada com sucesso, verifique sua caixa de email.";
-//		return popup(popup);
-//
-//	}
+	@PostMapping("/recupera/senha")
+	public ModelAndView recuperaSenha(String email) throws IOException {
+		ModelAndView modelAndView = new ModelAndView("login/recupera_senha");
+
+		if (loginService.validaEmail(email) == false) {
+			modelAndView.addObject("invalidEmail", "Não existe conta para esse email");
+
+			return modelAndView;
+
+		}
+		return modelAndView;
+
+	}
 
 }

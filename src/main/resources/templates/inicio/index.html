@@ -6,36 +6,23 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 
 	<title>Menu personalizado</title>
 </head>
 
 <body>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<main>
+		<h1>BEM VINDO</h1>
 		<div id="container">
-			<form method="GET" th:action="@{/api/email/}" th:object="${usuario}">
-
-				<!-- INPUTS -->
-				<div id="inputs">
-					<div class="input-box">
-						<label for="name">
-							Nome
-							<div class="input-field">
-								<i class="fa-solid fa-envelope"></i>
-								<input type="text" name="name" required>
-							</div>
-						</label>
-					</div>
-				</div>
-
-				<div class="buttons">
-					<!-- LOGIN BUTTON -->
-					<button type="submit" id="login_button">
-						Buscar Historico de Emails
-					</button>
-				</div>
-			</form>
+			<div class="info-basic">
+				<a th:href="@{/api/historico/email}">TESTE</a>
+				<a th:href="@{/css/style.css}">TESTE</a>
+				<a th:href="@{/css/style.css}">TESTE</a>
+				<a th:href="@{/css/style.css}">TESTE</a>
+				<a th:href="@{/css/style.css}">TESTE</a>
+			</div><br>
 		</div>
 		<main>
 </body>

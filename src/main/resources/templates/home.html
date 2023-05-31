@@ -4,13 +4,34 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 
-
-	<title>Your Website</title>
+	<title>Historico de Emails</title>
 </head>
 
 <body>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<div class="container">
+		<table class="table table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Usuario</th>
+					<th scope="col">Titulo</th>
+					<th scope="col">Conteudo</th>
+					<th scope="col">Data do Envio</th>
+					<th scope="col">Destinatario</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="lista : ${lista}">
+					<td class="table-secondary"></td>
+					<td th:text="${lista.tituloEmail}" class="table-secondary"></td>
+					<td th:text="${lista.conteudo}" class="table-secondary"></td>
+					<td th:text="${lista.dataEnvio}" class="table-secondary"></td>
+					<td th:text="${lista.destinatario}" class="table-secondary"></td>
+				</tr>
+			</tbody>
+		</table>
 		<table class="table table-hover">
 			<thead class="thead-dark">
 				<tr>

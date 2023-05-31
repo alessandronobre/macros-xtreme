@@ -24,7 +24,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.excludePathPatterns("/js/**")
 				.excludePathPatterns("/api/calculador/calcular")
 				.excludePathPatterns("/api/calculador/macros")
-				.excludePathPatterns("/api/email/**")
 				.excludePathPatterns("/api/login")
 				.excludePathPatterns("/api/criar")
 				.excludePathPatterns("/api/recupera/senha");

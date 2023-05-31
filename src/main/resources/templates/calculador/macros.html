@@ -1,68 +1,90 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="pt-br">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/calculador/style_result.css}">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 
-	<title>Macros Xtreme</title>
+	<title>Historico de Emails</title>
 </head>
 
 <body>
-	<main id="container">
-		<div id="result">
-			<div id="check">
-				<!-- GÊNERO -->
-				<div class="input-box">
-					<div class="info-basic">
-						<label>Percentual de Gordura (IMC)</label>
-						<p th:text="${imc}"></p>
-					</div><br>
-					<div class="info-basic">
-						<label>Gasto Energetico</label>
-						<p th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${tmb} + ' kcal'"></p>
-						<p th:text="'Gasto Calorico Total: ' + ' ' + ${gastoT} + ' kcal'"></p>
-					</div><br>
-					<div class="info-kcal-title">
-						<label for="macros">Metas de Calorias</label>
-					</div>
-					<div class="info-kcal">
-						<p th:text="'Dias de Treino: ' + ' ' + ${objT} + ' kcal'"></p>
-						<p th:text="'Dias de Descanso: ' + ' ' + ${objOff} + ' kcal'"></p>
-					</div><br>
-					<div class="info-macros">
-						<div class="info-macro">
-							<label for="macros">Macros - Treino</label>
-							<p th:text="'Proteina: ' + ' ' + ${macrosT[0]} + 'g'"></p>
-							<p th:text="'Carboidrato: ' + ' ' + ${macrosT[1]} + 'g'"></p>
-							<p th:text="'Gordura: ' + ' ' + ${macrosT[2]} + 'g'"></p>
-							<p th:text="'Fibras: ' + ' ' + ${macrosT[3]} + 'g'"></p>
-						</div>
-						<div class="info-macro">
-							<label for="macros">Macros - Descanso</label>
-							<p th:text="'Proteina: ' + ' ' + ${macrosOff[0]} + 'g'"></p>
-							<p th:text="'Carboidrato: ' + ' ' + ${macrosOff[1]} + 'g'"></p>
-							<p th:text="'Gordura: ' + ' ' + ${macrosOff[2]} + 'g'"></p>
-							<p th:text="'Fibras: ' + ' ' + ${macrosOff[3]} + 'g'"></p>
-						</div>
-
-					</div>
-
-				</div>
-			</div>
-
-			<!-- BACK BUTTON -->
-			<div class="buttons">
-				<a th:href="@{/api/calculador/calcular}" id="back_button">Voltar</a>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+	<div class="container">
+		<h2>Informações Nutricionais do Paciente</h2>
+		<div class="d-flex">
+			<div>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Informações Basicas</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="table-secondary" th:text="'IMC: ' + ' ' + ${imc}"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary"
+								th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${tmb} + ' kcal'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Gasto Calorico Total: ' + ' ' + ${gastoT} + ' kcal'">
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-	</main>
-
-	<!-- JAVASCRIPT -->
-	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<div class="d-flex">
+			<div>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Macros - Treino</th>
+							<th scope="col">Macros - Descanso</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${macrosT[0]} + 'g'"></td>
+							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${macrosOff[0]} + 'g'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Carboidrato: ' + ' ' + ${macrosT[1]} + 'g'"></td>
+							<td class="table-secondary" th:text="'Carboidrato: ' + ' ' + ${macrosOff[1]} + 'g'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${macrosT[2]} + 'g'"></td>
+							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${macrosOff[2]} + 'g'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${macrosT[3]} + 'g'"></td>
+							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${macrosOff[3]} + 'g'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Metas de Calorias</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="table-secondary" th:text="'Dias de Treino: ' + ' ' + ${objT} + ' kcal'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Dias de Descanso: ' + ' ' + ${objOff} + ' kcal'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div>
 </body>
 
 </html>
