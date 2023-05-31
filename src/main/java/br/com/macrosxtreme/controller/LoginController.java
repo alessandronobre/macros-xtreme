@@ -1,7 +1,5 @@
 package br.com.macrosxtreme.controller;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.service.LoginService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -99,20 +96,19 @@ public class LoginController {
 
 	}
 
-	@PostMapping("/recupera/senha")
-	public ModelAndView recuperaSenha(String email) throws MessagingException, IOException {
-		ModelAndView modelAndView = new ModelAndView("login/recupera_senha");
-
-		if (loginService.validaEmail(email) == false) {
-			modelAndView.addObject("invalidEmail", "Não existe conta para esse email");
-
-			return modelAndView;
-
-		}
-		String popup = "Senha enviada com sucesso, verifique sua caixa de email.";
-		loginService.sendMailForgotPassword(email);
-		return popup(popup);
-
-	}
+//	@PostMapping("/recupera/senha")
+//	public ModelAndView recuperaSenha(String email) throws MessagingException, IOException {
+//		ModelAndView modelAndView = new ModelAndView("login/recupera_senha");
+//
+////		if (loginService.validaEmail(email) == false) {
+////			modelAndView.addObject("invalidEmail", "Não existe conta para esse email");
+//
+//			return modelAndView;
+//
+//		}
+//		String popup = "Senha enviada com sucesso, verifique sua caixa de email.";
+//		return popup(popup);
+//
+//	}
 
 }

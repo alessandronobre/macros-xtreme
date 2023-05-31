@@ -9,6 +9,9 @@
     --color-dark-50: #797984;
     --color-dark-100: #312d37;
     --color-dark-900: #000;
+    
+    --color-orage: #da580c;
+    --color-back: #EEE;
 }
 
 /* General */
@@ -25,7 +28,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--color-dark-50);
+    background: var(--color-back);
 }
 
 form {
@@ -36,7 +39,7 @@ form {
     padding: 30px 40px;
     border-radius: 8px;
     gap: 30px;
-    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.336);
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
     animation: dark-to-light-background 0.3s ease-in-out;
 }
 
@@ -98,7 +101,8 @@ form {
 }
 
 #forgot_password a:hover {
-    color: var(--color-dark-50);
+   	color: var(--color-orage);
+    transform: scale(1.01);
 }
 
 #erro{
@@ -118,17 +122,17 @@ form {
 
 /* Login Button */
 #login_button {
-    background: var(--color-dark-50);
+    background: black;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: var(--color-light-50);
-    font-size: 18px;
-    width: 250px;
+    font-size: 15px;
+    width: 100px;
     cursor: pointer;
 }
 
 #login_button:hover {
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 
 #calculation_button {
@@ -136,18 +140,15 @@ form {
 	display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--color-dark-50);
-    color: var(--color-light-50);
-    width: 160px;
+    color: black;
     padding: 3px;
-    border-radius: 10px;
-    border: 2px solid black;
     font-size: 12px;
     cursor: pointer;
 }
 
 #calculation_button:hover {
-    transform: scale(1.05);
+	color: var(--color-orage);
+    transform: scale(1.01);
 }
 
 /* Social Media */
@@ -163,7 +164,8 @@ form {
 }
 
 #social_media i:hover {
-    transform: scale(1.2);
+	color: var(--color-orage);
+    transform: scale(1.1);
 }
 
 .text-footer {

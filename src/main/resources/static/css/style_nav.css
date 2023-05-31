@@ -9,6 +9,9 @@
     --color-dark-50: #797984;
     --color-dark-100: #312d37;
     --color-dark-900: #000;
+    
+    --color-orage: #da580c;
+    --color-back: #EEE;
 }
 
 
@@ -21,14 +24,14 @@
 
 nav{
 	width: 100%;
-	background: var(--color-dark-50);
+	background: var(--color-back);
     border-radius: 2px;
     box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.336);
 
 }
 
 .menu a{
-    color: rgb(0, 0, 0);
+    color: var(--color-dark-900);
     text-decoration: none;
     font-size: 18px;
     padding-right: 30px;
@@ -52,7 +55,7 @@ nav{
 }
 
 .menu a:hover{
-    color: #ffffff;
+    color: var(--color-orage);
     transform: scale(1.2);
 }
 
