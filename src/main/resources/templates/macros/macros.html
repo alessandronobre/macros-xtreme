@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_macros.css}">
 
 	<title>Macros</title>
@@ -12,13 +12,6 @@
 
 <body>
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
-	<div class="colunm">
-		<div class="col-md-6">
-			<a id="btn_macros" th:href="@{/api/calcular}">Gerar Novos Macros</a>
-			<a> | </a>
-			<a id="btn_macros" th:href="@{/api/historico/macros}">Histórico de Macros</a>
-		</div>
-	</div>
 	<div class="container">
 		<h2>Informações Nutricionais do Paciente</h2>
 		<div class="d-flex">

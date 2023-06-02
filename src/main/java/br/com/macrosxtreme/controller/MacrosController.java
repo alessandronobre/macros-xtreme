@@ -2,7 +2,6 @@ package br.com.macrosxtreme.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +12,14 @@ import br.com.macrosxtreme.dto.HistoricoMacrosDTO;
 import br.com.macrosxtreme.dto.UsuarioFreeDTO;
 import br.com.macrosxtreme.model.HistoricoMacros;
 import br.com.macrosxtreme.service.MacrosService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class MacrosController {
 	
-	@Autowired
-	private MacrosService macrosService;
+	private final MacrosService macrosService;
 	
 	@GetMapping("/macros")
 	public ModelAndView macros(UsuarioFreeDTO usuario) {

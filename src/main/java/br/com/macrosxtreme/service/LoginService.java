@@ -1,6 +1,5 @@
 package br.com.macrosxtreme.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -8,16 +7,15 @@ import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.model.Usuario;
 import br.com.macrosxtreme.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
-
+@RequiredArgsConstructor
 @Service
 public class LoginService {
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private final UsuarioRepository usuarioRepository;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
 	public Boolean login(LoginDTO login) {
 

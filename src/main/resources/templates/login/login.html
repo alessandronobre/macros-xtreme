@@ -83,33 +83,6 @@
 				</a>
 			</div>
 		</form>
-		<form method="GET" th:action="@{/api/email/}" th:object="${usuario}">
-
-			<!-- INPUTS -->
-			<div id="inputs">
-				<div class="input-box">
-					<label for="name">
-						Nome
-						<div class="input-field">
-							<i class="fa-solid fa-envelope"></i>
-							<input type="text" name="name" required>
-						</div>
-					</label>
-				</div>
-			</div>
-
-			<div class="buttons">
-				<!-- LOGIN BUTTON -->
-				<button type="submit" id="login_button">
-					Buscar Historico de Emails
-				</button>
-
-			</div>
-
-		</form>
-		<a th:href="@{/api/email/teste}" id="calculation_button">
-			BOTÃO
-		</a>
 	</main>
 
 </body>

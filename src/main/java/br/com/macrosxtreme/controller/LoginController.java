@@ -2,7 +2,6 @@ package br.com.macrosxtreme.controller;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +14,14 @@ import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class LoginController {
 
-	@Autowired
-	LoginService loginService;
+	private final LoginService loginService;
 
 	@GetMapping("/login")
 	public ModelAndView login() {
@@ -44,7 +44,7 @@ public class LoginController {
 		request.getSession().setAttribute("user", login);
 		return home();
 	}
-	
+
 	@GetMapping("/home")
 	public ModelAndView home() {
 		ModelAndView modelAndView = new ModelAndView("inicio/index");
@@ -71,7 +71,7 @@ public class LoginController {
 	@PostMapping("/criar")
 	public ModelAndView criarConta(UsuarioDTO usuario) {
 		ModelAndView modelAndView = new ModelAndView("login/criar_conta");
-		
+
 		if (loginService.validaEmail(usuario.getEmail())) {
 			modelAndView.addObject("invalidEmail", "Email ja cadastrado");
 
