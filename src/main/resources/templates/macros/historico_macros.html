@@ -6,66 +6,54 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_macros.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_historico.css}">
 
-	<title>Historico de Emails</title>
-	<style>
-		table,
-		th,
-		td {
-			padding: 2px;
-			border: 1px solid black;
-			border-collapse: collapse;
-		}
-
-		#main {
-			padding: 10px;
-		}
-	</style>
+	<title>Historico de Macros</title>
 </head>
 
 <body>
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<div id="main">
-			<table>
-				<thead>
-					<tr>
-						<th> IMC </th>
-						<th> TBM </th>
-						<th> Gasto Kcal </th>
-						<th> Kcal Treino </th>
-						<th> Proteina Treino </th>
-						<th> Carbo Treino </th>
-						<th> Gordura Treino </th>
-						<th> Fibra Treino </th>
-						<th> Kcal Descanso </th>
-						<th> Proteina Descanso </th>
-						<th> Carbo Descanso </th>
-						<th> Gordura Descanso </th>
-						<th> Fibra Descanso </th>
-						<th> Usuario </th>
-						<th> Data </th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="lista : ${lista}">
-						<td th:text="${lista.imc}"></td>
-						<td th:text="${lista.tmb}"></td>
-						<td th:text="${lista.gastoCaloricoTotal}"></td>
-						<td th:text="${lista.caloriasTreino}"></td>
-						<td th:text="${lista.proteinaTreino}"></td>
-						<td th:text="${lista.carboidratoTreino}"></td>
-						<td th:text="${lista.gorduraTreino}"></td>
-						<td th:text="${lista.fibraTreino}"></td>
-						<td th:text="${lista.caloriasDescanso}"></td>
-						<td th:text="${lista.proteinaDescanso}"></td>
-						<td th:text="${lista.carboidratoDescanso}"></td>
-						<td th:text="${lista.gorduraDescanso}"></td>
-						<td th:text="${lista.fibraDescanso}"></td>
-						<td th:text="${lista.usuario}"></td>
-						<td th:text="${lista.usuario}"></td>
-					</tr>
-				</tbody>
-			</table>
+		<table>
+			<thead>
+				<tr>
+					<th> IMC </th>
+					<th> TBM </th>
+					<th> Gasto Kcal </th>
+					<th> Kcal Treino </th>
+					<th> Proteina Treino </th>
+					<th> Carbo Treino </th>
+					<th> Gordura Treino </th>
+					<th> Fibra Treino </th>
+					<th> Kcal Descanso </th>
+					<th> Proteina Descanso </th>
+					<th> Carbo Descanso </th>
+					<th> Gordura Descanso </th>
+					<th> Fibra Descanso </th>
+					<th> Usuario </th>
+					<th> Data </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="lista : ${lista}">
+					<td th:text="${lista.imc}"></td>
+					<td th:text="${lista.tmb}"></td>
+					<td th:text="${lista.gastoCaloricoTotal}"></td>
+					<td th:text="${lista.caloriasTreino}"></td>
+					<td th:text="${lista.proteinaTreino}"></td>
+					<td th:text="${lista.carboidratoTreino}"></td>
+					<td th:text="${lista.gorduraTreino}"></td>
+					<td th:text="${lista.fibraTreino}"></td>
+					<td th:text="${lista.caloriasDescanso}"></td>
+					<td th:text="${lista.proteinaDescanso}"></td>
+					<td th:text="${lista.carboidratoDescanso}"></td>
+					<td th:text="${lista.gorduraDescanso}"></td>
+					<td th:text="${lista.fibraDescanso}"></td>
+					<td th:text="${lista.usuario}"></td>
+					<td th:text="${lista.usuario}"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 

@@ -14,16 +14,3 @@
 body {
     background: var(--color-back);
 }
-
-/* Login Button */
-#btn_macros {
-	text-decoration: none;
-	color: var(--color-dark-900);
-	padding: 3px;
-    cursor: pointer;
-}
-
-#btn_macros:hover {
-	color: var(--color-orage);
-    transform: scale(1.01);
-}

@@ -1,10 +1,48 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
-<nav th:frangment="nav" class="navbar navbar-light ">
+<nav>
+	<ul>
+		<li>
+			<a th:href="@{/api/home}">Home</a>
+		</li>
+		<li class="dropdown">
+			<a>Macros</a>
+
+			<div class="dropdown-menu">
+				<a th:href="@{/api/macros}">Macros</a>
+				<a th:href="@{/api/calcular}">Gerar Novos Macros</a>
+				<a th:href="@{/api/historico/macros}">Histórico de Macros</a>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a>Email</a>
+
+			<div class="dropdown-menu">
+				<a th:href="@{/api/historico}">Historico de Emails</a>
+				<a href="">Serviço 2</a>
+				<a href="">Serviço 3</a>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a>Serviços</a>
+
+			<div class="dropdown-menu">
+				<a href="">Serviço 1</a>
+				<a href="">Serviço 2</a>
+				<a href="">Serviço 3</a>
+			</div>
+		</li>
+		<li>
+			<a th:href="@{/api/logout}">Sair</a>
+		</li>
+	</ul>
+</nav>
+
+<!--<nav th:frangment="nav" class="navbar navbar-light ">
 	<div class="menu">
-		<a th:href="@{/api/home}" >Home</a>
+		<a th:href="@{/api/home}">Home</a>
 		<a th:href="@{/api/macros}">Macros</a>
-		<a href="#equipe">Nossa equipe</a>
+		<a th:href="@{/api/historico}">Email</a>
 		<a href="#servicos">Serviços</a>
 		<a th:href="@{/api/logout}">Sair</a>
 	</div>
-</nav>
+</nav>-->

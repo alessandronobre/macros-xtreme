@@ -110,3 +110,15 @@ button {
 button:hover {
     transform: scale(1.01);
 }
+
+#cancelar_button {
+	text-decoration: none;
+    color: var(--color-dark-900);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#cancelar_button:hover {
+	color: var(--color-orage);
+    transform: scale(1.01);
+}

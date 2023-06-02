@@ -17,35 +17,19 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/email")
+@RequestMapping("/api")
 public class EmailController {
 
 	private final MsEmailClient msEmailClient;
 	
-	@GetMapping("/teste")
-	public ModelAndView teste() {
-		ModelAndView modelAndView = new ModelAndView("inicio/index");
-
-		return modelAndView;
-	}
-	
-	@GetMapping("/login")
-	public ModelAndView login() {
-		ModelAndView modelAndView = new ModelAndView("login/login");
-
-		return modelAndView;
-	}
-
-	@GetMapping("/")
-	public ModelAndView findHistoricoPorUsuario(@ModelAttribute("usuario") UsuarioDTO usuario) {
-		ModelAndView modelAndView = new ModelAndView("home");
-
+	@GetMapping("/historico")
+	public ModelAndView findByHistoricoEmail(@ModelAttribute("usuario") UsuarioDTO usuario) {
+		ModelAndView modelAndView = new ModelAndView("email/historico_email");
+		String nome = "Marcos";
 		ResponseEntity<List<HistoricoEmailDTO>> lista = null;
-		lista = msEmailClient.findHistoricoPorUsuario(usuario.getName());
-		
-		List<HistoricoEmailDTO> listaHistorico = lista.getBody()
-				.stream()
-				.collect(Collectors.toList());
+		lista = msEmailClient.findHistoricoPorUsuario(nome);
+
+		List<HistoricoEmailDTO> listaHistorico = lista.getBody().stream().collect(Collectors.toList());
 
 		modelAndView.addObject("lista", listaHistorico);
 		return modelAndView;

@@ -10,15 +10,17 @@ import br.com.macrosxtreme.dto.HistoricoMacrosDTO;
 import br.com.macrosxtreme.model.HistoricoMacros;
 import br.com.macrosxtreme.repository.MacrosRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MacrosService {
 
 	private final MacrosRepository macrosRepository;
-	
+
 	public void salvarHistorico(HistoricoMacrosDTO historicoMacros) {
-		
+
 		HistoricoMacros historico = new HistoricoMacros();
 		historico.setUsuario(historicoMacros.getUsuario());
 		historico.setImc(historicoMacros.getImc());
@@ -36,15 +38,40 @@ public class MacrosService {
 		historico.setFibraDescanso(historicoMacros.getFibraDescanso());
 		macrosRepository.save(historico);
 	}
-	
+
 	public HistoricoMacros findByMacros(String usuario) {
 		return macrosRepository.findByMacros(usuario);
-		
+
 	}
-	
-	public List<HistoricoMacros> findByHistoricoMacros(String usuario) {
-		return macrosRepository.findByHistoricoMacros(usuario);
-		
+
+	public List<HistoricoMacrosDTO> findByHistoricoMacros(String usuario) {
+		List<HistoricoMacros> histMacros = macrosRepository.findByHistoricoMacros(usuario);
+		List<HistoricoMacrosDTO> historico = new ArrayList<>();
+
+		if (!histMacros.isEmpty()) {
+			for (HistoricoMacros histMacro : histMacros) {
+				HistoricoMacrosDTO hist = new HistoricoMacrosDTO();
+				hist.setUsuario(histMacro.getUsuario());
+				hist.setImc(histMacro.getImc());
+				hist.setTmb(histMacro.getTmb());
+				hist.setGastoCaloricoTotal(histMacro.getGastoCaloricoTotal());
+				hist.setCaloriasTreino(histMacro.getCaloriasTreino());
+				hist.setProteinaTreino(histMacro.getProteinaTreino());
+				hist.setCarboidratoTreino(histMacro.getCarboidratoTreino());
+				hist.setGorduraTreino(histMacro.getGorduraTreino());
+				hist.setFibraTreino(histMacro.getFibraTreino());
+				hist.setCaloriasDescanso(histMacro.getCaloriasDescanso());
+				hist.setProteinaDescanso(histMacro.getProteinaDescanso());
+				hist.setCarboidratoDescanso(histMacro.getCarboidratoDescanso());
+				hist.setGorduraDescanso(histMacro.getGorduraDescanso());
+				hist.setFibraDescanso(histMacro.getFibraDescanso());
+				historico.add(hist);
+			}
+		} else {
+			log.info("Voce ainda não possui historico de macros ");
+		}
+
+		return historico;
 	}
 
 	public Integer calcularTBM(String genero, int idade, int altura, int peso) {
@@ -144,10 +171,10 @@ public class MacrosService {
 	public Integer objetivoDescanso(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		int objetivoTreino = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
-		
+
 		double objetivoOff = objetivoTreino - (10 * objetivoTreino / 100);
 		int objetivoDescanso = (int) Math.round(objetivoOff);
-		
+
 		return objetivoDescanso;
 
 	}
@@ -155,21 +182,21 @@ public class MacrosService {
 	public List<Integer> macrosTreino(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		int objtivo = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
-		
+
 		int proteina, gordura, carboidatro, fibras = 0;
 		double p = peso * 2.240;
 		double g = peso * 0.760;
 		double c = (objtivo - (p * 4) - (g * 9)) / 4;
-		
+
 		if (objtivo <= 1200) {
 			fibras = 10;
-			
+
 		} else if (objtivo > 1200 && objtivo <= 2200) {
 			fibras = 20;
-			
+
 		} else if (objtivo > 2200 && objtivo <= 3200) {
 			fibras = 30;
-			
+
 		} else if (objtivo > 3200 && objtivo <= 4200) {
 			fibras = 40;
 		}
@@ -177,7 +204,7 @@ public class MacrosService {
 		proteina = (int) Math.round(p);
 		gordura = (int) Math.round(g);
 		carboidatro = (int) Math.round(c);
-		
+
 		List<Integer> macros = new ArrayList<>();
 		macros.add(proteina);
 		macros.add(carboidatro);
@@ -190,9 +217,9 @@ public class MacrosService {
 	public List<Integer> macrosDescanso(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		List<Integer> macrosTreino = macrosTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
-		
+
 		int proteina, gordura, carboidatro, fibras = 0;
-		
+
 		proteina = macrosTreino.get(0);
 		carboidatro = macrosTreino.get(1) - (20 * macrosTreino.get(1) / 100);
 		gordura = macrosTreino.get(2) - (9 * macrosTreino.get(2) / 100);

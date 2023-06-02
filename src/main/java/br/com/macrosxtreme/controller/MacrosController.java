@@ -1,7 +1,6 @@
 package br.com.macrosxtreme.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,13 +50,9 @@ public class MacrosController {
 		ModelAndView modelAndView = new ModelAndView("macros/historico_macros");
 		
 		String nome = "Teste";
-		List<HistoricoMacros> lista = null;
-		lista = macrosService.findByHistoricoMacros(nome);
-		
-		List<HistoricoMacros> listaHistorico = lista.stream()
-				.collect(Collectors.toList());
+		List<HistoricoMacrosDTO> lista = macrosService.findByHistoricoMacros(nome);
 
-		modelAndView.addObject("lista", listaHistorico);
+		modelAndView.addObject("lista", lista);
 		return modelAndView;
 
 	}

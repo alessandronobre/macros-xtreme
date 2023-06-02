@@ -53,11 +53,11 @@ public class LoginController {
 	}
 
 	@GetMapping("/logout")
-	public String logout(HttpServletRequest request) {
+	public ModelAndView logout(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.removeAttribute("user");
 
-		return "redirect:/login";
+		return login();
 	}
 
 	@GetMapping("/criar")
