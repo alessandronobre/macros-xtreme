@@ -1,0 +1,29 @@
+
+:root {
+    /* Light */
+    --color-light-50: #f8fafc;
+
+    /* Dark */
+    --color-dark-50: #797984;
+    --color-dark-100: #312d37;
+    --color-dark-900: #000;
+    --color-orage: #da580c;
+    --color-back: #EEE;   
+}
+
+body {
+    background: var(--color-back);
+}
+
+/* Login Button */
+#btn_macros {
+	text-decoration: none;
+	color: var(--color-dark-900);
+	padding: 3px;
+    cursor: pointer;
+}
+
+#btn_macros:hover {
+	color: var(--color-orage);
+    transform: scale(1.01);
+}

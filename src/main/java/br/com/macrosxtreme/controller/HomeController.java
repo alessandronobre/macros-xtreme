@@ -3,7 +3,6 @@ package br.com.macrosxtreme.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +15,7 @@ import br.com.macrosxtreme.dto.HistoricoEmailDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.dto.UsuarioFreeDTO;
 import br.com.macrosxtreme.model.HistoricoMacros;
-import br.com.macrosxtreme.service.HistoricoMacrosService;
+import br.com.macrosxtreme.service.MacrosService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,9 +23,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class HomeController {
 
-	@Autowired
-	private HistoricoMacrosService historicoMacrosService;
-	
+	private final MacrosService macrosService;
+
 	private final MsEmailClient msEmailClient;
 
 	@GetMapping("/historico/email")
@@ -43,11 +41,11 @@ public class HomeController {
 
 	}
 
-	@GetMapping("/historico/macros")
-	public void findByHistoricoMacros(UsuarioFreeDTO usuario) {
-
-		List<HistoricoMacros> historico = historicoMacrosService.buscarHistorico(usuario.getNome());
-		historico.stream().forEach(e -> System.out.println(e.toString()));
-	}
+//	@GetMapping("/historico/macros")
+//	public void findByHistoricoMacros(UsuarioFreeDTO usuario) {
+//
+//		List<HistoricoMacros> historico = macrosService.findByHistorico(usuario.getNome());
+//		historico.stream().forEach(e -> System.out.println(e.toString()));
+//	}
 
 }

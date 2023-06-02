@@ -6,8 +6,46 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.com.macrosxtreme.dto.HistoricoMacrosDTO;
+import br.com.macrosxtreme.model.HistoricoMacros;
+import br.com.macrosxtreme.repository.MacrosRepository;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
-public class CalculadorService {
+public class MacrosService {
+
+	private final MacrosRepository macrosRepository;
+	
+	public void salvarHistorico(HistoricoMacrosDTO historicoMacros) {
+		
+		HistoricoMacros historico = new HistoricoMacros();
+		historico.setUsuario(historicoMacros.getUsuario());
+		historico.setImc(historicoMacros.getImc());
+		historico.setTmb(historicoMacros.getTmb());
+		historico.setGastoCaloricoTotal(historicoMacros.getGastoCaloricoTotal());
+		historico.setCaloriasTreino(historicoMacros.getCaloriasTreino());
+		historico.setProteinaTreino(historicoMacros.getProteinaTreino());
+		historico.setCarboidratoTreino(historicoMacros.getCarboidratoTreino());
+		historico.setGorduraTreino(historicoMacros.getGorduraTreino());
+		historico.setFibraTreino(historicoMacros.getFibraTreino());
+		historico.setCaloriasDescanso(historicoMacros.getCaloriasDescanso());
+		historico.setProteinaDescanso(historicoMacros.getProteinaDescanso());
+		historico.setCarboidratoDescanso(historicoMacros.getCarboidratoDescanso());
+		historico.setGorduraDescanso(historicoMacros.getGorduraDescanso());
+		historico.setFibraDescanso(historicoMacros.getFibraDescanso());
+		macrosRepository.save(historico);
+	}
+	
+	public HistoricoMacros findByMacros(String usuario) {
+		return macrosRepository.findByMacros(usuario);
+		
+	}
+	
+	public List<HistoricoMacros> findByHistoricoMacros(String usuario) {
+		return macrosRepository.findByHistoricoMacros(usuario);
+		
+	}
 
 	public Integer calcularTBM(String genero, int idade, int altura, int peso) {
 		int tmb = 0;

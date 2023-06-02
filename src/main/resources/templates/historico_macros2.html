@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" title="Coding design">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
+
+	<title>Historico de Macros</title>
+</head>
+
+<body>
+	<main class="table">
+		<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+		<section class="table__header">
+			<h1>Historico de Macros</h1>
+		</section>
+		<section class="table__body">
+			<table>
+				<thead>
+					<tr>
+						<th> IMC </th>
+						<th> TBM </th>
+						<th> Gasto Calorico </th>
+						<th> Calorias Treino </th>
+						<th> Proteina Treino </th>
+						<th> Carboidrato Treino </th>
+						<th> Gordura Treino </th>
+						<th> Fibra Treino </th>
+						<th> Calorias Descanso </th>
+						<th> Proteina Descanso </th>
+						<th> Carboidrato Descanso </th>
+						<th> Gordura Descanso </th>
+						<th> Fibra Descanso </th>
+						<th> Usuario </th>
+						<th> Data </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="lista : ${lista}">
+						<td th:text="${lista.imc}"></td>
+						<td th:text="${lista.tmb}"></td>
+						<td th:text="${lista.gastoCaloricoTotal}"></td>
+						<td th:text="${lista.caloriasTreino}"></td>
+						<td th:text="${lista.proteinaTreino}"></td>
+						<td th:text="${lista.carboidratoTreino}"></td>
+						<td th:text="${lista.gorduraTreino}"></td>
+						<td th:text="${lista.fibraTreino}"></td>
+						<td th:text="${lista.caloriasDescanso}"></td>
+						<td th:text="${lista.proteinaDescanso}"></td>
+						<td th:text="${lista.carboidratoDescanso}"></td>
+						<td th:text="${lista.gorduraDescanso}"></td>
+						<td th:text="${lista.fibraDescanso}"></td>
+						<td th:text="${lista.usuario}"></td>
+						<td th:text="${lista.usuario}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</main>
+</body>
+
+</html>

@@ -135,22 +135,6 @@ form {
     transform: scale(1.01);
 }
 
-#calculation_button {
-	text-decoration: none;
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    color: black;
-    padding: 3px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-#calculation_button:hover {
-	color: var(--color-orage);
-    transform: scale(1.01);
-}
-
 /* Social Media */
 #social_media {
     display: flex;
