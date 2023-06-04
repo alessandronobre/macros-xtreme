@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table
 @NoArgsConstructor
-public class Email {
+public class HistoricoEmail {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class Email {
 	@Column(nullable = false)
 	private String destinatario;
 	
-	public Email(EmailDTO email) {
+	public HistoricoEmail(EmailDTO email) {
 		this.usuario = email.getUsuario();
 		this.tituloEmail = email.getTituloEmail();
 		this.conteudo = email.getConteudo();

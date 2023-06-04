@@ -1,6 +1,6 @@
 package br.com.macrosxtreme.dto;
 
-import br.com.macrosxtreme.model.Email;
+import br.com.macrosxtreme.model.HistoricoEmail;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,7 @@ public class EmailDTO {
 	private String dataEnvio;
 	private String destinatario;
 	
-	public EmailDTO(Email email) {
+	public EmailDTO(HistoricoEmail email) {
 		this.usuario = email.getUsuario();
 		this.tituloEmail = email.getTituloEmail();
 		this.conteudo = email.getConteudo();
