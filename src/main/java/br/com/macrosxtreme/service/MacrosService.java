@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.macrosxtreme.dto.HistoricoMacrosDTO;
-import br.com.macrosxtreme.model.HistoricoMacros;
+import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.repository.MacrosRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,52 +19,26 @@ public class MacrosService {
 
 	private final MacrosRepository macrosRepository;
 
-	public void salvarHistorico(HistoricoMacrosDTO historicoMacros) {
-
-		HistoricoMacros historico = new HistoricoMacros();
-		historico.setUsuario(historicoMacros.getUsuario());
-		historico.setImc(historicoMacros.getImc());
-		historico.setTmb(historicoMacros.getTmb());
-		historico.setGastoCaloricoTotal(historicoMacros.getGastoCaloricoTotal());
-		historico.setCaloriasTreino(historicoMacros.getCaloriasTreino());
-		historico.setProteinaTreino(historicoMacros.getProteinaTreino());
-		historico.setCarboidratoTreino(historicoMacros.getCarboidratoTreino());
-		historico.setGorduraTreino(historicoMacros.getGorduraTreino());
-		historico.setFibraTreino(historicoMacros.getFibraTreino());
-		historico.setCaloriasDescanso(historicoMacros.getCaloriasDescanso());
-		historico.setProteinaDescanso(historicoMacros.getProteinaDescanso());
-		historico.setCarboidratoDescanso(historicoMacros.getCarboidratoDescanso());
-		historico.setGorduraDescanso(historicoMacros.getGorduraDescanso());
-		historico.setFibraDescanso(historicoMacros.getFibraDescanso());
+	public void salvarHistorico(MacrosDTO historicoMacros) {
+		Macros historico = new Macros(historicoMacros);
+		
 		macrosRepository.save(historico);
 	}
 
-	public HistoricoMacros findByMacros(String usuario) {
-		return macrosRepository.findByMacros(usuario);
+	public MacrosDTO findByMacros(String usuario) {
+		MacrosDTO historico = new MacrosDTO(macrosRepository.findByMacros(usuario));
+				
+		return historico;
 
 	}
 
-	public List<HistoricoMacrosDTO> findByHistoricoMacros(String usuario) {
-		List<HistoricoMacros> histMacros = macrosRepository.findByHistoricoMacros(usuario);
-		List<HistoricoMacrosDTO> historico = new ArrayList<>();
+	public List<MacrosDTO> findByHistoricoMacros(String usuario) {
+		List<Macros> histMacros = macrosRepository.findByHistoricoMacros(usuario);
+		List<MacrosDTO> historico = new ArrayList<>();
 
 		if (!histMacros.isEmpty()) {
-			for (HistoricoMacros histMacro : histMacros) {
-				HistoricoMacrosDTO hist = new HistoricoMacrosDTO();
-				hist.setUsuario(histMacro.getUsuario());
-				hist.setImc(histMacro.getImc());
-				hist.setTmb(histMacro.getTmb());
-				hist.setGastoCaloricoTotal(histMacro.getGastoCaloricoTotal());
-				hist.setCaloriasTreino(histMacro.getCaloriasTreino());
-				hist.setProteinaTreino(histMacro.getProteinaTreino());
-				hist.setCarboidratoTreino(histMacro.getCarboidratoTreino());
-				hist.setGorduraTreino(histMacro.getGorduraTreino());
-				hist.setFibraTreino(histMacro.getFibraTreino());
-				hist.setCaloriasDescanso(histMacro.getCaloriasDescanso());
-				hist.setProteinaDescanso(histMacro.getProteinaDescanso());
-				hist.setCarboidratoDescanso(histMacro.getCarboidratoDescanso());
-				hist.setGorduraDescanso(histMacro.getGorduraDescanso());
-				hist.setFibraDescanso(histMacro.getFibraDescanso());
+			for (Macros histMacro : histMacros) {
+				MacrosDTO hist = new MacrosDTO(histMacro);
 				historico.add(hist);
 			}
 		} else {

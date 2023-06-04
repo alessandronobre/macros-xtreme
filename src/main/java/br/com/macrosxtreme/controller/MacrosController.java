@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.macrosxtreme.dto.HistoricoMacrosDTO;
+import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.dto.UsuarioFreeDTO;
-import br.com.macrosxtreme.model.HistoricoMacros;
 import br.com.macrosxtreme.service.MacrosService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +25,9 @@ public class MacrosController {
 	ModelAndView modelAndView = new ModelAndView("macros/macros");
 		
 		String nome = "Teste";
-		HistoricoMacros macros = macrosService.findByMacros(nome);
+		MacrosDTO macros = macrosService.findByMacros(nome);
+		modelAndView.addObject("data", macros.getDataCalculo());
+		modelAndView.addObject("imc", macros.getImc());
 		modelAndView.addObject("imc", macros.getImc());
 		modelAndView.addObject("tmb", macros.getTmb());
 		modelAndView.addObject("gastoTotal", macros.getGastoCaloricoTotal());
@@ -50,7 +51,7 @@ public class MacrosController {
 		ModelAndView modelAndView = new ModelAndView("macros/historico_macros");
 		
 		String nome = "Teste";
-		List<HistoricoMacrosDTO> lista = macrosService.findByHistoricoMacros(nome);
+		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(nome);
 
 		modelAndView.addObject("lista", lista);
 		return modelAndView;
@@ -77,7 +78,7 @@ public class MacrosController {
 		List<Integer> macrosDescanso = macrosService.macrosDescanso(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso(), usuario.getObjetivo(), usuario.getNivelAtividadeFisica());
 		
 		String nome = "Teste";
-		HistoricoMacrosDTO historicoMacrosDTO = new HistoricoMacrosDTO();
+		MacrosDTO historicoMacrosDTO = new MacrosDTO();
 		historicoMacrosDTO.setUsuario(nome);
 		historicoMacrosDTO.setImc(imc);
 		historicoMacrosDTO.setTmb(tmb);

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.client.MsEmailClient;
-import br.com.macrosxtreme.dto.HistoricoEmailDTO;
+import br.com.macrosxtreme.dto.EmailDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.dto.UsuarioFreeDTO;
-import br.com.macrosxtreme.model.HistoricoMacros;
+import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.service.MacrosService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,20 +26,20 @@ public class HomeController {
 	private final MacrosService macrosService;
 
 	private final MsEmailClient msEmailClient;
-
-	@GetMapping("/historico/email")
-	public ModelAndView findByHistoricoEmail(@ModelAttribute("usuario") UsuarioDTO usuario) {
-		ModelAndView modelAndView = new ModelAndView("home");
-		String nome = "Marcos";
-		ResponseEntity<List<HistoricoEmailDTO>> lista = null;
-		lista = msEmailClient.findHistoricoPorUsuario(nome);
-
-		List<HistoricoEmailDTO> listaHistorico = lista.getBody().stream().collect(Collectors.toList());
-
-		modelAndView.addObject("lista", listaHistorico);
-		return modelAndView;
-
-	}
+//
+//	@GetMapping("/historico/email")
+//	public ModelAndView findByHistoricoEmail(@ModelAttribute("usuario") UsuarioDTO usuario) {
+//		ModelAndView modelAndView = new ModelAndView("home");
+//		String nome = "Marcos";
+//		ResponseEntity<List<EmailDTO>> lista = null;
+//		lista = msEmailClient.findHistoricoPorUsuario(nome);
+//
+//		List<EmailDTO> listaHistorico = lista.getBody().stream().collect(Collectors.toList());
+//
+//		modelAndView.addObject("lista", listaHistorico);
+//		return modelAndView;
+//
+//	}
 
 //	@GetMapping("/historico/macros")
 //	public void findByHistoricoMacros(UsuarioFreeDTO usuario) {

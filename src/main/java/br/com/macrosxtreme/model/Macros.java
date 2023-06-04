@@ -1,5 +1,6 @@
 package br.com.macrosxtreme.model;
 
+import br.com.macrosxtreme.dto.MacrosDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,19 +8,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table
 @Data
-public class HistoricoMacros {
+@NoArgsConstructor
+public class Macros {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="cod_hist_macros")
+	@Column(name="cod_macros")
 	private Long id;
 	
 	@Column(nullable = false)
 	private String usuario;
+	
+	@Column(name="data_calculo", nullable = false)
+	private String dataCalculo;
 	
 	@Column(nullable = false)
 	private String imc;
@@ -59,5 +65,23 @@ public class HistoricoMacros {
 	
 	@Column(name="fibra_descanso", nullable = false)
 	private Integer fibraDescanso;
+	
+	public Macros(MacrosDTO historico) {
+		this.usuario = historico.getUsuario();
+		this.dataCalculo = historico.getDataCalculo();
+		this.imc = historico.getImc();
+		this.tmb = historico.getTmb();
+		this.gastoCaloricoTotal = historico.getGastoCaloricoTotal();
+		this.caloriasTreino = historico.getCaloriasTreino();
+		this.proteinaTreino = historico.getProteinaTreino();
+		this.carboidratoTreino = historico.getCarboidratoTreino();
+		this.gorduraTreino = historico.getGorduraTreino();
+		this.fibraTreino = historico.getFibraTreino();
+		this.caloriasDescanso = historico.getCaloriasDescanso();
+		this.proteinaDescanso = historico.getProteinaDescanso();
+		this.carboidratoDescanso = historico.getCarboidratoDescanso();
+		this.gorduraDescanso = historico.getGorduraDescanso();
+		this.fibraDescanso = historico.getFibraDescanso();
+	}
 
 }

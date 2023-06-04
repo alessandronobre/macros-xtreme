@@ -17,6 +17,8 @@
 		<table>
 			<thead>
 				<tr>
+					<th> Usuario </th>
+					<th> Data </th>
 					<th> IMC </th>
 					<th> TBM </th>
 					<th> Gasto Kcal </th>
@@ -30,12 +32,12 @@
 					<th> Carbo Descanso </th>
 					<th> Gordura Descanso </th>
 					<th> Fibra Descanso </th>
-					<th> Usuario </th>
-					<th> Data </th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="lista : ${lista}">
+					<td th:text="${lista.usuario}"></td>
+					<td th:text="${lista.dataCalculo}"></td>				
 					<td th:text="${lista.imc}"></td>
 					<td th:text="${lista.tmb}"></td>
 					<td th:text="${lista.gastoCaloricoTotal}"></td>
@@ -49,8 +51,6 @@
 					<td th:text="${lista.carboidratoDescanso}"></td>
 					<td th:text="${lista.gorduraDescanso}"></td>
 					<td th:text="${lista.fibraDescanso}"></td>
-					<td th:text="${lista.usuario}"></td>
-					<td th:text="${lista.usuario}"></td>
 				</tr>
 			</tbody>
 		</table>

@@ -1,18 +1,16 @@
 package br.com.macrosxtreme.client;
 
-import java.util.List;
-
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.macrosxtreme.dto.HistoricoEmailDTO;
+import br.com.macrosxtreme.dto.EmailDTO;
 
 @FeignClient(name = "MsEmailClient", url = "http://localhost:8082", path = "/api/email")
 public interface MsEmailClient {
-
-    @GetMapping(params = "nome")
-    public ResponseEntity<List<HistoricoEmailDTO>> findHistoricoPorUsuario(@RequestParam("nome") String nome);
+    
+	@PostMapping
+	public ResponseEntity<String> enviar(@RequestBody EmailDTO email);
 	
 }
