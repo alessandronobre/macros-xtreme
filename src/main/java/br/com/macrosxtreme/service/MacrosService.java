@@ -10,9 +10,7 @@ import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.repository.MacrosRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MacrosService {
@@ -26,8 +24,12 @@ public class MacrosService {
 	}
 
 	public MacrosDTO findByMacros(String usuario) {
-		MacrosDTO historico = new MacrosDTO(macrosRepository.findByMacros(usuario));
-				
+		Macros hist = macrosRepository.findByMacros(usuario);
+		if(hist == null) {
+			return null;
+		}
+		MacrosDTO historico = new MacrosDTO(hist);
+	
 		return historico;
 
 	}
@@ -41,11 +43,10 @@ public class MacrosService {
 				MacrosDTO hist = new MacrosDTO(histMacro);
 				historico.add(hist);
 			}
-		} else {
-			log.info("Voce ainda não possui historico de macros ");
+			return historico;
 		}
 
-		return historico;
+		return null;
 	}
 
 	public Integer calcularTBM(String genero, int idade, int altura, int peso) {

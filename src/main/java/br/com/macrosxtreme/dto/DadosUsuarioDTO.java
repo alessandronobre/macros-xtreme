@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UsuarioFreeDTO {
+public class DadosUsuarioDTO {
 	
 	private String nome;
 	private String genero;

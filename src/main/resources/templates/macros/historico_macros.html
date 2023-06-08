@@ -13,7 +13,10 @@
 
 <body>
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
-	<div id="main">
+	<div class="container" th:if="${lista == null}">
+		<h2>Você ainda não possui histórico de macros</h2>
+	</div>
+	<div id="main" th:if="${lista != null}">
 		<table>
 			<thead>
 				<tr>
@@ -37,7 +40,7 @@
 			<tbody>
 				<tr th:each="lista : ${lista}">
 					<td th:text="${lista.usuario}"></td>
-					<td th:text="${lista.dataCalculo}"></td>				
+					<td th:text="${lista.dataCalculo}"></td>
 					<td th:text="${lista.imc}"></td>
 					<td th:text="${lista.tmb}"></td>
 					<td th:text="${lista.gastoCaloricoTotal}"></td>

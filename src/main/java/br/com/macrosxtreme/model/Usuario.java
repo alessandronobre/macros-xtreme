@@ -1,6 +1,5 @@
 package br.com.macrosxtreme.model;
 
-import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,11 +29,6 @@ public class Usuario {
 	
 	@Column(nullable = false)
 	private String password;
-
-	public Usuario(LoginDTO login) {
-		email = login.getEmail();
-		password = login.getPassword();
-	}
 
 	public Usuario(UsuarioDTO usuario) {
 		name = usuario.getName();

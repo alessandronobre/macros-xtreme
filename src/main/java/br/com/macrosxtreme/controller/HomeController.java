@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
-import br.com.macrosxtreme.dto.UsuarioFreeDTO;
+import br.com.macrosxtreme.dto.DadosUsuarioDTO;
 import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.service.MacrosService;
 import lombok.RequiredArgsConstructor;

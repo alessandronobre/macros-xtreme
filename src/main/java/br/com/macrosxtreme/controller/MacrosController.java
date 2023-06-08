@@ -1,5 +1,7 @@
 package br.com.macrosxtreme.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.macrosxtreme.dto.DadosUsuarioDTO;
 import br.com.macrosxtreme.dto.MacrosDTO;
-import br.com.macrosxtreme.dto.UsuarioFreeDTO;
 import br.com.macrosxtreme.service.MacrosService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,26 +23,31 @@ public class MacrosController {
 	private final MacrosService macrosService;
 	
 	@GetMapping("/macros")
-	public ModelAndView macros(UsuarioFreeDTO usuario) {
+	public ModelAndView macros(DadosUsuarioDTO dados) {
 	ModelAndView modelAndView = new ModelAndView("macros/macros");
-		
+
 		String nome = "Teste";
 		MacrosDTO macros = macrosService.findByMacros(nome);
-		modelAndView.addObject("data", macros.getDataCalculo());
-		modelAndView.addObject("imc", macros.getImc());
-		modelAndView.addObject("imc", macros.getImc());
-		modelAndView.addObject("tmb", macros.getTmb());
-		modelAndView.addObject("gastoTotal", macros.getGastoCaloricoTotal());
-		modelAndView.addObject("caloriasTreino", macros.getCaloriasTreino());
-		modelAndView.addObject("caloriasDescanso", macros.getCaloriasDescanso());
-		modelAndView.addObject("proteinaTreino", macros.getProteinaTreino());
-		modelAndView.addObject("carboTreino", macros.getCarboidratoTreino());
-		modelAndView.addObject("gorduraTreino", macros.getGorduraTreino());
-		modelAndView.addObject("fibraTreino", macros.getFibraTreino());
-		modelAndView.addObject("proteinaDescanso", macros.getProteinaDescanso());
-		modelAndView.addObject("carboDescanso", macros.getCarboidratoDescanso());
-		modelAndView.addObject("gorduraDescanso", macros.getGorduraDescanso());
-		modelAndView.addObject("fibraDescanso", macros.getFibraDescanso());
+		if(macros != null) {
+			modelAndView.addObject("data", macros.getDataCalculo());
+			modelAndView.addObject("imc", macros.getImc());
+			modelAndView.addObject("imc", macros.getImc());
+			modelAndView.addObject("tmb", macros.getTmb());
+			modelAndView.addObject("gastoTotal", macros.getGastoCaloricoTotal());
+			modelAndView.addObject("caloriasTreino", macros.getCaloriasTreino());
+			modelAndView.addObject("caloriasDescanso", macros.getCaloriasDescanso());
+			modelAndView.addObject("proteinaTreino", macros.getProteinaTreino());
+			modelAndView.addObject("carboTreino", macros.getCarboidratoTreino());
+			modelAndView.addObject("gorduraTreino", macros.getGorduraTreino());
+			modelAndView.addObject("fibraTreino", macros.getFibraTreino());
+			modelAndView.addObject("proteinaDescanso", macros.getProteinaDescanso());
+			modelAndView.addObject("carboDescanso", macros.getCarboidratoDescanso());
+			modelAndView.addObject("gorduraDescanso", macros.getGorduraDescanso());
+			modelAndView.addObject("fibraDescanso", macros.getFibraDescanso());
+			
+			return modelAndView;
+
+		}
 
 		return modelAndView;
 
@@ -52,14 +59,16 @@ public class MacrosController {
 		
 		String nome = "Teste";
 		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(nome);
-
-		modelAndView.addObject("lista", lista);
+		if(lista != null) {
+			modelAndView.addObject("lista", lista);
+			return modelAndView;
+		}
 		return modelAndView;
 
 	}
 	
 	@GetMapping("/calcular")
-	public ModelAndView calcular(UsuarioFreeDTO usuario) {
+	public ModelAndView calcular(DadosUsuarioDTO dados) {
 		ModelAndView modelAndView = new ModelAndView("macros/form");
 		
 		return modelAndView;
@@ -67,36 +76,41 @@ public class MacrosController {
 	}
 
 	@PostMapping("/calcular")
-	public ModelAndView calcula(UsuarioFreeDTO usuario) {
+	public ModelAndView calcula(DadosUsuarioDTO dados) {
+		
+		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		LocalDateTime dataHoraAtual = LocalDateTime.now();
+		String dataHoraFormatada = dataHoraAtual.format(formatador);
 
-		String imc = macrosService.imc(usuario.getAltura(), usuario.getPeso());
-		Integer tmb =  macrosService.calcularTBM(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso());
-		Integer gastoCaloricoTotal = macrosService.calcularGT(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso(), usuario.getNivelAtividadeFisica());
-		Integer objetivoTreino = macrosService.objetivoTreino(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso(), usuario.getObjetivo(), usuario.getNivelAtividadeFisica());
-		Integer objetivoDescanso = macrosService.objetivoDescanso(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso(), usuario.getObjetivo(), usuario.getNivelAtividadeFisica());
-		List<Integer> macrosTreino = macrosService.macrosTreino(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso(), usuario.getObjetivo(), usuario.getNivelAtividadeFisica());
-		List<Integer> macrosDescanso = macrosService.macrosDescanso(usuario.getGenero(), usuario.getIdade(), usuario.getAltura(), usuario.getPeso(), usuario.getObjetivo(), usuario.getNivelAtividadeFisica());
+		String imc = macrosService.imc(dados.getAltura(), dados.getPeso());
+		Integer tmb =  macrosService.calcularTBM(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso());
+		Integer gastoCaloricoTotal = macrosService.calcularGT(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getNivelAtividadeFisica());
+		Integer objetivoTreino = macrosService.objetivoTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+		Integer objetivoDescanso = macrosService.objetivoDescanso(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+		List<Integer> macrosTreino = macrosService.macrosTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+		List<Integer> macrosDescanso = macrosService.macrosDescanso(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
 		
 		String nome = "Teste";
-		MacrosDTO historicoMacrosDTO = new MacrosDTO();
-		historicoMacrosDTO.setUsuario(nome);
-		historicoMacrosDTO.setImc(imc);
-		historicoMacrosDTO.setTmb(tmb);
-		historicoMacrosDTO.setGastoCaloricoTotal(gastoCaloricoTotal);
-		historicoMacrosDTO.setCaloriasTreino(objetivoTreino);
-		historicoMacrosDTO.setProteinaTreino(macrosTreino.get(0));
-		historicoMacrosDTO.setCarboidratoTreino(macrosTreino.get(1));
-		historicoMacrosDTO.setGorduraTreino(macrosTreino.get(2));
-		historicoMacrosDTO.setFibraTreino(macrosTreino.get(3));
-		historicoMacrosDTO.setCaloriasDescanso(objetivoDescanso);
-		historicoMacrosDTO.setProteinaDescanso(macrosDescanso.get(0));
-		historicoMacrosDTO.setCarboidratoDescanso(macrosDescanso.get(1));
-		historicoMacrosDTO.setGorduraDescanso(macrosDescanso.get(2));
-		historicoMacrosDTO.setFibraDescanso(macrosDescanso.get(3));
+		MacrosDTO historicoMacros = new MacrosDTO();
+		historicoMacros.setUsuario(nome);
+		historicoMacros.setDataCalculo(dataHoraFormatada);
+		historicoMacros.setImc(imc);
+		historicoMacros.setTmb(tmb);
+		historicoMacros.setGastoCaloricoTotal(gastoCaloricoTotal);
+		historicoMacros.setCaloriasTreino(objetivoTreino);
+		historicoMacros.setProteinaTreino(macrosTreino.get(0));
+		historicoMacros.setCarboidratoTreino(macrosTreino.get(1));
+		historicoMacros.setGorduraTreino(macrosTreino.get(2));
+		historicoMacros.setFibraTreino(macrosTreino.get(3));
+		historicoMacros.setCaloriasDescanso(objetivoDescanso);
+		historicoMacros.setProteinaDescanso(macrosDescanso.get(0));
+		historicoMacros.setCarboidratoDescanso(macrosDescanso.get(1));
+		historicoMacros.setGorduraDescanso(macrosDescanso.get(2));
+		historicoMacros.setFibraDescanso(macrosDescanso.get(3));
 		
-		macrosService.salvarHistorico(historicoMacrosDTO);
+		macrosService.salvarHistorico(historicoMacros);
 		
-		return macros(usuario);
+		return macros(dados);
 
 	}
 

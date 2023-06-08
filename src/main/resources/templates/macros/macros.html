@@ -12,7 +12,10 @@
 
 <body>
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
-	<div class="container">
+	<div class="container" th:if="${data == null}">
+		<h2>Você ainda não possui informações nutricionais para esse  Paciente</h2>
+	</div>
+	<div class="container" th:if="${data != null}">
 		<h2>Informações Nutricionais do Paciente</h2>
 		<div class="d-flex">
 			<div>

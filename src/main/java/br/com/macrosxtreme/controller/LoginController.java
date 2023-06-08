@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.macrosxtreme.dto.LoginDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +30,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public ModelAndView login(HttpServletRequest request, @ModelAttribute LoginDTO login) {
+	public ModelAndView login(HttpServletRequest request, @ModelAttribute UsuarioDTO login) {
 		ModelAndView modelAndView = new ModelAndView("login/login");
 
 		Boolean userLogin = loginService.login(login);
