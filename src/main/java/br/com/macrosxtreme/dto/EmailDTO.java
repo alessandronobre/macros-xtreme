@@ -1,6 +1,7 @@
 package br.com.macrosxtreme.dto;
 
 import br.com.macrosxtreme.model.HistoricoEmail;
+import br.com.macrosxtreme.model.Usuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmailDTO {
 	
-	private String usuario;
+	private Usuario usuario;
 	private String tituloEmail;
 	private String conteudo;
 	private String dataEnvio;

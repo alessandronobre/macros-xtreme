@@ -42,7 +42,7 @@ public class EmailController {
 	@PostMapping("/historico")
 	public void salverHistoricoEmail(@RequestBody EmailDTO email) {
 		String nome = "Marcos";
-		email.setUsuario(nome);
+		email.getUsuario().setName(nome);
 		emailService.salvarHistoricoEmail(email);
 
 	}
