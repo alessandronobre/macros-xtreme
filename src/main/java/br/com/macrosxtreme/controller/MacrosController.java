@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.DadosUsuarioDTO;
 import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.model.Usuario;
+import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.MacrosService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,12 +24,15 @@ public class MacrosController {
 	
 	private final MacrosService macrosService;
 	
+	private final UsuarioRepository usuarioRepository;
+	
 	@GetMapping("/macros")
 	public ModelAndView macros(DadosUsuarioDTO dados) {
 	ModelAndView modelAndView = new ModelAndView("macros/macros");
+	
+		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
 
-		String nome = "Teste";
-		MacrosDTO macros = macrosService.findByMacros(nome);
+		MacrosDTO macros = macrosService.findByMacros(user.getId());
 		if(macros != null) {
 			modelAndView.addObject("data", macros.getDataCalculo());
 			modelAndView.addObject("imc", macros.getImc());
@@ -57,10 +62,11 @@ public class MacrosController {
 	public ModelAndView findByHistoricoMacros() {
 		ModelAndView modelAndView = new ModelAndView("macros/historico_macros");
 		
-		String nome = "Teste";
-		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(nome);
-		if(lista != null) {
+		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
+		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(user.getId());
+		if(!lista.isEmpty()) {
 			modelAndView.addObject("lista", lista);
+			
 			return modelAndView;
 		}
 		return modelAndView;
@@ -90,9 +96,9 @@ public class MacrosController {
 		List<Integer> macrosTreino = macrosService.macrosTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
 		List<Integer> macrosDescanso = macrosService.macrosDescanso(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
 		
-		String nome = "Teste";
+		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
 		MacrosDTO historicoMacros = new MacrosDTO();
-		historicoMacros.setUsuario(nome);
+		historicoMacros.setUsuario(user);
 		historicoMacros.setDataCalculo(dataHoraFormatada);
 		historicoMacros.setImc(imc);
 		historicoMacros.setTmb(tmb);

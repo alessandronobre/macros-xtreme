@@ -1,28 +1,26 @@
 package br.com.macrosxtreme.dto;
 
 import br.com.macrosxtreme.model.Usuario;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class UsuarioDTO {
 	
-	private String name;
+	private String nome;
 	private String email;
 	private String password;
 	
 	public UsuarioDTO(Usuario user) {
-		name = user.getName();
+		nome = user.getNome();
 		email = user.getEmail();
 		password = user.getPassword();
 	}
 	
 	@Override
 	public String toString() {
-		return "UserDTO [name=" + name + ", email=" + email + "]";
+		return "UserDTO [name=" + nome + ", email=" + email + "]";
 	}
 	
 }

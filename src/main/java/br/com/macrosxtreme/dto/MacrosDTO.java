@@ -1,6 +1,7 @@
 package br.com.macrosxtreme.dto;
 
 import br.com.macrosxtreme.model.Macros;
+import br.com.macrosxtreme.model.Usuario;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MacrosDTO {
 
-	private String usuario;
+	private Usuario usuario;
 	private String dataCalculo;
 	private String imc;
 	private Integer tmb;

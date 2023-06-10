@@ -25,7 +25,7 @@ public class Usuario {
 	private Long id;
 
 	@Column(nullable = false, length = 50)
-	private String name;
+	private String nome;
 	
 	@Column(nullable = false, length = 40, unique = true)
 	private String email;
@@ -35,9 +35,12 @@ public class Usuario {
 	
 	@OneToMany(mappedBy = "usuario")
 	private List<HistoricoEmail> historicoEmail ;
+	
+	@OneToMany(mappedBy = "usuario")
+	private List<Macros> macros ;
 
 	public Usuario(UsuarioDTO usuario) {
-		name = usuario.getName();
+		nome = usuario.getNome();
 		email = usuario.getEmail();
 		password = usuario.getPassword();
 	}

@@ -1,18 +1,18 @@
 package br.com.macrosxtreme.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
+import br.com.macrosxtreme.model.Usuario;
+import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +27,8 @@ public class EmailController {
 	
 	private final MsEmailClient msEmailClient;
 	
+	private final UsuarioRepository usuarioRepository;
+	
 	@PostMapping("/enviar")
 	public void enviar(@RequestBody EmailDTO email) {
 
@@ -40,25 +42,27 @@ public class EmailController {
 	}
 	
 	@PostMapping("/historico")
-	public void salverHistoricoEmail(@RequestBody EmailDTO email) {
-		String nome = "Marcos";
-		email.getUsuario().setName(nome);
+	public void salvarHistoricoEmail(@RequestBody EmailDTO email) {
+		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
+		email.setUsuario(user);
 		emailService.salvarHistoricoEmail(email);
 
 	}
 	
 	@GetMapping("/historico")
-	public ModelAndView findByHistoricoEmail(@RequestParam String usuario) {
+	public ModelAndView findByHistoricoEmail() {
 		ModelAndView modelAndView = new ModelAndView("email/historico_email");
-		String nome = "Marcos";
-		List<EmailDTO> lista = null;
-		lista = emailService.findEmailUsuario(nome);
 
-		List<EmailDTO> listaHistorico = lista.stream().collect(Collectors.toList());
+		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
+		List<EmailDTO> lista = emailService.findEmailUsuario(user.getId());
 
-		modelAndView.addObject("lista", listaHistorico);
+		if(lista != null) {
+			modelAndView.addObject("lista", lista);
+			
+			return modelAndView;
+		}
 		return modelAndView;
 
 	}
-
+	
 }

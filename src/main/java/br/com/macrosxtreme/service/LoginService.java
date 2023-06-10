@@ -38,8 +38,8 @@ public class LoginService {
 	}
 
 	public void save(UsuarioDTO usuario) {
-		String encoder = SenhaUtils.passwordEncoder().encode(usuario.getPassword());
-		usuario.setPassword(encoder);
+		String SenhaEncoder = SenhaUtils.passwordEncoder().encode(usuario.getPassword());
+		usuario.setPassword(SenhaEncoder);
 		Usuario user = new Usuario(usuario);
 		usuarioRepository.save(user);
 

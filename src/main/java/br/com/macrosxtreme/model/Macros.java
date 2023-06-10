@@ -1,11 +1,15 @@
 package br.com.macrosxtreme.model;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,9 +24,6 @@ public class Macros {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="cod_macros")
 	private Long id;
-	
-	@Column(nullable = false)
-	private String usuario;
 	
 	@Column(name="data_calculo", nullable = false)
 	private String dataCalculo;
@@ -65,6 +66,10 @@ public class Macros {
 	
 	@Column(name="fibra_descanso", nullable = false)
 	private Integer fibraDescanso;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="cod_usuario", nullable = false)
+	private Usuario usuario ;
 	
 	public Macros(MacrosDTO historico) {
 		this.usuario = historico.getUsuario();
