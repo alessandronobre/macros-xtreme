@@ -23,8 +23,8 @@ public class MacrosService {
 		macrosRepository.save(historico);
 	}
 
-	public MacrosDTO findByMacros(Long codUsuario) {
-		Macros hist = macrosRepository.findByMacros(codUsuario);
+	public MacrosDTO findByMacros(Long codPaciente) {
+		Macros hist = macrosRepository.findByMacros(codPaciente);
 		if(hist == null) {
 			return null;
 		}
@@ -34,8 +34,8 @@ public class MacrosService {
 
 	}
 
-	public List<MacrosDTO> findByHistoricoMacros(Long codUsuario) {
-		List<Macros> histMacros = macrosRepository.findByHistoricoMacros(codUsuario);
+	public List<MacrosDTO> findByHistoricoMacros(Long codPaciente) {
+		List<Macros> histMacros = macrosRepository.findByHistoricoMacros(codPaciente);
 		List<MacrosDTO> historico = new ArrayList<>();
 
 		if (!histMacros.isEmpty()) {

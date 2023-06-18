@@ -1,7 +1,7 @@
 package br.com.macrosxtreme.dto;
 
 import br.com.macrosxtreme.model.Macros;
-import br.com.macrosxtreme.model.Usuario;
+import br.com.macrosxtreme.model.Paciente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MacrosDTO {
 
-	private Usuario usuario;
+	private Paciente paciente;
 	private String dataCalculo;
 	private String imc;
 	private Integer tmb;
@@ -26,7 +26,7 @@ public class MacrosDTO {
 	private Integer fibraDescanso;
 	
 	public MacrosDTO(Macros historico) {
-		this.usuario = historico.getUsuario();
+		this.paciente = historico.getPaciente();
 		this.dataCalculo = historico.getDataCalculo();
 		this.imc = historico.getImc();
 		this.tmb = historico.getTmb();

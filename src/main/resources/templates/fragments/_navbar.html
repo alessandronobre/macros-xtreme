@@ -5,12 +5,20 @@
 			<a th:href="@{/api/home}">Home</a>
 		</li>
 		<li class="dropdown">
+			<a>Pacientes</a>
+
+			<div class="dropdown-menu">
+				<a th:href="@{/api/paciente/lista/pacientes}">Buscar</a>
+				<a th:href="@{/api/paciente/cadastrar}">Cadastrar</a>
+			</div>
+		</li>
+		<li class="dropdown">
 			<a>Macros</a>
 
 			<div class="dropdown-menu">
 				<a th:href="@{/api/macros}">Macros</a>
-				<a th:href="@{/api/calcular}">Gerar Novos Macros</a>
-				<a th:href="@{/api/historico/macros}">Histórico de Macros</a>
+				<a th:href="@{/api/calcular}">Calcular Macros</a>
+				<a th:href="@{/api/historico/form}">Histórico de Macros</a>
 			</div>
 		</li>
 		<li class="dropdown">
@@ -18,15 +26,6 @@
 
 			<div class="dropdown-menu">
 				<a th:href="@{/api/email/historico}">Historico de Emails</a>
-				<a href="">Serviço 2</a>
-				<a href="">Serviço 3</a>
-			</div>
-		</li>
-		<li class="dropdown">
-			<a>Serviços</a>
-
-			<div class="dropdown-menu">
-				<a href="">Serviço 1</a>
 				<a href="">Serviço 2</a>
 				<a href="">Serviço 3</a>
 			</div>

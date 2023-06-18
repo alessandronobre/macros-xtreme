@@ -68,11 +68,11 @@ public class Macros {
 	private Integer fibraDescanso;
 	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="cod_usuario", nullable = false)
-	private Usuario usuario ;
+	@JoinColumn(name="cod_paciente", nullable = false)
+	private Paciente paciente ;
 	
 	public Macros(MacrosDTO historico) {
-		this.usuario = historico.getUsuario();
+		this.paciente = historico.getPaciente();
 		this.dataCalculo = historico.getDataCalculo();
 		this.imc = historico.getImc();
 		this.tmb = historico.getTmb();

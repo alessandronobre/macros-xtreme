@@ -19,12 +19,10 @@
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
 	<main id="container">
 
-		<form id="login_form" method="POST" th:action="@{/api/calcular}" th:object="${pacienteDTO}">
+		<form id="login_form" method="POST" th:action="@{/api/paciente/cadastrar}" th:object="${pacienteDTO}">
 			<div class="input-box">
-				<label class="form-check-label">Lista de Pacientes</label>
-				<select class="form-select" aria-label="Default select example" name="nome" th:field="*{nome}" required>
-					<option th:each="item : ${lista}" th:value="${item.nome}" th:text="${item.nome}"></option>
-				</select>
+				<label for="nome" class="labelInput">Nome</label>
+				<input type="text" name="nome" id="nome" class="inputUser" required>
 			</div>
 			<div id="check">
 				<!-- GÊNERO -->

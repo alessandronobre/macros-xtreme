@@ -35,9 +35,6 @@ public class Usuario {
 	
 	@OneToMany(mappedBy = "usuario")
 	private List<HistoricoEmail> historicoEmail ;
-	
-	@OneToMany(mappedBy = "usuario")
-	private List<Macros> macros ;
 
 	public Usuario(UsuarioDTO usuario) {
 		nome = usuario.getNome();
