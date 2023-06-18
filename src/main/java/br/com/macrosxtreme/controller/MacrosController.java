@@ -5,17 +5,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.macrosxtreme.dto.PacienteDTO;
 import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.dto.PacienteDTO;
 import br.com.macrosxtreme.model.Paciente;
-import br.com.macrosxtreme.model.Usuario;
-import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.MacrosService;
 import br.com.macrosxtreme.service.PacienteService;
 import lombok.RequiredArgsConstructor;
@@ -27,17 +26,26 @@ public class MacrosController {
 
 	private final MacrosService macrosService;
 
-	private final UsuarioRepository usuarioRepository;
-
 	private final PacienteService pacienteService;
 
-	@GetMapping("/macros")
-	public ModelAndView macros(PacienteDTO dados) {
+	@GetMapping("/macros/form")
+	public ModelAndView macrosForm() {
+		ModelAndView modelAndView = new ModelAndView("macros/buscar_form_macros");
+		List<PacienteDTO> lista = pacienteService.buscarPacientes();
+		if (!lista.isEmpty()) {
+			modelAndView.addObject("lista", lista);
+
+			return modelAndView;
+		}
+		return modelAndView;
+
+	}
+
+	@GetMapping("/macros/{id}")
+	public ModelAndView macros(@PathVariable Long id) {
 		ModelAndView modelAndView = new ModelAndView("macros/macros");
 
-		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
-
-		MacrosDTO macros = macrosService.findByMacros(user.getId());
+		MacrosDTO macros = macrosService.findByMacros(id);
 		if (macros != null) {
 			modelAndView.addObject("data", macros.getDataCalculo());
 			modelAndView.addObject("imc", macros.getImc());
@@ -64,8 +72,8 @@ public class MacrosController {
 	}
 
 	@GetMapping("/historico/form")
-	public ModelAndView teste(PacienteDTO dados) {
-		ModelAndView modelAndView = new ModelAndView("macros/buscar_form");
+	public ModelAndView findByHistoricoMacros() {
+		ModelAndView modelAndView = new ModelAndView("macros/buscar_form_hist");
 		List<PacienteDTO> lista = pacienteService.buscarPacientes();
 		if (!lista.isEmpty()) {
 			modelAndView.addObject("lista", lista);
@@ -83,8 +91,8 @@ public class MacrosController {
 
 		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(paciente.getId());
 
-			modelAndView.addObject("lista", lista);
-
+		modelAndView.addObject("nome", paciente.getNome());
+		modelAndView.addObject("lista", lista);
 
 		return modelAndView;
 
@@ -93,6 +101,7 @@ public class MacrosController {
 	@GetMapping("/calcular")
 	public ModelAndView calcular(PacienteDTO dados) {
 		ModelAndView modelAndView = new ModelAndView("macros/form");
+		
 		List<PacienteDTO> lista = pacienteService.buscarPacientes();
 		if (!lista.isEmpty()) {
 			modelAndView.addObject("lista", lista);
@@ -105,7 +114,8 @@ public class MacrosController {
 
 	@PostMapping("/calcular")
 	public ModelAndView calcula(PacienteDTO dados) {
-
+		ModelAndView modelAndView = new ModelAndView("redirect:/api/home");
+		
 		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		LocalDateTime dataHoraAtual = LocalDateTime.now();
 		String dataHoraFormatada = dataHoraAtual.format(formatador);
@@ -143,7 +153,7 @@ public class MacrosController {
 
 		macrosService.salvarHistorico(historicoMacros);
 
-		return macros(dados);
+		return modelAndView;
 
 	}
 

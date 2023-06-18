@@ -39,7 +39,9 @@
 			</thead>
 			<tbody>
 				<tr th:each="lista : ${lista}">
-					<td th:text="${lista.paciente.id}"></td>
+					<td >
+					<a th:href="@{/api/macros/{id} (id=${lista.paciente.id})}" th:text="${nome}"></a>
+					</td>
 					<td th:text="${lista.dataCalculo}"></td>
 					<td th:text="${lista.imc}"></td>
 					<td th:text="${lista.tmb}"></td>
