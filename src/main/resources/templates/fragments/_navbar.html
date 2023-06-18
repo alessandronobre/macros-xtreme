@@ -1,0 +1,34 @@
+<link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+<nav>
+	<ul>
+		<li>
+			<a th:href="@{/api/home}">Home</a>
+		</li>
+		<li class="dropdown">
+			<a>Pacientes</a>
+
+			<div class="dropdown-menu">
+				<a th:href="@{/api/paciente/lista/pacientes}">Buscar</a>
+				<a th:href="@{/api/paciente/cadastrar}">Cadastrar</a>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a>Macros</a>
+
+			<div class="dropdown-menu">
+				<a th:href="@{/api/calcular}">Calcular Macros</a>
+				<a th:href="@{/api/historico/form}">Histórico de Macros</a>
+			</div>
+		</li>
+		<li class="dropdown">
+			<a>Email</a>
+
+			<div class="dropdown-menu">
+				<a th:href="@{/api/email/historico}">Historico de Emails</a>
+			</div>
+		</li>
+		<li>
+			<a th:href="@{/api/logout}">Sair</a>
+		</li>
+	</ul>
+</nav>

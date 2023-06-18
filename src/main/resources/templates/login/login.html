@@ -5,23 +5,19 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/login/style_login.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/style_nav.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
 		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-	<link rel="stylesheet" href="/css/login/style_login.css">
 
 	<title>Macros Xtreme</title>
 </head>
 
 <body>
 	<main id="container">
-		<form method="POST" th:action="login" th:object="${loginDTO}">
-			<!-- FORM HEADER -->
-			<div id="form_header">
-				<img src="/img/logo.png" alt="">
-				<h2>Macros Xtreme</h2>
-			</div>
+		<form method="POST" th:action="login" th:object="${UsuarioDTO}">
 
 			<!-- INPUTS -->
 			<div id="inputs">
@@ -32,7 +28,7 @@
 						E-mail
 						<div class="input-field">
 							<i class="fa-solid fa-envelope"></i>
-							<input type="email" name="email">
+							<input type="email" name="email" required>
 						</div>
 					</label>
 				</div>
@@ -43,16 +39,16 @@
 						Password
 						<div class="input-field">
 							<i class="fa-solid fa-key"></i>
-							<input type="password" name="password">
+							<input type="password" name="password" required>
 						</div>
 					</label>
 
 					<!-- FORGOT PASSWORD -->
 					<div id="forgot_password">
-						<a th:href="@{/forgot}">
+						<a th:href="@{/api/recupera/senha}">
 							Esqueceu sua senha?
 						</a>
-						<a th:href="@{/create}">
+						<a th:href="@{/api/criar}">
 							Criar Conta
 						</a>
 					</div>
@@ -66,18 +62,13 @@
 			<div class="buttons">
 				<!-- LOGIN BUTTON -->
 				<button type="submit" id="login_button">
-					Login
+					Entrar
 				</button>
-
-				<!-- CALCULATION BUTTON -->
-				<a th:href="@{/calculation}" id="calculation_button">
-					Gerar Macros Basicos
-				</a>
 			</div>
 			<!-- SOCIAL MEDIA LINKS -->
 			<div id="social_media">
 				<!-- LINKEDIN -->
-				<a href="https://www.linkedin.com/in/alessandro-lima-nobre-1a576215b/" target="_blank">
+				<a href="https://www.linkedin.com/in/alessandro-nobre-1a576215b/" target="_blank">
 					<i class="fa-brands fa-linkedin"></i>
 				</a>
 
@@ -94,8 +85,6 @@
 		</form>
 	</main>
 
-	<!-- JAVASCRIPT -->
-	<!--<script type="text/javascript" src="/js/script.js"></script>-->
 </body>
 
 </html>

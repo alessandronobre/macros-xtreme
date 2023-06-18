@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_form.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<title>Macros Xtreme</title>
+</head>
+
+<body>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+	<main id="container">
+
+		<form id="login_form" method="GET" th:action="@{/api/macros}">
+			<div>
+				<span class="badge text-bg-dark">Buscar Historico de Paciente</span>
+			</div>
+			<div class="input-box">
+				<label class="form-check-label">Lista de Pacientes</label>
+				<select class="form-select" aria-label="Default select example" name="nome">
+					<option th:each="item : ${lista}" th:value="${item.nome}" th:text="${item.nome}"></option>
+				</select>
+			</div>
+
+			<div class="buttons">
+				<button type="submit" id="login_button">Buscar</button>
+			</div>
+		</form>
+	</main>
+</body>
+
+</html>

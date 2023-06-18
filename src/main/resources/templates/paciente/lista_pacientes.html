@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_macros.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_historico.css}">
+
+	<title>Historico de Macros</title>
+</head>
+
+<body>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+	<div class="container" th:if="${lista.isEmpty}">
+		<h2>Você ainda não possui pacientes</h2>
+	</div>
+	<div id="main" th:if="${!lista.isEmpty}">
+		<table>
+			<thead>
+				<tr>
+					<th> Paciente </th>
+					<th> Genero </th>
+					<th> Altura </th>
+					<th> Idade </th>
+					<th> Peso </th>
+					<th> Objetivo </th>
+					<th> Nivel De Atividade Fisica </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="lista : ${lista}">
+					<td th:text="${lista.nome}"></td>
+					<td th:text="${lista.genero}"></td>
+					<td th:text="${lista.idade}"></td>
+					<td th:text="${lista.altura}"></td>
+					<td th:text="${lista.peso}"></td>
+					<td th:text="${lista.objetivo}"></td>
+					<td th:text="${lista.nivelAtividadeFisica}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>

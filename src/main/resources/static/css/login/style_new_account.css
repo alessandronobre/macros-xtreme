@@ -9,13 +9,9 @@
     --color-dark-50: #797984;
     --color-dark-100: #312d37;
     --color-dark-900: #000;
-
-        /* Blue */
-    --color-blue-50: #36a9e1;
-    --color-blue-100: #195488;
-
-    /* Gradient */
-    --color-gradient: linear-gradient(90deg, var(--color-blue-50), var(--color-blue-100));
+    
+    --color-orage: #da580c;
+    --color-back: #EEE;
 }
 
 /* General */
@@ -26,13 +22,19 @@
     box-sizing: border-box;
 }
 
-#container {
+body {
     height: 100vh;
     width: 100%;
+    background: var(--color-back);
+}
+
+#container{
+	height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--color-gradient);
+    background: var(--color-back);
+
 }
 
 form {
@@ -43,37 +45,8 @@ form {
     padding: 30px 40px;
     border-radius: 8px;
     gap: 30px;
-    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.336);
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
     animation: dark-to-light-background 0.3s ease-in-out;
-}
-
-/* Form Header */
-#form_header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-#form_header h1 {
-    font-size: 40px;
-    position: relative;
-}
-
-#form_header h1::before {
-    position: absolute;
-    content: '';
-    width: 40%;
-    height: 3px;
-    color: var(--color-dark-900);
-    bottom: 10px;
-    border-radius: 5px;
-}
-
-#form_header img {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 45px;
 }
 
 /* Inputs */
@@ -95,7 +68,7 @@ form {
     align-items: center;
     gap: 15px;
     padding: 3px;
-    border-bottom: 1px solid var(--color-blue-50);
+    border-bottom: 1px solid var(--color-dark-50);
     cursor: text;
 }
 
@@ -117,6 +90,13 @@ form {
     outline: none;
 }
 
+#erro{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	color: red;
+}
+
 .buttons {
 	display: flex;
     align-items: center;
@@ -125,15 +105,27 @@ form {
 
 /* Login Button */
 button {
-    background: var(--color-gradient);
+    background: black;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: var(--color-light-50);
-    font-size: 18px;
-    width: 250px;
+    font-size: 15px;
+    width: 100px;
     cursor: pointer;
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.01);
+}
+
+#cancelar_button {
+	text-decoration: none;
+    color: var(--color-dark-900);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#cancelar_button:hover {
+	color: var(--color-orage);
+    transform: scale(1.01);
 }

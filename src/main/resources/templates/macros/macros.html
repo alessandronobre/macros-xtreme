@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_macros.css}">
+
+	<title>Macros</title>
+</head>
+
+<body>
+	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+	<div class="container" th:if="${data == null}">
+		<h2>Você ainda não possui informações nutricionais para esse  Paciente</h2>
+	</div>
+	<div class="container" th:if="${data != null}">
+		<h2>Informações Nutricionais do Paciente</h2>
+		<div class="d-flex">
+			<div>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Informações Basicas</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="table-secondary" th:text="'IMC: ' + ' ' + ${imc}"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary"
+								th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${tmb} + ' kcal'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary"
+								th:text="'Gasto Calorico Total: ' + ' ' + ${gastoTotal} + ' kcal'">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="d-flex">
+			<div>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Macros - Treino</th>
+							<th scope="col">Macros - Descanso</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${proteinaTreino} + 'g'"></td>
+							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${proteinaDescanso} + 'g'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Carboidrato: ' + ' ' + ${carboTreino} + 'g'"></td>
+							<td class="table-secondary" th:text="'Carboidrato: ' + ' ' + ${carboDescanso} + 'g'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${gorduraTreino} + 'g'"></td>
+							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${gorduraDescanso} + 'g'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${fibraTreino} + 'g'"></td>
+							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${fibraDescanso} + 'g'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<table class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Metas de Calorias</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="table-secondary"
+								th:text="'Dias de Treino: ' + ' ' + ${caloriasTreino} + ' kcal'"></td>
+						</tr>
+						<tr>
+							<td class="table-secondary"
+								th:text="'Dias de Descanso: ' + ' ' + ${caloriasDescanso} + ' kcal'"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div>
+</body>
+
+</html>

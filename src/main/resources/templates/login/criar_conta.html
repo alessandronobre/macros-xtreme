@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/login/style_new_account.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+	<title>Macros Xtreme</title>
+</head>
+
+<body>
+	<main id="container">
+		<form method="POST" th:action="@{/api/criar}" th:object="${user}">
+			<!-- INPUTS -->
+			<div id="inputs">
+				<!-- NAME -->
+				<div class="input-box">
+					<label for="name">
+						Name
+						<div class="input-field">
+							<i class="fa-solid fa-user"></i>
+							<input type="text" id="nome" name="nome" required>
+						</div>
+					</label>
+				</div>
+
+				<!-- EMAIL -->
+				<div class="input-box">
+					<label for="email">
+						E-mail
+						<div class="input-field">
+							<i class="fa-solid fa-envelope"></i>
+							<input type="email" id="email" name="email" required>
+						</div>
+					</label>
+				</div>
+
+				<!-- PASSWORD -->
+				<div class="input-box">
+					<label for="password">
+						Password
+						<div class="input-field">
+							<i class="fa-solid fa-key"></i>
+							<input type="password" id="password" name="password" required>
+						</div>
+					</label>
+				</div>
+				<div th:if="${invalidEmail != null}" th:text="${invalidEmail}" id="erro" class="alert alert-danger"
+					role="alert"></div>
+			</div>
+
+			<!-- LOGIN BUTTON -->
+			<div class="buttons">
+				<button type="submit">
+					Criar
+				</button>
+			</div>
+			<a th:href="@{/api/login}" id="cancelar_button">
+				Cancelar
+			</a>
+		</form>
+	</main>
+
+</body>
+
+</html>

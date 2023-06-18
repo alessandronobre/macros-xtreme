@@ -9,13 +9,9 @@
     --color-dark-50: #797984;
     --color-dark-100: #312d37;
     --color-dark-900: #000;
-
-        /* Blue */
-    --color-blue-50: #36a9e1;
-    --color-blue-100: #195488;
-
-    /* Gradient */
-    --color-gradient: linear-gradient(90deg, var(--color-blue-50), var(--color-blue-100));
+    
+    --color-orage: #da580c;
+    --color-back: #EEE;
 }
 
 /* General */
@@ -32,7 +28,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--color-gradient);
+    background: var(--color-back);
 }
 
 form {
@@ -43,37 +39,8 @@ form {
     padding: 30px 40px;
     border-radius: 8px;
     gap: 30px;
-    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.336);
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
     animation: dark-to-light-background 0.3s ease-in-out;
-}
-
-/* Form Header */
-#form_header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-#form_header h1 {
-    font-size: 40px;
-    position: relative;
-}
-
-#form_header h1::before {
-    position: absolute;
-    content: '';
-    width: 40%;
-    height: 3px;
-    color: var(--color-dark-900);
-    bottom: 10px;
-    border-radius: 5px;
-}
-
-#form_header img {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 45px;
 }
 
 /* Inputs */
@@ -95,7 +62,7 @@ form {
     align-items: center;
     gap: 15px;
     padding: 3px;
-    border-bottom: 1px solid var(--color-blue-50);
+    border-bottom: 1px solid var(--color-dark-50);
     cursor: text;
 }
 
@@ -134,7 +101,8 @@ form {
 }
 
 #forgot_password a:hover {
-    color: var(--color-blue-50);
+   	color: var(--color-orage);
+    transform: scale(1.01);
 }
 
 #erro{
@@ -154,36 +122,17 @@ form {
 
 /* Login Button */
 #login_button {
-    background: var(--color-gradient);
+    background: black;
     padding: 5px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: var(--color-light-50);
-    font-size: 18px;
-    width: 250px;
+    font-size: 15px;
+    width: 100px;
     cursor: pointer;
 }
 
 #login_button:hover {
-    transform: scale(1.05);
-}
-
-#calculation_button {
-	text-decoration: none;
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-gradient);
-    color: var(--color-light-50);
-    width: 160px;
-    padding: 3px;
-    border-radius: 10px;
-    border: 2px solid black;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-#calculation_button:hover {
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 
 /* Social Media */
@@ -199,7 +148,8 @@ form {
 }
 
 #social_media i:hover {
-    transform: scale(1.2);
+	color: var(--color-orage);
+    transform: scale(1.1);
 }
 
 .text-footer {
