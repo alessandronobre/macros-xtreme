@@ -1,7 +1,5 @@
 package br.com.macrosxtreme.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.mapper.DataMapper;
 import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.service.MacrosService;
 import br.com.macrosxtreme.service.PacienteService;
@@ -27,6 +26,8 @@ public class MacrosController {
 	private final MacrosService macrosService;
 
 	private final PacienteService pacienteService;
+	
+	private final DataMapper dataMapper;
 
 	@GetMapping("/macros/form")
 	public ModelAndView macrosForm() {
@@ -115,10 +116,6 @@ public class MacrosController {
 	@PostMapping("/calcular")
 	public ModelAndView calcula(PacienteDTO dados) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/api/home");
-		
-		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		LocalDateTime dataHoraAtual = LocalDateTime.now();
-		String dataHoraFormatada = dataHoraAtual.format(formatador);
 
 		String imc = macrosService.imc(dados.getAltura(), dados.getPeso());
 		Integer tmb = macrosService.calcularTBM(dados.getGenero(), dados.getIdade(), dados.getAltura(),
@@ -136,7 +133,7 @@ public class MacrosController {
 
 		MacrosDTO historicoMacros = new MacrosDTO();
 		historicoMacros.setPaciente(pacienteService.buscaPaciente(dados.getNome()));
-		historicoMacros.setDataCalculo(dataHoraFormatada);
+		historicoMacros.setDataCalculo(dataMapper.formatador());
 		historicoMacros.setImc(imc);
 		historicoMacros.setTmb(tmb);
 		historicoMacros.setGastoCaloricoTotal(gastoCaloricoTotal);

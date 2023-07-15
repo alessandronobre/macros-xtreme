@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
+import br.com.macrosxtreme.exception.EmailException;
 import br.com.macrosxtreme.model.Usuario;
 import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.EmailService;
@@ -36,7 +37,8 @@ public class EmailController {
 			msEmailClient.enviar(email);
 			
 		} catch (Exception e) {
-			log.error("Erro: {}", e.getMessage());
+			log.error("Erro ao tentar se comunicar com o serviço de email");
+			throw new EmailException();
 		}
 
 	}

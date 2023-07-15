@@ -22,7 +22,7 @@ public class PacienteService {
 	}
 
 	public List<PacienteDTO> buscarPacientes() {
-		List<Paciente> pacientes = pacienteRepository.findAll();
+		List<Paciente> pacientes = pacienteRepository.findByAll();
 
 		List<PacienteDTO> listaPacientes = new ArrayList<>();
 		pacientes.forEach(paciente -> listaPacientes.add(new PacienteDTO(paciente)));

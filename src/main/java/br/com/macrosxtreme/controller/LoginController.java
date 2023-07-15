@@ -76,8 +76,8 @@ public class LoginController {
 
 			return modelAndView;
 		}
-		loginService.save(usuario);
-		return modelAndView;
+		loginService.salvar(usuario);
+		return login();
 	}
 
 	@GetMapping("/recupera/senha")
