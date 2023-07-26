@@ -3,6 +3,8 @@ package br.com.macrosxtreme.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+
 import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
@@ -20,13 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginService {
 
 	private final UsuarioRepository usuarioRepository;
-
 	private final MsEmailClient msEmailClient;
-	
 	private final DataMapper dataMapper;
 
 	public Boolean login(UsuarioDTO login) {
-
 		Usuario usuario = usuarioRepository.findByUser(login.getEmail());
 		Boolean validaPassword = SenhaUtils.passwordEncoder().matches(login.getPassword(), usuario.getPassword());
 		if (usuario != null) {
@@ -50,21 +49,23 @@ public class LoginService {
 
 	@Transactional
 	public void salvar(UsuarioDTO usuario) {
-		String SenhaEncoder = SenhaUtils.passwordEncoder().encode(usuario.getPassword());
-		usuario.setPassword(SenhaEncoder);
+		String senhaEncoder = SenhaUtils.passwordEncoder().encode(usuario.getPassword());
+		usuario.setPassword(senhaEncoder);
 		Usuario user = new Usuario(usuario);
 
 		EmailDTO email = new EmailDTO();
 		email.setUsuario(user);
 		email.setTituloEmail("Bem vindo " + usuario.getNome());
-		email.setConteudo("Conta criada com sucesso ! ;)");
+		email.setConteudo("Conta criada com sucesso.");
 		email.setDataEnvio(dataMapper.formatador());
 		email.setDestinatario(usuario.getEmail());
 
 		usuarioRepository.save(user);
 		
 		try {
-		    msEmailClient.enviar(email);
+			Gson gson = new Gson();
+			String json = gson.toJson(email);
+		    msEmailClient.enviar(json);
 		    
 		} catch (Exception e) {
 			log.error("Erro ao tentar se comunicar com o serviço de email");

@@ -15,9 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class PacienteService {
 
 	private final PacienteRepository pacienteRepository;
-
-	public Paciente buscaPaciente(String nome) {
-
+	
+	public Paciente buscaPacientePorNome(String nome) {
 		return pacienteRepository.findByNome(nome);
 	}
 

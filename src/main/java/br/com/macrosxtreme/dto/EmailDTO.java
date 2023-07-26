@@ -14,6 +14,7 @@ public class EmailDTO {
 	private String conteudo;
 	private String dataEnvio;
 	private String destinatario;
+	private Object  anexo;
 	
 	public EmailDTO(HistoricoEmail email) {
 		this.usuario = email.getUsuario();

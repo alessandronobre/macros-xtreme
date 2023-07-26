@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<title>MacrosXtreme</title>
+	<meta charset="utf-8">
+</head>
+
+<body>
+	<h1>Macros Xtreme</h1>
+
+	<h3 th:text="'Paciente: ' + ' ' + ${macros.paciente.nome}"></h3>
+	
+	<h3>Percentual de Gordura (IMC)</h3>
+	<p th:text="${macros.imc}"></p>
+
+
+	<h3>Gasto Energetico</h3>
+	<p th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${macros.tmb} + ' kcal'"></p>
+	<p th:text="'Gasto Calorico Total: ' + ' ' + ${macros.gastoCaloricoTotal} + ' kcal'"></p>
+
+	<h3>Metas de Calorias</h3>
+	<p th:text="'Dias de Treino: ' + ' ' + ${macros.caloriasTreino} + ' kcal'"></p>
+	<p th:text="'Dias de Descanso: ' + ' ' + ${macros.caloriasDescanso} + ' kcal'"></p>
+
+	<h2>Macros de Treino</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Proteina</th>
+				<th>Carboidrato</th>
+				<th>Gordura</th>
+				<th>Fibra</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${macros.proteinaTreino}"></td>
+				<td th:text="${macros.carboidratoTreino}"></td>
+				<td th:text="${macros.gorduraTreino}"></td>
+				<td th:text="${macros.fibraTreino}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h2>Macros de Descanso</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Proteina</th>
+				<th>Carboidrato</th>
+				<th>Gordura</th>
+				<th>Fibra</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${macros.proteinaDescanso}"></td>
+				<td th:text="${macros.carboidratoDescanso}"></td>
+				<td th:text="${macros.gorduraDescanso}"></td>
+				<td th:text="${macros.fibraDescanso}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+</html>

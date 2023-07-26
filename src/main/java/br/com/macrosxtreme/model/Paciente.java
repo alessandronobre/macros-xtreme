@@ -46,7 +46,7 @@ public class Paciente {
 	private String nivelAtividadeFisica;
 	
 	@OneToMany(mappedBy = "paciente")
-	private List<Macros> historicoMacros ;
+	private List<Macros> historicoMacros;
 	
 	public Paciente(PacienteDTO paciente) {
 		this.nome = paciente.getNome();

@@ -9,42 +9,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.macrosxtreme.client.MsEmailClient;
+import com.google.gson.Gson;
+
 import br.com.macrosxtreme.dto.EmailDTO;
-import br.com.macrosxtreme.exception.EmailException;
 import br.com.macrosxtreme.model.Usuario;
 import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/email")
 public class EmailController {
 
 	private final EmailService emailService;
-	
-	private final MsEmailClient msEmailClient;
-	
 	private final UsuarioRepository usuarioRepository;
 	
-	@PostMapping("/enviar")
-	public void enviar(@RequestBody EmailDTO email) {
-
-		try {
-			msEmailClient.enviar(email);
-			
-		} catch (Exception e) {
-			log.error("Erro ao tentar se comunicar com o serviço de email");
-			throw new EmailException();
-		}
-
-	}
-	
 	@PostMapping("/historico")
-	public void salvarHistoricoEmail(@RequestBody EmailDTO email) {
+	public void salvarHistoricoEmail(@RequestBody String json) {
+		Gson gson = new Gson();
+		EmailDTO email = gson.fromJson(json, EmailDTO.class);
+		
 		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
 		email.setUsuario(user);
 		emailService.salvarHistoricoEmail(email);
