@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.dto.PacienteDTO;
 import br.com.macrosxtreme.exception.EmailException;
-import br.com.macrosxtreme.mapper.DataMapper;
 import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.service.MacrosService;
 import br.com.macrosxtreme.service.PacienteService;
@@ -32,7 +31,6 @@ public class MacrosController {
 
 	private final MacrosService macrosService;
 	private final PacienteService pacienteService;
-	private final DataMapper dataMapper;
 
 	@GetMapping("/macros/form")
 	public ModelAndView macrosForm() {
@@ -110,38 +108,7 @@ public class MacrosController {
 	@PostMapping("/calcular")
 	public ModelAndView calcula(PacienteDTO dados) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/api/home");
-
-		String imc = macrosService.imc(dados.getAltura(), dados.getPeso());
-		Integer tmb = macrosService.calcularTBM(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso());
-		Integer gastoCaloricoTotal = macrosService.calcularGT(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso(), dados.getNivelAtividadeFisica());
-		Integer objetivoTreino = macrosService.objetivoTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		Integer objetivoDescanso = macrosService.objetivoDescanso(dados.getGenero(), dados.getIdade(),
-				dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		List<Integer> macrosTreino = macrosService.macrosTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		List<Integer> macrosDescanso = macrosService.macrosDescanso(dados.getGenero(), dados.getIdade(),
-				dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-
-		MacrosDTO historicoMacros = new MacrosDTO();
-		historicoMacros.setPaciente(pacienteService.buscaPacientePorNome(dados.getNome()));
-		historicoMacros.setDataCalculo(dataMapper.formatador());
-		historicoMacros.setImc(imc);
-		historicoMacros.setTmb(tmb);
-		historicoMacros.setGastoCaloricoTotal(gastoCaloricoTotal);
-		historicoMacros.setCaloriasTreino(objetivoTreino);
-		historicoMacros.setProteinaTreino(macrosTreino.get(0));
-		historicoMacros.setCarboidratoTreino(macrosTreino.get(1));
-		historicoMacros.setGorduraTreino(macrosTreino.get(2));
-		historicoMacros.setFibraTreino(macrosTreino.get(3));
-		historicoMacros.setCaloriasDescanso(objetivoDescanso);
-		historicoMacros.setProteinaDescanso(macrosDescanso.get(0));
-		historicoMacros.setCarboidratoDescanso(macrosDescanso.get(1));
-		historicoMacros.setGorduraDescanso(macrosDescanso.get(2));
-		historicoMacros.setFibraDescanso(macrosDescanso.get(3));
-		macrosService.salvarHistorico(historicoMacros);
+		macrosService.salvarHistorico(dados);
 
 		return modelAndView;
 
