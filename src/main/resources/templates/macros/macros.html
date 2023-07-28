@@ -12,11 +12,12 @@
 
 <body>
 	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
-	<div class="container" th:if="${data == null}">
-		<h2>Você ainda não possui informações nutricionais para esse  Paciente</h2>
+	<div class="container" th:if="${macros.dataCalculo == null}">
+		<h2>Você ainda não possui informações nutricionais para esse Paciente</h2>
 	</div>
-	<div class="container" th:if="${data != null}">
+	<div class="container" th:if="${macros.dataCalculo != null}">
 		<h2>Informações Nutricionais do Paciente</h2>
+
 		<div class="d-flex">
 			<div>
 				<table class="table table-hover">
@@ -27,15 +28,15 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="table-secondary" th:text="'IMC: ' + ' ' + ${imc}"></td>
+							<td class="table-secondary" th:text="'IMC: ' + ' ' + ${macros.imc}"></td>
 						</tr>
 						<tr>
 							<td class="table-secondary"
-								th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${tmb} + ' kcal'"></td>
+								th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${macros.tmb} + ' kcal'"></td>
 						</tr>
 						<tr>
 							<td class="table-secondary"
-								th:text="'Gasto Calorico Total: ' + ' ' + ${gastoTotal} + ' kcal'">
+								th:text="'Gasto Calorico Total: ' + ' ' + ${macros.gastoCaloricoTotal} + ' kcal'">
 							</td>
 						</tr>
 					</tbody>
@@ -53,20 +54,26 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${proteinaTreino} + 'g'"></td>
-							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${proteinaDescanso} + 'g'"></td>
+							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${macros.proteinaTreino} + 'g'">
+							</td>
+							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${macros.proteinaDescanso} + 'g'">
+							</td>
 						</tr>
 						<tr>
-							<td class="table-secondary" th:text="'Carboidrato: ' + ' ' + ${carboTreino} + 'g'"></td>
-							<td class="table-secondary" th:text="'Carboidrato: ' + ' ' + ${carboDescanso} + 'g'"></td>
+							<td class="table-secondary"
+								th:text="'Carboidrato: ' + ' ' + ${macros.carboidratoTreino} + 'g'"></td>
+							<td class="table-secondary"
+								th:text="'Carboidrato: ' + ' ' + ${macros.carboidratoDescanso} + 'g'"></td>
 						</tr>
 						<tr>
-							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${gorduraTreino} + 'g'"></td>
-							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${gorduraDescanso} + 'g'"></td>
+							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${macros.gorduraTreino} + 'g'">
+							</td>
+							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${macros.gorduraDescanso} + 'g'">
+							</td>
 						</tr>
 						<tr>
-							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${fibraTreino} + 'g'"></td>
-							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${fibraDescanso} + 'g'"></td>
+							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${macros.fibraTreino} + 'g'"></td>
+							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${macros.fibraDescanso} + 'g'"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -81,16 +88,32 @@
 					<tbody>
 						<tr>
 							<td class="table-secondary"
-								th:text="'Dias de Treino: ' + ' ' + ${caloriasTreino} + ' kcal'"></td>
+								th:text="'Dias de Treino: ' + ' ' + ${macros.caloriasTreino} + ' kcal'"></td>
 						</tr>
 						<tr>
 							<td class="table-secondary"
-								th:text="'Dias de Descanso: ' + ' ' + ${caloriasDescanso} + ' kcal'"></td>
+								th:text="'Dias de Descanso: ' + ' ' + ${macros.caloriasDescanso} + ' kcal'"></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+		<!-- ALERTAS -->
+		<div class="alert alert-success" role="alert" th:if="${status != null && status == 200}">
+			<a th:text="${msg}"></a>
+		</div>
+		<div class="alert alert-danger" role="alert" th:if="${status != null && status == 503}">
+			<a th:text="${msg}"></a>
+		</div>
+		<div class="alert alert-danger" role="alert" th:if="${status != null && status == 500}">
+			<a th:text="${msg}"></a>
+		</div>
+
+		<a type="button" class="btn btn-outline-secondary"
+			th:href="@{/api/download/macros(pacienteId=${macros.paciente.id})}">Download</a>
+		<a type="button" class="btn btn-outline-secondary"
+			th:href="@{/api/enviar/macros(pacienteId=${macros.paciente.id})}">Enviar por
+			email</a>
 		<div>
 </body>
 

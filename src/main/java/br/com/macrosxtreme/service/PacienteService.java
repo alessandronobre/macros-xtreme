@@ -15,14 +15,12 @@ import lombok.RequiredArgsConstructor;
 public class PacienteService {
 
 	private final PacienteRepository pacienteRepository;
-
-	public Paciente buscaPaciente(String nome) {
-
+	public Paciente buscaPacientePorNome(String nome) {
 		return pacienteRepository.findByNome(nome);
 	}
 
 	public List<PacienteDTO> buscarPacientes() {
-		List<Paciente> pacientes = pacienteRepository.findAll();
+		List<Paciente> pacientes = pacienteRepository.findByAll();
 
 		List<PacienteDTO> listaPacientes = new ArrayList<>();
 		pacientes.forEach(paciente -> listaPacientes.add(new PacienteDTO(paciente)));
@@ -35,4 +33,7 @@ public class PacienteService {
 		pacienteRepository.save(paciente);
 	}
 
+	public String buscarEmailPaciente(Long pacienteId) {
+		return pacienteRepository.buscarEmailPaciente(pacienteId);
+	}
 }

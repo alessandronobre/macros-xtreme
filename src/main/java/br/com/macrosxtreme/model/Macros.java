@@ -72,6 +72,7 @@ public class Macros {
 	private Paciente paciente ;
 	
 	public Macros(MacrosDTO historico) {
+		this.id = historico.getId();
 		this.paciente = historico.getPaciente();
 		this.dataCalculo = historico.getDataCalculo();
 		this.imc = historico.getImc();

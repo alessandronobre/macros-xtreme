@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MacrosDTO {
-
-	private Paciente paciente;
+	
+	private Long id;
+	private transient Paciente paciente;
+	private String nome;
 	private String dataCalculo;
 	private String imc;
 	private Integer tmb;
@@ -26,6 +28,7 @@ public class MacrosDTO {
 	private Integer fibraDescanso;
 	
 	public MacrosDTO(Macros historico) {
+		this.id = historico.getId();
 		this.paciente = historico.getPaciente();
 		this.dataCalculo = historico.getDataCalculo();
 		this.imc = historico.getImc();

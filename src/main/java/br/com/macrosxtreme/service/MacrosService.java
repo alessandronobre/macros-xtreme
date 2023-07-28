@@ -1,12 +1,25 @@
 package br.com.macrosxtreme.service;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.macrosxtreme.dto.UsuarioDTO;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import com.itextpdf.html2pdf.HtmlConverter;
+
+import br.com.macrosxtreme.dto.EmailDTO;
 import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.exception.EmailException;
+import br.com.macrosxtreme.mapper.DataMapper;
 import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.repository.MacrosRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +29,71 @@ import lombok.RequiredArgsConstructor;
 public class MacrosService {
 
 	private final MacrosRepository macrosRepository;
+	private final TemplateEngine templateEngine;
+	private final EmailService emailService;
+	private final DataMapper dataMapper;
+	private final PacienteService pacienteService;
+	
+	public void enviarMacrosEmail(Long pacienteId) {
+		EmailDTO email = new EmailDTO();
+		email.setTituloEmail("Bem vindo");
+		email.setDestinatario(pacienteService.buscarEmailPaciente(pacienteId));
+		email.setDataEnvio(dataMapper.formatador());
+		email.setConteudo("Segue em anexo seus macros");
+		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(pacienteId));
+		macros.setNome(macros.getPaciente().getNome());
+		email.setAnexo(macros);
+		
+		try {
+			emailService.enviarEmail(email);
+			
+		} catch (Exception e) {
+			throw new EmailException();
+		}
+		
+	}
+	
+	public ResponseEntity<?> downloadPDF(Long id) {
+		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(id));
+		
+		Context context = new Context();
+		context.setVariable("macros", macros);
 
-	public void salvarHistorico(MacrosDTO historicoMacros) {
-		Macros historico = new Macros(historicoMacros);
+		String html = templateEngine.process("macros/macrospdf.html", context);
+		
+		ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
+		HtmlConverter.convertToPdf(html, pdfStream);
+		return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Macros.pdf")
+					.body(pdfStream.toByteArray());
+	}
+
+	public void salvarHistorico(PacienteDTO dados) {
+		
+		String imc = imc(dados.getAltura(), dados.getPeso());
+		Integer tmb = calcularTBM(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso());
+		Integer gastoCaloricoTotal = calcularGT(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getNivelAtividadeFisica());
+		Integer objetivoTreino = objetivoTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+		Integer objetivoDescanso = objetivoDescanso(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+		List<Integer> macrosTreino = macrosTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+		List<Integer> macrosDescanso = macrosDescanso(dados.getGenero(), dados.getIdade(),dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+
+		Macros historico = new Macros();
+		historico.setPaciente(pacienteService.buscaPacientePorNome(dados.getNome()));
+		historico.setDataCalculo(dataMapper.formatador());
+		historico.setImc(imc);
+		historico.setTmb(tmb);
+		historico.setGastoCaloricoTotal(gastoCaloricoTotal);
+		historico.setCaloriasTreino(objetivoTreino);
+		historico.setProteinaTreino(macrosTreino.get(0));
+		historico.setCarboidratoTreino(macrosTreino.get(1));
+		historico.setGorduraTreino(macrosTreino.get(2));
+		historico.setFibraTreino(macrosTreino.get(3));
+		historico.setCaloriasDescanso(objetivoDescanso);
+		historico.setProteinaDescanso(macrosDescanso.get(0));
+		historico.setCarboidratoDescanso(macrosDescanso.get(1));
+		historico.setGorduraDescanso(macrosDescanso.get(2));
+		historico.setFibraDescanso(macrosDescanso.get(3));
 		
 		macrosRepository.save(historico);
 	}
@@ -47,7 +122,7 @@ public class MacrosService {
 		return null;
 	}
 
-	public Integer calcularTBM(String genero, int idade, int altura, int peso) {
+	private Integer calcularTBM(String genero, int idade, int altura, int peso) {
 		int tmb = 0;
 		if (genero.equals("Masculino")) {
 			double i = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
@@ -62,7 +137,7 @@ public class MacrosService {
 		return tmb;
 	}
 
-	public Integer calcularGT(String genero, int idade, int altura, int peso, String nivelAtividadeFisica) {
+	private Integer calcularGT(String genero, int idade, int altura, int peso, String nivelAtividadeFisica) {
 		double tmb = calcularTBM(genero, idade, altura, peso);
 		double i = 0;
 
@@ -124,7 +199,7 @@ public class MacrosService {
 		return gastoTotal;
 	}
 
-	public Integer objetivoTreino(String genero, int idade, int altura, int peso, String objetivo,
+	private Integer objetivoTreino(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		double i = 0, gastoTotal;
 		gastoTotal = calcularGT(genero, idade, altura, peso, nivelAtividadeFisica);
@@ -141,7 +216,7 @@ public class MacrosService {
 
 	}
 
-	public Integer objetivoDescanso(String genero, int idade, int altura, int peso, String objetivo,
+	private Integer objetivoDescanso(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		int objetivoTreino = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
 
@@ -152,7 +227,7 @@ public class MacrosService {
 
 	}
 
-	public List<Integer> macrosTreino(String genero, int idade, int altura, int peso, String objetivo,
+	private List<Integer> macrosTreino(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		int objtivo = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
 
@@ -187,7 +262,7 @@ public class MacrosService {
 		return macros;
 	}
 
-	public List<Integer> macrosDescanso(String genero, int idade, int altura, int peso, String objetivo,
+	private List<Integer> macrosDescanso(String genero, int idade, int altura, int peso, String objetivo,
 			String nivelAtividadeFisica) {
 		List<Integer> macrosTreino = macrosTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
 
@@ -207,7 +282,7 @@ public class MacrosService {
 		return macros;
 	}
 
-	public String imc(int altura, int peso) {
+	private String imc(int altura, int peso) {
 		DecimalFormat conversor = new DecimalFormat("#,##");
 
 		String formatAltura = conversor.format(altura);

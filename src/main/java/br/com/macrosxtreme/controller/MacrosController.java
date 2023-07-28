@@ -1,9 +1,12 @@
 package br.com.macrosxtreme.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.io.IOException;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,18 +17,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.exception.EmailException;
 import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.service.MacrosService;
 import br.com.macrosxtreme.service.PacienteService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class MacrosController {
 
 	private final MacrosService macrosService;
-
 	private final PacienteService pacienteService;
 
 	@GetMapping("/macros/form")
@@ -41,34 +46,16 @@ public class MacrosController {
 
 	}
 
-	@GetMapping("/macros/{id}")
-	public ModelAndView macros(@PathVariable Long id) {
+	@GetMapping("/macros/{pacienteId}")
+	public ModelAndView macros(@PathVariable Long pacienteId, HttpStatus status, String msg) {
 		ModelAndView modelAndView = new ModelAndView("macros/macros");
-
-		MacrosDTO macros = macrosService.findByMacros(id);
-		if (macros != null) {
-			modelAndView.addObject("data", macros.getDataCalculo());
-			modelAndView.addObject("imc", macros.getImc());
-			modelAndView.addObject("imc", macros.getImc());
-			modelAndView.addObject("tmb", macros.getTmb());
-			modelAndView.addObject("gastoTotal", macros.getGastoCaloricoTotal());
-			modelAndView.addObject("caloriasTreino", macros.getCaloriasTreino());
-			modelAndView.addObject("caloriasDescanso", macros.getCaloriasDescanso());
-			modelAndView.addObject("proteinaTreino", macros.getProteinaTreino());
-			modelAndView.addObject("carboTreino", macros.getCarboidratoTreino());
-			modelAndView.addObject("gorduraTreino", macros.getGorduraTreino());
-			modelAndView.addObject("fibraTreino", macros.getFibraTreino());
-			modelAndView.addObject("proteinaDescanso", macros.getProteinaDescanso());
-			modelAndView.addObject("carboDescanso", macros.getCarboidratoDescanso());
-			modelAndView.addObject("gorduraDescanso", macros.getGorduraDescanso());
-			modelAndView.addObject("fibraDescanso", macros.getFibraDescanso());
-
-			return modelAndView;
-
+		MacrosDTO macros = macrosService.findByMacros(pacienteId);
+		modelAndView.addObject("macros", macros);
+		if (status != null) {
+			modelAndView.addObject("status", status.value());
+			modelAndView.addObject("msg", msg);
 		}
-
 		return modelAndView;
-
 	}
 
 	@GetMapping("/historico/form")
@@ -87,7 +74,7 @@ public class MacrosController {
 	@GetMapping("/historico/macros")
 	public ModelAndView findByHistoricoMacros(@RequestParam("nome") String nome) {
 		ModelAndView modelAndView = new ModelAndView("macros/historico_macros");
-		Paciente paciente = pacienteService.buscaPaciente(nome);
+		Paciente paciente = pacienteService.buscaPacientePorNome(nome);
 
 		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(paciente.getId());
 
@@ -115,46 +102,33 @@ public class MacrosController {
 	@PostMapping("/calcular")
 	public ModelAndView calcula(PacienteDTO dados) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/api/home");
-		
-		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		LocalDateTime dataHoraAtual = LocalDateTime.now();
-		String dataHoraFormatada = dataHoraAtual.format(formatador);
-
-		String imc = macrosService.imc(dados.getAltura(), dados.getPeso());
-		Integer tmb = macrosService.calcularTBM(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso());
-		Integer gastoCaloricoTotal = macrosService.calcularGT(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso(), dados.getNivelAtividadeFisica());
-		Integer objetivoTreino = macrosService.objetivoTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		Integer objetivoDescanso = macrosService.objetivoDescanso(dados.getGenero(), dados.getIdade(),
-				dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		List<Integer> macrosTreino = macrosService.macrosTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(),
-				dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		List<Integer> macrosDescanso = macrosService.macrosDescanso(dados.getGenero(), dados.getIdade(),
-				dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-
-		MacrosDTO historicoMacros = new MacrosDTO();
-		historicoMacros.setPaciente(pacienteService.buscaPaciente(dados.getNome()));
-		historicoMacros.setDataCalculo(dataHoraFormatada);
-		historicoMacros.setImc(imc);
-		historicoMacros.setTmb(tmb);
-		historicoMacros.setGastoCaloricoTotal(gastoCaloricoTotal);
-		historicoMacros.setCaloriasTreino(objetivoTreino);
-		historicoMacros.setProteinaTreino(macrosTreino.get(0));
-		historicoMacros.setCarboidratoTreino(macrosTreino.get(1));
-		historicoMacros.setGorduraTreino(macrosTreino.get(2));
-		historicoMacros.setFibraTreino(macrosTreino.get(3));
-		historicoMacros.setCaloriasDescanso(objetivoDescanso);
-		historicoMacros.setProteinaDescanso(macrosDescanso.get(0));
-		historicoMacros.setCarboidratoDescanso(macrosDescanso.get(1));
-		historicoMacros.setGorduraDescanso(macrosDescanso.get(2));
-		historicoMacros.setFibraDescanso(macrosDescanso.get(3));
-
-		macrosService.salvarHistorico(historicoMacros);
+		macrosService.salvarHistorico(dados);
 
 		return modelAndView;
 
+	}
+	
+	@GetMapping(value = "/download/macros", produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<?> downloadPDF(@RequestParam("pacienteId") Long id) throws IOException {
+		return macrosService.downloadPDF(id);
+		
+	}
+	
+	@GetMapping("/enviar/macros")
+	public ModelAndView enviarMacrosEmail(@RequestParam("pacienteId") Long pacienteId) {
+		try {
+			macrosService.enviarMacrosEmail(pacienteId);
+			return macros(pacienteId, HttpStatus.OK, "Envio realizado com sucesso");
+			
+		} catch (EmailException e) {
+			log.error(e.getMessage());
+			return macros(pacienteId, HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return macros(pacienteId, HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado");
+		}
+		
 	}
 
 }
