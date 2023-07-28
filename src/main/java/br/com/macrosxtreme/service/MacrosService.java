@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.macrosxtreme.dto.UsuarioDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,13 +34,13 @@ public class MacrosService {
 	private final DataMapper dataMapper;
 	private final PacienteService pacienteService;
 	
-	public void enviarMacrosEmail(Long id) {
+	public void enviarMacrosEmail(Long pacienteId) {
 		EmailDTO email = new EmailDTO();
 		email.setTituloEmail("Bem vindo");
-		email.setDestinatario("alessandronobre.ti@gmail.com");
+		email.setDestinatario(pacienteService.buscarEmailPaciente(pacienteId));
 		email.setDataEnvio(dataMapper.formatador());
 		email.setConteudo("Segue em anexo seus macros");
-		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(id));
+		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(pacienteId));
 		macros.setNome(macros.getPaciente().getNome());
 		email.setAnexo(macros);
 		

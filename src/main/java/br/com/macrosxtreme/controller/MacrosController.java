@@ -3,6 +3,7 @@ package br.com.macrosxtreme.controller;
 import java.io.IOException;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,23 +46,16 @@ public class MacrosController {
 
 	}
 
-	@GetMapping("/macros/{id}")
-	public ModelAndView macros(@PathVariable Long id, HttpStatus status, String msg) {
+	@GetMapping("/macros/{pacienteId}")
+	public ModelAndView macros(@PathVariable Long pacienteId, HttpStatus status, String msg) {
 		ModelAndView modelAndView = new ModelAndView("macros/macros");
-		MacrosDTO macros = macrosService.findByMacros(id);
-		
-		if (macros != null) {
-			modelAndView.addObject("macros", macros);
-			if (status != null) {
-				modelAndView.addObject("status", status.value());
-				modelAndView.addObject("msg", msg);
-
-			}
-			return modelAndView;
-
+		MacrosDTO macros = macrosService.findByMacros(pacienteId);
+		modelAndView.addObject("macros", macros);
+		if (status != null) {
+			modelAndView.addObject("status", status.value());
+			modelAndView.addObject("msg", msg);
 		}
 		return modelAndView;
-
 	}
 
 	@GetMapping("/historico/form")
@@ -121,18 +115,18 @@ public class MacrosController {
 	}
 	
 	@GetMapping("/enviar/macros")
-	public ModelAndView enviarMacrosEmail(@RequestParam("pacienteId") Long pacienteId, @RequestParam("macrosId") Long macrosId) {
+	public ModelAndView enviarMacrosEmail(@RequestParam("pacienteId") Long pacienteId) {
 		try {
 			macrosService.enviarMacrosEmail(pacienteId);
-			return macros(macrosId, HttpStatus.OK, "Envio realizado com sucesso");
+			return macros(pacienteId, HttpStatus.OK, "Envio realizado com sucesso");
 			
 		} catch (EmailException e) {
 			log.error(e.getMessage());
-			return macros(macrosId, HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+			return macros(pacienteId, HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
 			
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return macros(macrosId, HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado");
+			return macros(pacienteId, HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado");
 		}
 		
 	}

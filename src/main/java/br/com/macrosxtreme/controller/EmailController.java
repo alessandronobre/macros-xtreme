@@ -2,6 +2,8 @@ package br.com.macrosxtreme.controller;
 
 import java.util.List;
 
+import br.com.macrosxtreme.dto.UsuarioDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,18 +32,17 @@ public class EmailController {
 		Gson gson = new Gson();
 		EmailDTO email = gson.fromJson(json, EmailDTO.class);
 		
-		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
-		email.setUsuario(user);
+		Usuario usuario = usuarioRepository.findByUser("teste@gmail.com");
+		email.setUsuario(usuario);
 		emailService.salvarHistoricoEmail(email);
-
 	}
 	
 	@GetMapping("/historico")
-	public ModelAndView findByHistoricoEmail() {
+	public ModelAndView findByHistoricoEmail(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("email/historico_email");
-
-		Usuario user = usuarioRepository.findByUser("teste@gmail.com");
-		List<EmailDTO> lista = emailService.findEmailUsuario(user.getId());
+		UsuarioDTO usuarioLogado = (UsuarioDTO) request.getSession().getAttribute("user");
+		List<EmailDTO> lista = emailService.findEmailUsuario(
+				usuarioRepository.findByUser(usuarioLogado.getEmail()).getId());
 
 		if(lista != null) {
 			modelAndView.addObject("lista", lista);
@@ -49,7 +50,5 @@ public class EmailController {
 			return modelAndView;
 		}
 		return modelAndView;
-
 	}
-	
 }

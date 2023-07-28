@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 public class PacienteService {
 
 	private final PacienteRepository pacienteRepository;
-	
 	public Paciente buscaPacientePorNome(String nome) {
 		return pacienteRepository.findByNome(nome);
 	}
@@ -34,4 +33,7 @@ public class PacienteService {
 		pacienteRepository.save(paciente);
 	}
 
+	public String buscarEmailPaciente(Long pacienteId) {
+		return pacienteRepository.buscarEmailPaciente(pacienteId);
+	}
 }

@@ -26,6 +26,9 @@ public class Paciente {
 
 	@Column(nullable = false)
 	private String nome;
+
+	@Column(nullable = false, unique = true)
+	private String email;
 	
 	@Column(nullable = false)
 	private String genero;
@@ -50,6 +53,7 @@ public class Paciente {
 	
 	public Paciente(PacienteDTO paciente) {
 		this.nome = paciente.getNome();
+		this.email = paciente.getEmail();
 		this.genero = paciente.getGenero();
 		this.idade = paciente.getIdade();
 		this.altura = paciente.getAltura();

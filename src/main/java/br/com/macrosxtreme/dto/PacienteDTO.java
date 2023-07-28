@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 public class PacienteDTO {
 	
 	private String nome;
+	private String email;
 	private String genero;
 	private int idade;
 	private int altura;
@@ -18,6 +19,7 @@ public class PacienteDTO {
 	
 	public PacienteDTO(Paciente paciente) {
 		this.nome = paciente.getNome();
+		this.email = paciente.getEmail();
 		this.genero = paciente.getGenero();
 		this.idade = paciente.getIdade();
 		this.altura = paciente.getAltura();
