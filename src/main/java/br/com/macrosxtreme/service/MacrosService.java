@@ -33,7 +33,7 @@ public class MacrosService {
 	private final EmailService emailService;
 	private final DataMapper dataMapper;
 	private final PacienteService pacienteService;
-	
+
 	public void enviarMacrosEmail(Long pacienteId) {
 		EmailDTO email = new EmailDTO();
 		email.setTituloEmail("Bem vindo");
@@ -43,14 +43,9 @@ public class MacrosService {
 		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(pacienteId));
 		macros.setNome(macros.getPaciente().getNome());
 		email.setAnexo(macros);
-		
-		try {
-			emailService.enviarEmail(email);
-			
-		} catch (Exception e) {
-			throw new EmailException();
-		}
-		
+
+		emailService.enviarEmail(email);
+
 	}
 	
 	public ResponseEntity<?> downloadPDF(Long id) {
@@ -118,7 +113,6 @@ public class MacrosService {
 
 			return historico;
 		}
-
 		return null;
 	}
 
@@ -161,11 +155,7 @@ public class MacrosService {
 				break;
 			case "nivel5": {
 				i = tmb * 1.9;
-			}
-				break;
-			default:
-				throw new IllegalArgumentException("Valor não existe");
-			}
+			}}
 
 		} else if (genero.equals("Feminino")) {
 
@@ -189,9 +179,6 @@ public class MacrosService {
 			case "nivel5": {
 				i = tmb * 1.9;
 			}
-				break;
-			default:
-				throw new IllegalArgumentException("Valor não existe ");
 			}
 		}
 

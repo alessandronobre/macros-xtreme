@@ -27,15 +27,13 @@ public class LoginService {
 
 	public Boolean login(UsuarioDTO login) {
 		Usuario usuario = usuarioRepository.findByUser(login.getEmail());
-		Boolean validaPassword = SenhaUtils.passwordEncoder().matches(login.getPassword(), usuario.getPassword());
 		if (usuario != null) {
+			Boolean validaPassword = SenhaUtils.passwordEncoder().matches(login.getPassword(), usuario.getPassword());
 			if (validaPassword) {
 				return true;
 			}
-
 		}
 		return false;
-
 	}
 
 	public Boolean validaEmail(String email) {
@@ -72,5 +70,4 @@ public class LoginService {
 			throw new EmailException();
 		} 
 	}
-
 }

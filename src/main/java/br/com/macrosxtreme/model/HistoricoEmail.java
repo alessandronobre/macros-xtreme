@@ -42,6 +42,7 @@ public class HistoricoEmail {
 	private Usuario usuario ;
 	
 	public HistoricoEmail(EmailDTO email) {
+		this.id = email.getId();
 		this.usuario = email.getUsuario();
 		this.tituloEmail = email.getTituloEmail();
 		this.conteudo = email.getConteudo();

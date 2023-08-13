@@ -10,6 +10,10 @@ public class EmailException extends RuntimeException {
 
 	}
 
+	public EmailException(String msg, String error) {
+
+	}
+
 	public String getMessage() {
 		return ERRO_CONEXAO;
 
