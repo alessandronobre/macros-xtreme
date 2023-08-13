@@ -1,12 +1,11 @@
 package br.com.macrosxtreme.repository;
 
-import java.util.List;
-
+import br.com.macrosxtreme.model.Macros;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import br.com.macrosxtreme.model.Macros;
+import java.util.List;
 
 
 @Repository

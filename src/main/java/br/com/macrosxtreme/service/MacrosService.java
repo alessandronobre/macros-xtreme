@@ -1,28 +1,23 @@
 package br.com.macrosxtreme.service;
 
-import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.macrosxtreme.dto.UsuarioDTO;
-import jakarta.servlet.http.HttpServletRequest;
+import br.com.macrosxtreme.dto.EmailDTO;
+import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.mapper.DataMapper;
+import br.com.macrosxtreme.model.Macros;
+import br.com.macrosxtreme.repository.MacrosRepository;
+import com.itextpdf.html2pdf.HtmlConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.itextpdf.html2pdf.HtmlConverter;
-
-import br.com.macrosxtreme.dto.EmailDTO;
-import br.com.macrosxtreme.dto.MacrosDTO;
-import br.com.macrosxtreme.dto.PacienteDTO;
-import br.com.macrosxtreme.exception.EmailException;
-import br.com.macrosxtreme.mapper.DataMapper;
-import br.com.macrosxtreme.model.Macros;
-import br.com.macrosxtreme.repository.MacrosRepository;
-import lombok.RequiredArgsConstructor;
+import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service

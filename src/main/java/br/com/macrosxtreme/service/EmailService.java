@@ -1,18 +1,16 @@
 package br.com.macrosxtreme.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.macrosxtreme.exception.EmailException;
-import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
-
 import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
+import br.com.macrosxtreme.exception.EmailException;
 import br.com.macrosxtreme.model.HistoricoEmail;
 import br.com.macrosxtreme.repository.EmailRepository;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service

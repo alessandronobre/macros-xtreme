@@ -1,14 +1,13 @@
 package br.com.macrosxtreme.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import br.com.macrosxtreme.dto.PacienteDTO;
 import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.repository.PacienteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service

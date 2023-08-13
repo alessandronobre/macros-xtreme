@@ -1,23 +1,17 @@
 package br.com.macrosxtreme.controller;
 
-import java.util.List;
-
-import br.com.macrosxtreme.dto.UsuarioDTO;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.Gson;
-
 import br.com.macrosxtreme.dto.EmailDTO;
+import br.com.macrosxtreme.dto.UsuarioDTO;
 import br.com.macrosxtreme.model.Usuario;
 import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.EmailService;
+import com.google.gson.Gson;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
