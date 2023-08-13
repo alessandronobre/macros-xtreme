@@ -1,10 +1,5 @@
 package br.com.macrosxtreme.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.google.gson.Gson;
-
 import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
 import br.com.macrosxtreme.dto.UsuarioDTO;
@@ -13,8 +8,11 @@ import br.com.macrosxtreme.mapper.DataMapper;
 import br.com.macrosxtreme.model.Usuario;
 import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.utils.SenhaUtils;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,15 +25,13 @@ public class LoginService {
 
 	public Boolean login(UsuarioDTO login) {
 		Usuario usuario = usuarioRepository.findByUser(login.getEmail());
-		Boolean validaPassword = SenhaUtils.passwordEncoder().matches(login.getPassword(), usuario.getPassword());
 		if (usuario != null) {
+			Boolean validaPassword = SenhaUtils.passwordEncoder().matches(login.getPassword(), usuario.getPassword());
 			if (validaPassword) {
 				return true;
 			}
-
 		}
 		return false;
-
 	}
 
 	public Boolean validaEmail(String email) {
@@ -72,5 +68,4 @@ public class LoginService {
 			throw new EmailException();
 		} 
 	}
-
 }

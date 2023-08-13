@@ -1,20 +1,5 @@
 package br.com.macrosxtreme.controller;
 
-import java.io.IOException;
-import java.util.List;
-
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
 import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.dto.PacienteDTO;
 import br.com.macrosxtreme.exception.EmailException;
@@ -23,6 +8,14 @@ import br.com.macrosxtreme.service.MacrosService;
 import br.com.macrosxtreme.service.PacienteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor

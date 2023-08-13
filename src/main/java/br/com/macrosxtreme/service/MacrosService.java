@@ -1,28 +1,23 @@
 package br.com.macrosxtreme.service;
 
-import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import br.com.macrosxtreme.dto.UsuarioDTO;
-import jakarta.servlet.http.HttpServletRequest;
+import br.com.macrosxtreme.dto.EmailDTO;
+import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.mapper.DataMapper;
+import br.com.macrosxtreme.model.Macros;
+import br.com.macrosxtreme.repository.MacrosRepository;
+import com.itextpdf.html2pdf.HtmlConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.itextpdf.html2pdf.HtmlConverter;
-
-import br.com.macrosxtreme.dto.EmailDTO;
-import br.com.macrosxtreme.dto.MacrosDTO;
-import br.com.macrosxtreme.dto.PacienteDTO;
-import br.com.macrosxtreme.exception.EmailException;
-import br.com.macrosxtreme.mapper.DataMapper;
-import br.com.macrosxtreme.model.Macros;
-import br.com.macrosxtreme.repository.MacrosRepository;
-import lombok.RequiredArgsConstructor;
+import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +28,7 @@ public class MacrosService {
 	private final EmailService emailService;
 	private final DataMapper dataMapper;
 	private final PacienteService pacienteService;
-	
+
 	public void enviarMacrosEmail(Long pacienteId) {
 		EmailDTO email = new EmailDTO();
 		email.setTituloEmail("Bem vindo");
@@ -43,14 +38,9 @@ public class MacrosService {
 		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(pacienteId));
 		macros.setNome(macros.getPaciente().getNome());
 		email.setAnexo(macros);
-		
-		try {
-			emailService.enviarEmail(email);
-			
-		} catch (Exception e) {
-			throw new EmailException();
-		}
-		
+
+		emailService.enviarEmail(email);
+
 	}
 	
 	public ResponseEntity<?> downloadPDF(Long id) {
@@ -118,7 +108,6 @@ public class MacrosService {
 
 			return historico;
 		}
-
 		return null;
 	}
 
@@ -161,11 +150,7 @@ public class MacrosService {
 				break;
 			case "nivel5": {
 				i = tmb * 1.9;
-			}
-				break;
-			default:
-				throw new IllegalArgumentException("Valor não existe");
-			}
+			}}
 
 		} else if (genero.equals("Feminino")) {
 
@@ -189,9 +174,6 @@ public class MacrosService {
 			case "nivel5": {
 				i = tmb * 1.9;
 			}
-				break;
-			default:
-				throw new IllegalArgumentException("Valor não existe ");
 			}
 		}
 
