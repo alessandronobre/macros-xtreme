@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/usuario/style_recupera_senha.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+		integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+	<title>Macros Xtreme</title>
+</head>
+
+<body>
+	<main id="container">
+		<form method="POST" th:action="@{/api/usuario/recupera/senha}">
+			<!-- INPUTS -->
+			<p>Digite seu email de recuperação</p>
+			<div id="inputs">
+				<div class="input-box">
+					<label for="email">
+						E-mail
+						<div class="input-field">
+							<i class="fa-solid fa-envelope"></i>
+							<input type="email" id="email" name="email" required>
+						</div>
+					</label>
+				</div>
+				<div th:if="${msg != null}" th:class="${msg != null && msg != 'sucesso'} ? 'alert alert-danger alert-dismissible fade show' : 'alert alert-success alert-dismissible fade show'" role="alert">
+					<a th:if="${msg == 'sucesso'}">Email encaminhado com sucesso!<br>Verifique sua caixa de email.</a>
+					<a th:if="${msg == 'erro'}">Falha no envio do email, tente novamente mais tarde.</a>
+					<a th:if="${msg == 'emailNull'}">Não existe cadastro com esse email.</a>
+					<a th:href="@{/api/usuario/recupera/senha}" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+				</div>
+			<div class="text-center">
+				<button class="btn btn-primary" type="submit">Enviar</button>
+			</div>
+			<a th:href="@{/api/usuario/autenticacao}" id="cancelar_button">
+				Voltar
+			</a>
+		</form>
+	</main>
+
+</body>
+
+</html>

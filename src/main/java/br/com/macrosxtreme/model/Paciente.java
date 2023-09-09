@@ -1,6 +1,9 @@
 package br.com.macrosxtreme.model;
 
 import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.enums.AtividadeFisica;
+import br.com.macrosxtreme.enums.Genero;
+import br.com.macrosxtreme.enums.Objetivo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,34 +28,29 @@ public class Paciente {
 	private String email;
 	
 	@Column(nullable = false)
-	private String genero;
-	
+	@Enumerated(EnumType.STRING)
+	private Genero genero;
+
 	@Column(nullable = false)
-	private int idade;
-	
+	private Integer idade;
+
 	@Column(nullable = false)
-	private int altura;
-	
+	private Integer altura;
+
 	@Column(nullable = false)
-	private int peso;
+	private Integer peso;
 	
-	@Column(nullable = false)
-	private String objetivo;
-	
-	@Column(nullable = false)
-	private String nivelAtividadeFisica;
-	
-	@OneToMany(mappedBy = "paciente")
+	@OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Macros> historicoMacros;
-	
+
 	public Paciente(PacienteDTO paciente) {
+		this.id = paciente.getId();
 		this.nome = paciente.getNome();
 		this.email = paciente.getEmail();
 		this.genero = paciente.getGenero();
 		this.idade = paciente.getIdade();
 		this.altura = paciente.getAltura();
 		this.peso = paciente.getPeso();
-		this.objetivo = paciente.getObjetivo();
-		this.nivelAtividadeFisica = paciente.getNivelAtividadeFisica();
+
 	}
 }

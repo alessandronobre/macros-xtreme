@@ -1,6 +1,8 @@
 package br.com.macrosxtreme.model;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
+import br.com.macrosxtreme.enums.AtividadeFisica;
+import br.com.macrosxtreme.enums.Objetivo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,14 @@ public class Macros {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="cod_macros")
 	private Long id;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Objetivo objetivo;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private AtividadeFisica atividadeFisica;
 	
 	@Column(name="data_calculo", nullable = false)
 	private String dataCalculo;
@@ -57,14 +67,15 @@ public class Macros {
 	
 	@Column(name="fibra_descanso", nullable = false)
 	private Integer fibraDescanso;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="cod_paciente", nullable = false)
-	private Paciente paciente ;
+
+	@ManyToOne()
+	@JoinColumn(name="cod_paciente_fk", nullable = false)
+	private Paciente paciente;
 	
 	public Macros(MacrosDTO historico) {
 		this.id = historico.getId();
-		this.paciente = historico.getPaciente();
+		this.objetivo = historico.getObjetivo();
+		this.atividadeFisica = historico.getAtividadeFisica();
 		this.dataCalculo = historico.getDataCalculo();
 		this.imc = historico.getImc();
 		this.tmb = historico.getTmb();
@@ -80,5 +91,4 @@ public class Macros {
 		this.gorduraDescanso = historico.getGorduraDescanso();
 		this.fibraDescanso = historico.getFibraDescanso();
 	}
-
 }

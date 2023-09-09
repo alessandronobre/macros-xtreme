@@ -1,11 +1,8 @@
 package br.com.macrosxtreme.controller;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
-import br.com.macrosxtreme.dto.PacienteDTO;
-import br.com.macrosxtreme.exception.EmailException;
-import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.service.MacrosService;
-import br.com.macrosxtreme.service.PacienteService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,108 +18,60 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/macros")
 public class MacrosController {
 
 	private final MacrosService macrosService;
-	private final PacienteService pacienteService;
+    private final EmailController emailController;
 
-	@GetMapping("/macros/form")
-	public ModelAndView macrosForm() {
-		ModelAndView modelAndView = new ModelAndView("macros/buscar_form_macros");
-		List<PacienteDTO> lista = pacienteService.buscarPacientes();
-		if (!lista.isEmpty()) {
-			modelAndView.addObject("lista", lista);
+    @GetMapping("/gerar")
+    public ModelAndView gerar(@RequestParam("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("macros/gerar");
+        modelAndView.addObject("pacienteId", id);
+        modelAndView.addObject("macros", new MacrosDTO());
+        return modelAndView;
+    }
 
-			return modelAndView;
-		}
-		return modelAndView;
+    @PostMapping("/gerar")
+    public RedirectView  gerar(@RequestParam("id") Long id, MacrosDTO macros) {
+        macrosService.salvarMacros(macros, id);
+        return new RedirectView("/api/macros/historico?id=" + id + "&msg=");
 
-	}
+    }
 
-	@GetMapping("/macros/{pacienteId}")
-	public ModelAndView macros(@PathVariable Long pacienteId, HttpStatus status, String msg) {
-		ModelAndView modelAndView = new ModelAndView("macros/macros");
-		MacrosDTO macros = macrosService.findByMacros(pacienteId);
-		modelAndView.addObject("macros", macros);
-		if (status != null) {
-			modelAndView.addObject("status", status.value());
-			modelAndView.addObject("msg", msg);
-		}
-		return modelAndView;
-	}
+    @GetMapping("/historico")
+    public ModelAndView macros(@RequestParam("id") Long id, @RequestParam("msg") String msg) {
+        ModelAndView modelAndView = new ModelAndView("macros/macros");
+        MacrosDTO macrosAtual = macrosService.buscarMacrosAtual(id);
+        List<MacrosDTO> macrosPaciente = macrosService.buscarMacrosPaciente(id);
 
-	@GetMapping("/historico/form")
-	public ModelAndView findByHistoricoMacros() {
-		ModelAndView modelAndView = new ModelAndView("macros/buscar_form_hist");
-		List<PacienteDTO> lista = pacienteService.buscarPacientes();
-		if (!lista.isEmpty()) {
-			modelAndView.addObject("lista", lista);
+        modelAndView.addObject("msg", msg);
+        modelAndView.addObject("pacienteId", id);
+        modelAndView.addObject("macrosAtual", macrosAtual);
+        modelAndView.addObject("macrosPaciente", macrosPaciente);
+        return modelAndView;
+    }
 
-			return modelAndView;
-		}
-		return modelAndView;
+    @GetMapping("/deletar")
+    public RedirectView deletar(@RequestParam("id") Long id) {
+        macrosService.deletar(id);
+        return new RedirectView("/api/paciente/perfil/" + id);
+    }
 
-	}
-
-	@GetMapping("/historico/macros")
-	public ModelAndView findByHistoricoMacros(@RequestParam("nome") String nome) {
-		ModelAndView modelAndView = new ModelAndView("macros/historico_macros");
-		Paciente paciente = pacienteService.buscaPacientePorNome(nome);
-
-		List<MacrosDTO> lista = macrosService.findByHistoricoMacros(paciente.getId());
-
-		modelAndView.addObject("nome", paciente.getNome());
-		modelAndView.addObject("lista", lista);
-
-		return modelAndView;
-
-	}
-
-	@GetMapping("/calcular")
-	public ModelAndView calcular(PacienteDTO dados) {
-		ModelAndView modelAndView = new ModelAndView("macros/form");
-		
-		List<PacienteDTO> lista = pacienteService.buscarPacientes();
-		if (!lista.isEmpty()) {
-			modelAndView.addObject("lista", lista);
-
-			return modelAndView;
-		}
-		return modelAndView;
-
-	}
-
-	@PostMapping("/calcular")
-	public ModelAndView calcula(PacienteDTO dados) {
-		ModelAndView modelAndView = new ModelAndView("redirect:/api/home");
-		macrosService.salvarHistorico(dados);
-
-		return modelAndView;
-
-	}
-	
-	@GetMapping(value = "/download/macros", produces = MediaType.APPLICATION_PDF_VALUE)
-	public ResponseEntity<?> downloadPDF(@RequestParam("pacienteId") Long id) throws IOException {
+	@GetMapping(value = "/download", produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<?> downloadPDF(@RequestParam("id") Long id) throws IOException {
 		return macrosService.downloadPDF(id);
-		
-	}
-	
-	@GetMapping("/enviar/macros")
-	public ModelAndView enviarMacrosEmail(@RequestParam("pacienteId") Long pacienteId) {
-		try {
-			macrosService.enviarMacrosEmail(pacienteId);
-			return macros(pacienteId, HttpStatus.OK, "Envio realizado com sucesso");
-			
-		} catch (EmailException e) {
-			log.error(e.getMessage());
-			return macros(pacienteId, HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
-			
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return macros(pacienteId, HttpStatus.INTERNAL_SERVER_ERROR, "Erro inesperado");
-		}
-		
 	}
 
+    @GetMapping("/enviar")
+    public RedirectView enviarMacrosEmail(@RequestParam("id") Long id) {
+        String msg = null;
+        HttpStatus resp = emailController.enviarEmail(macrosService.gerarEmailMacros(id));
+        if (resp == HttpStatus.OK) {
+            msg = "sucesso";
+        } else {
+            msg = "erro";
+        }
+        return new RedirectView("/api/macros/historico?id=" + id + "&msg=" + msg);
+    }
 }

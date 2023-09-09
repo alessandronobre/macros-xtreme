@@ -39,21 +39,6 @@ nav li a{
 
 nav li a:hover{
 	text-decoration: none;
-	color: var(--color-orage);
+	color: blue;
     background: var(--color-back);
-}
-
-.dropdown-menu{
-    position: absolute;
-    box-shadow: 0 0 2px black;
-    display: none;
-}
-
-.dropdown-menu a{
-    display: block;
-    color: black;
-}
-
-.dropdown:hover .dropdown-menu{
-    display: block;
 }

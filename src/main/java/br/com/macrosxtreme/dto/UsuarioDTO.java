@@ -12,19 +12,15 @@ public class UsuarioDTO {
 
 	private Long id;
 	private String nome;
+	private String usuario;
 	private String email;
-	private String password;
+	private String senha;
 	
 	public UsuarioDTO(Usuario usuario) {
 		this.id = usuario.getId();
 		this.nome = usuario.getNome();
+		this.usuario = usuario.getUsuario();
 		this.email = usuario.getEmail();
-		this.password = usuario.getPassword();
+		this.senha = usuario.getSenha();
 	}
-	
-	@Override
-	public String toString() {
-		return "UserDTO [name=" + nome + ", email=" + email + "]";
-	}
-	
 }

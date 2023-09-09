@@ -8,35 +8,32 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
-@Table
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
+@Table
+@Entity
 public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="cod_usuario")
 	private Long id;
-
-	@Column(nullable = false, length = 50)
+	@Column(nullable = false)
 	private String nome;
-	
+	@Column(nullable = false, unique = true)
+	private String usuario;
 	@Column(nullable = false, length = 40, unique = true)
 	private String email;
-	
 	@Column(nullable = false)
-	private String password;
-	
-	@OneToMany(mappedBy = "usuario")
-	private List<HistoricoEmail> historicoEmail ;
+	private String senha;
 
 	public Usuario(UsuarioDTO usuario) {
 		this.id = usuario.getId();
 		this.nome = usuario.getNome();
+		this.usuario = usuario.getUsuario();
 		this.email = usuario.getEmail();
-		this.password = usuario.getPassword();
+		this.senha = usuario.getSenha();
 	}
 
 }
