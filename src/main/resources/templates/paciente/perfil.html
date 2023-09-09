@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <title>Detalhes do Paciente</title>
+</head>
+<body>
+<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+<main class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Detalhes do Paciente</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <h5 class="card-header" th:text="${paciente.nome}"></h5>
+                <div class="card-body">
+                    <p>
+                        Email: <span th:text="${paciente.email}"></span>
+                    </p>
+                    <p>
+                        Gênero: <span th:text="${paciente.genero}"></span>
+                    </p>
+                    <p>
+                        Idade: <span th:text="${paciente.idade}"></span>
+                    </p>
+                    <p>
+                        Altura: <span th:text="${paciente.altura}"></span>
+                    </p>
+                    <p>
+                        Peso: <span th:text="${paciente.peso}"></span>
+                    </p>
+
+                    <a th:href="@{/api/macros/historico(id=${paciente.id},msg=null)}" class="btn btn-primary">Visualizar Macros</a>
+                    <a th:href="@{/api/macros/gerar(id=${paciente.id})}" class="btn btn-primary">Gerar Macros</a>
+                    <a th:href="@{/api/paciente/editar(id=${paciente.id})}" class="btn btn-warning">Editar</a>
+                    <a th:href="@{/api/paciente/deletar(id=${paciente.id})}" class="btn btn-danger">Excluir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

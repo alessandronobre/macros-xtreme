@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <title>Formulário de Macros</title>
+</head>
+<body>
+<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+<main class="container">
+    <div class="container mt-5">
+        <h1>Formulário de Macros</h1>
+
+        <form th:action="@{'/api/macros/gerar?id=' + ${pacienteId}}" method="POST" th:object="${macros}">
+            <div class="mb-3">
+                <label for="objetivo" class="form-label fw-bold">Objetivo</label>
+                <select th:field="*{objetivo}" class="form-select" id="objetivo" required>
+                    <option value="" selected disabled>Selecione..</option>
+                    <option value="EMAGRECIMENTO">Emagrecimento</option>
+                    <option value="GANHO">Ganho de Massa</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="atividade" class="form-label fw-bold">Selecione o nivel de atividade fisica</label>
+                <select th:field="*{atividadeFisica}" class="form-select" id="atividade" required>
+                    <option value="" selected disabled>Selecione..</option>
+                    <option value="NIVEL1">Sedentário (Exercicio minimo)</option>
+                    <option value="NIVEL2">Exercicio Leve (1-3 dias por semana)</option>
+                    <option value="NIVEL3">Exercicio Moderado (3-5 dias por semana)</option>
+                    <option value="NIVEL4">Exercicio Intenso (6-7 dias por semana)</option>
+                    <option value="NIVEL5">Exercicio Muito Intenso (Atleta, 2x por dia)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a th:href="@{/api/paciente/perfil/{id} (id=${pacienteId})}" class="btn btn-danger">Cancelar</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

@@ -9,7 +9,7 @@
     --color-dark-50: #797984;
     --color-dark-100: #312d37;
     --color-dark-900: #000;
-    
+
     --color-orage: #da580c;
     --color-back: #EEE;
 }
@@ -22,19 +22,13 @@
     box-sizing: border-box;
 }
 
-body {
+#container {
     height: 100vh;
     width: 100%;
-    background: var(--color-back);
-}
-
-#container{
-	height: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: var(--color-back);
-
 }
 
 form {
@@ -75,8 +69,8 @@ form {
 .input-field i {
     font-size: 18px;
     cursor: text;
-    color: var(--color-dark-900);
-} 
+    color: var(--color-dark-50);
+}
 
 .input-field input {
     border: none;
@@ -90,35 +84,30 @@ form {
     outline: none;
 }
 
-.buttons {
+/* Forgot password */
+#forgot_password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 33%;
+}
+
+#forgot_password a {
+    text-decoration: none;
+    color: var(--color-dark-50);
+    font-size: 12px;
+    padding: 0px;
+}
+
+#forgot_password a:hover {
+   	color: blue;
+    transform: scale(1.01);
+}
+
+#erro{
 	display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* Login Button */
-button {
-    background: black;
-    padding: 5px;
-    border-radius: 5px;
-    color: var(--color-light-50);
-    font-size: 15px;
-    width: 100px;
-    cursor: pointer;
-}
-
-button:hover {
-    transform: scale(1.01);
-}
-
-#cancelar_button {
-	text-decoration: none;
-    color: var(--color-dark-900);
-    font-size: 15px;
-    cursor: pointer;
-}
-
-#cancelar_button:hover {
-	color: var(--color-orage);
-    transform: scale(1.01);
+	color: red;
 }

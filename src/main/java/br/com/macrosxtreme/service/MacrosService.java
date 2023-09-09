@@ -2,11 +2,18 @@ package br.com.macrosxtreme.service;
 
 import br.com.macrosxtreme.dto.EmailDTO;
 import br.com.macrosxtreme.dto.MacrosDTO;
-import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.enums.AtividadeFisica;
+import br.com.macrosxtreme.enums.Genero;
+import br.com.macrosxtreme.enums.Objetivo;
 import br.com.macrosxtreme.mapper.DataMapper;
+import br.com.macrosxtreme.mapper.GerarAnexoEmailMapper;
 import br.com.macrosxtreme.model.Macros;
+import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.repository.MacrosRepository;
+import br.com.macrosxtreme.repository.PacienteRepository;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.io.source.ByteArrayOutputStream;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,275 +29,253 @@ import java.util.List;
 @Service
 public class MacrosService {
 
-	private final MacrosRepository macrosRepository;
+    private final MacrosRepository macrosRepository;
+    private final PacienteRepository pacienteRepository;
 	private final TemplateEngine templateEngine;
-	private final EmailService emailService;
 	private final DataMapper dataMapper;
-	private final PacienteService pacienteService;
+    private final GerarAnexoEmailMapper gerarAnexoEmailMapper;
 
-	public void enviarMacrosEmail(Long pacienteId) {
-		EmailDTO email = new EmailDTO();
-		email.setTituloEmail("Bem vindo");
-		email.setDestinatario(pacienteService.buscarEmailPaciente(pacienteId));
-		email.setDataEnvio(dataMapper.formatador());
-		email.setConteudo("Segue em anexo seus macros");
-		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(pacienteId));
-		macros.setNome(macros.getPaciente().getNome());
-		email.setAnexo(macros);
+    private static final String TEMPLATE_PDF = "macros/macrospdf.html";
 
-		emailService.enviarEmail(email);
+    public EmailDTO gerarEmailMacros(Long id) {
+        Macros macros = macrosRepository.buscarMacrosAtualPorIdPaciente(id);
+        String nomePaciente = null;
+        if (macros.getPaciente().getNome().contains(" ")) {
+            int indice = macros.getPaciente().getNome().indexOf(' ');
+            nomePaciente =  macros.getPaciente().getNome().substring(0, indice);
+        } else {
+            nomePaciente = macros.getPaciente().getNome();
+        }
 
-	}
-	
-	public ResponseEntity<?> downloadPDF(Long id) {
-		MacrosDTO macros = new MacrosDTO(macrosRepository.findByMacros(id));
-		
-		Context context = new Context();
-		context.setVariable("macros", macros);
+        Context context = new Context();
+        context.setVariable("paciente", nomePaciente);
+        String html = templateEngine.process("macros/macros_template_email.html", context);
 
-		String html = templateEngine.process("macros/macrospdf.html", context);
-		
-		ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
-		HtmlConverter.convertToPdf(html, pdfStream);
-		return ResponseEntity.ok()
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Macros.pdf")
-					.body(pdfStream.toByteArray());
-	}
+        EmailDTO email = new EmailDTO();
+        email.setDestinatario(macros.getPaciente().getEmail());
+        email.setTitulo("Obá, chegaram seus macros!");
+        email.setConteudo(html);
+        email.setNomeAnexo("Macros.pdf");
+        email.setAnexo(gerarAnexoEmailMapper.gerarAnexoPdf(TEMPLATE_PDF, macros));
+        return email;
+    }
 
-	public void salvarHistorico(PacienteDTO dados) {
-		
-		String imc = imc(dados.getAltura(), dados.getPeso());
-		Integer tmb = calcularTBM(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso());
-		Integer gastoCaloricoTotal = calcularGT(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getNivelAtividadeFisica());
-		Integer objetivoTreino = objetivoTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		Integer objetivoDescanso = objetivoDescanso(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		List<Integer> macrosTreino = macrosTreino(dados.getGenero(), dados.getIdade(), dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
-		List<Integer> macrosDescanso = macrosDescanso(dados.getGenero(), dados.getIdade(),dados.getAltura(), dados.getPeso(), dados.getObjetivo(), dados.getNivelAtividadeFisica());
+    public ResponseEntity<?> downloadPDF(Long id) {
+        MacrosDTO macros = new MacrosDTO(macrosRepository.buscarMacrosAtual(id));
+        int indice = macros.getPaciente().getNome().indexOf(' ');
+        String nomePaciente = macros.getPaciente().getNome().substring(0, indice);
 
-		Macros historico = new Macros();
-		historico.setPaciente(pacienteService.buscaPacientePorNome(dados.getNome()));
-		historico.setDataCalculo(dataMapper.formatador());
-		historico.setImc(imc);
-		historico.setTmb(tmb);
-		historico.setGastoCaloricoTotal(gastoCaloricoTotal);
-		historico.setCaloriasTreino(objetivoTreino);
-		historico.setProteinaTreino(macrosTreino.get(0));
-		historico.setCarboidratoTreino(macrosTreino.get(1));
-		historico.setGorduraTreino(macrosTreino.get(2));
-		historico.setFibraTreino(macrosTreino.get(3));
-		historico.setCaloriasDescanso(objetivoDescanso);
-		historico.setProteinaDescanso(macrosDescanso.get(0));
-		historico.setCarboidratoDescanso(macrosDescanso.get(1));
-		historico.setGorduraDescanso(macrosDescanso.get(2));
-		historico.setFibraDescanso(macrosDescanso.get(3));
-		
-		macrosRepository.save(historico);
-	}
+        Context context = new Context();
+        context.setVariable("anexo", macros);
 
-	public MacrosDTO findByMacros(Long codPaciente) {
-		Macros hist = macrosRepository.findByMacros(codPaciente);
-		if(hist == null) {
-			return null;
-		}
-		MacrosDTO historico = new MacrosDTO(hist);
-	
-		return historico;
+        String html = templateEngine.process(TEMPLATE_PDF, context);
 
-	}
+        ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
+        HtmlConverter.convertToPdf(html, pdfStream);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Macros_" + nomePaciente + ".pdf")
+                .body(pdfStream.toByteArray());
+    }
 
-	public List<MacrosDTO> findByHistoricoMacros(Long codPaciente) {
-		List<Macros> histMacros = macrosRepository.findByHistoricoMacros(codPaciente);
-		List<MacrosDTO> historico = new ArrayList<>();
+    public List<MacrosDTO> buscarMacrosPaciente(Long id) {
+        List<Macros> macros = macrosRepository.buscarMacrosPacienteIgnorandoMacrosAtual(id);
+        if(!macros.isEmpty()) {
+            List<MacrosDTO> macrosPaciente = new ArrayList<>();
+            macros.stream().forEach(i -> macrosPaciente.add(new MacrosDTO(i)));
+            return macrosPaciente;
+        }
+        return null;
+    }
 
-		if (!histMacros.isEmpty()) {
-			histMacros.forEach(histMacro -> historico.add(new MacrosDTO(histMacro)));
+    public MacrosDTO buscarMacrosAtual(Long id) {
+        Macros macros = macrosRepository.buscarMacrosAtualPorIdPaciente(id);
+        if(macros == null) {
+            return null;
+        }
+        MacrosDTO macrosAtual = new MacrosDTO(macros);
+        return macrosAtual;
+    }
 
-			return historico;
-		}
-		return null;
-	}
+    @Transactional
+	public void salvarMacros(MacrosDTO dadosMacros, Long id) {
+        Paciente paciente = pacienteRepository.buscaPacientePorId(id);
+		String imc = imc(paciente.getAltura(), paciente.getPeso());
+		Integer tmb = calcularTaxaMetabolicaBasal(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso());
+		Integer gastoCaloricoTotal = calcularGastoTotal(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getAtividadeFisica());
+		Integer objetivoTreino = objetivoTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
+		Integer objetivoDescanso = objetivoDescanso(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
+		List<Integer> macrosTreino = macrosTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
+		List<Integer> macrosDescanso = macrosDescanso(paciente.getGenero(), paciente.getIdade(),paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 
-	private Integer calcularTBM(String genero, int idade, int altura, int peso) {
-		int tmb = 0;
-		if (genero.equals("Masculino")) {
-			double i = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
-			tmb = (int) Math.round(i);
-			return tmb;
-		} else if (genero.equals("Feminino")) {
-			double i = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
-			tmb = (int) Math.round(i);
-			return tmb;
+		Macros macros = new Macros();
+        macros.setObjetivo(dadosMacros.getObjetivo());
+        macros.setAtividadeFisica(dadosMacros.getAtividadeFisica());
+		macros.setDataCalculo(dataMapper.formatador());
+		macros.setImc(imc);
+		macros.setTmb(tmb);
+		macros.setGastoCaloricoTotal(gastoCaloricoTotal);
+		macros.setCaloriasTreino(objetivoTreino);
+		macros.setProteinaTreino(macrosTreino.get(0));
+		macros.setCarboidratoTreino(macrosTreino.get(1));
+		macros.setGorduraTreino(macrosTreino.get(2));
+		macros.setFibraTreino(macrosTreino.get(3));
+		macros.setCaloriasDescanso(objetivoDescanso);
+		macros.setProteinaDescanso(macrosDescanso.get(0));
+		macros.setCarboidratoDescanso(macrosDescanso.get(1));
+		macros.setGorduraDescanso(macrosDescanso.get(2));
+		macros.setFibraDescanso(macrosDescanso.get(3));
+        macros.setPaciente(paciente);
 
-		}
-		return tmb;
-	}
-
-	private Integer calcularGT(String genero, int idade, int altura, int peso, String nivelAtividadeFisica) {
-		double tmb = calcularTBM(genero, idade, altura, peso);
-		double i = 0;
-
-		if (genero.equals("Masculino")) {
-			switch (nivelAtividadeFisica) {
-			case "nivel1": {
-				i = tmb * 1.2;
-			}
-				break;
-			case "nivel2": {
-				i = tmb * 1.375;
-			}
-				break;
-			case "nivel3": {
-				i = tmb * 1.55;
-			}
-				break;
-			case "nivel4": {
-				i = tmb * 1.725;
-			}
-				break;
-			case "nivel5": {
-				i = tmb * 1.9;
-			}}
-
-		} else if (genero.equals("Feminino")) {
-
-			switch (nivelAtividadeFisica) {
-			case "nivel1": {
-				i = tmb * 1.2;
-			}
-				break;
-			case "nivel2": {
-				i = tmb * 1.375;
-			}
-				break;
-			case "nivel3": {
-				i = tmb * 1.55;
-			}
-				break;
-			case "nivel4": {
-				i = tmb * 1.725;
-			}
-				break;
-			case "nivel5": {
-				i = tmb * 1.9;
-			}
-			}
-		}
-
-		int gastoTotal = (int) Math.round(i);
-		return gastoTotal;
+        List<MacrosDTO> macrosList = buscarMacrosPaciente(id);
+        if (macrosList != null && macrosList.size() == 5) {
+            macrosRepository.deleteById(macrosRepository.buscarRegistroMaisAntigo(id));
+        }
+        macrosRepository.save(macros);
 	}
 
-	private Integer objetivoTreino(String genero, int idade, int altura, int peso, String objetivo,
-			String nivelAtividadeFisica) {
-		double i = 0, gastoTotal;
-		gastoTotal = calcularGT(genero, idade, altura, peso, nivelAtividadeFisica);
+    public void deletar(Long id) {
+        macrosRepository.deleteAll(macrosRepository.buscarTodosMacrosPaciente(id));
+    }
 
-		if (objetivo.equals("Emagrecimento")) {
-			i = gastoTotal - (25 * gastoTotal / 100);
+    private Integer calcularTaxaMetabolicaBasal(Genero genero, int idade, int altura, int peso) {
+        int tmb = 0;
+        if (genero.equals(Genero.MASCULINO)) {
+            double i = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
+            tmb = (int) Math.round(i);
+            return tmb;
+        } else if (genero.equals(Genero.FEMININO)) {
+            double i = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
+            tmb = (int) Math.round(i);
+            return tmb;
+        }
+        return tmb;
+    }
 
-		} else if (objetivo.equals("Ganho")) {
-			i = gastoTotal + 200;
+    private Integer calcularGastoTotal(Genero genero, int idade, int altura, int peso, AtividadeFisica nivelAtividade) {
+        double tmb = calcularTaxaMetabolicaBasal(genero, idade, altura, peso);
+        double i = 0;
+        if (genero.equals(Genero.MASCULINO)) {
+            switch (nivelAtividade.getValor()) {
+                case 1: {
+                    i = tmb * 1.2;
+                }
+                break;
+                case 2: {
+                    i = tmb * 1.375;
+                }
+                break;
+                case 3: {
+                    i = tmb * 1.55;
+                }
+                break;
+                case 4: {
+                    i = tmb * 1.725;
+                }
+                break;
+                case 5: {
+                    i = tmb * 1.9;
+                }
+            }
 
-		}
-		int objetivoTreino = (int) Math.round(i);
-		return objetivoTreino;
+        } else {
+            switch (nivelAtividade.getValor()) {
+                case 1: {
+                    i = tmb * 1.2;
+                }
+                break;
+                case 2: {
+                    i = tmb * 1.375;
+                }
+                break;
+                case 3: {
+                    i = tmb * 1.55;
+                }
+                break;
+                case 4: {
+                    i = tmb * 1.725;
+                }
+                break;
+                case 5: {
+                    i = tmb * 1.9;
+                }
+            }
+        }
+        int gastoTotal = (int) Math.round(i);
+        return gastoTotal;
+    }
 
-	}
+    private Integer objetivoTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
+        double i = 0, gastoTotal;
+        gastoTotal = calcularGastoTotal(genero, idade, altura, peso, nivelAtividade);
+        if (objetivo.equals(Objetivo.EMAGRECIMENTO)) {
+            i = gastoTotal - (25 * gastoTotal / 100);
+        } else {
+            i = gastoTotal + 200;
+        }
+        int objetivoTreino = (int) Math.round(i);
+        return objetivoTreino;
+    }
 
-	private Integer objetivoDescanso(String genero, int idade, int altura, int peso, String objetivo,
-			String nivelAtividadeFisica) {
-		int objetivoTreino = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
+    private Integer objetivoDescanso(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
+        int objetivoTreino = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
+        double objetivoOff = objetivoTreino - (10 * objetivoTreino / 100);
+        int objetivoDescanso = (int) Math.round(objetivoOff);
+        return objetivoDescanso;
+    }
 
-		double objetivoOff = objetivoTreino - (10 * objetivoTreino / 100);
-		int objetivoDescanso = (int) Math.round(objetivoOff);
+    private List<Integer> macrosTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
+        int objtivo = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
+        int proteina, gordura, carboidatro, fibras = 0;
+        double p = peso * 2.240;
+        double g = peso * 0.760;
+        double c = (objtivo - (p * 4) - (g * 9)) / 4;
+        if (objtivo <= 1200) {
+            fibras = 10;
+        } else if (objtivo > 1200 && objtivo <= 2200) {
+            fibras = 20;
 
-		return objetivoDescanso;
+        } else if (objtivo > 2200 && objtivo <= 3200) {
+            fibras = 30;
 
-	}
+        } else if (objtivo > 3200 && objtivo <= 4200) {
+            fibras = 40;
+        }
 
-	private List<Integer> macrosTreino(String genero, int idade, int altura, int peso, String objetivo,
-			String nivelAtividadeFisica) {
-		int objtivo = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
+        proteina = (int) Math.round(p);
+        gordura = (int) Math.round(g);
+        carboidatro = (int) Math.round(c);
 
-		int proteina, gordura, carboidatro, fibras = 0;
-		double p = peso * 2.240;
-		double g = peso * 0.760;
-		double c = (objtivo - (p * 4) - (g * 9)) / 4;
+        List<Integer> macros = new ArrayList<>();
+        macros.add(proteina);
+        macros.add(carboidatro);
+        macros.add(gordura);
+        macros.add(fibras);
+        return macros;
+    }
 
-		if (objtivo <= 1200) {
-			fibras = 10;
+    private List<Integer> macrosDescanso(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
+        List<Integer> macrosTreino = macrosTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
+        int proteina, gordura, carboidatro, fibras = 0;
+        proteina = macrosTreino.get(0);
+        carboidatro = macrosTreino.get(1) - (20 * macrosTreino.get(1) / 100);
+        gordura = macrosTreino.get(2) - (9 * macrosTreino.get(2) / 100);
+        fibras = macrosTreino.get(3);
 
-		} else if (objtivo > 1200 && objtivo <= 2200) {
-			fibras = 20;
+        List<Integer> macros = new ArrayList<>();
+        macros.add(proteina);
+        macros.add(carboidatro);
+        macros.add(gordura);
+        macros.add(fibras);
+        return macros;
+    }
 
-		} else if (objtivo > 2200 && objtivo <= 3200) {
-			fibras = 30;
+    private String imc(int altura, int peso) {
+        DecimalFormat conversor = new DecimalFormat("#,##");
+        String formatAltura = conversor.format(altura);
+        double converterAltura = Double.parseDouble(formatAltura);
 
-		} else if (objtivo > 3200 && objtivo <= 4200) {
-			fibras = 40;
-		}
-
-		proteina = (int) Math.round(p);
-		gordura = (int) Math.round(g);
-		carboidatro = (int) Math.round(c);
-
-		List<Integer> macros = new ArrayList<>();
-		macros.add(proteina);
-		macros.add(carboidatro);
-		macros.add(gordura);
-		macros.add(fibras);
-
-		return macros;
-	}
-
-	private List<Integer> macrosDescanso(String genero, int idade, int altura, int peso, String objetivo,
-			String nivelAtividadeFisica) {
-		List<Integer> macrosTreino = macrosTreino(genero, idade, altura, peso, objetivo, nivelAtividadeFisica);
-
-		int proteina, gordura, carboidatro, fibras = 0;
-
-		proteina = macrosTreino.get(0);
-		carboidatro = macrosTreino.get(1) - (20 * macrosTreino.get(1) / 100);
-		gordura = macrosTreino.get(2) - (9 * macrosTreino.get(2) / 100);
-		fibras = macrosTreino.get(3);
-
-		List<Integer> macros = new ArrayList<>();
-		macros.add(proteina);
-		macros.add(carboidatro);
-		macros.add(gordura);
-		macros.add(fibras);
-
-		return macros;
-	}
-
-	private String imc(int altura, int peso) {
-		DecimalFormat conversor = new DecimalFormat("#,##");
-
-		String formatAltura = conversor.format(altura);
-		double converterAltura = Double.parseDouble(formatAltura);
-
-		String formatImc = conversor.format(peso / (converterAltura * converterAltura));
-		double imcFormatado = Double.parseDouble(formatImc);
-
-		String situacao = null;
-
-		if (imcFormatado < 17) {
-			situacao = "Muito abaixo do peso";
-		} else if (imcFormatado >= 17 && imcFormatado <= 18.5) {
-			situacao = "Abaixo do peso";
-		} else if (imcFormatado >= 18.6 && imcFormatado <= 24.9) {
-			situacao = "Peso normal";
-		} else if (imcFormatado >= 25 && imcFormatado <= 29.9) {
-			situacao = "Acima do peso";
-		} else if (imcFormatado >= 30 && imcFormatado <= 34.9) {
-			situacao = "Obesidade 1";
-		} else if (imcFormatado >= 35 && imcFormatado <= 39.9) {
-			situacao = "Obesidade 2 (Severa)";
-		} else if (imcFormatado >= 40) {
-			situacao = "Obesidade 3 (Mórbida)";
-		}
-
-		return imcFormatado + "%" + " (" + situacao + ")";
-	}
-
+        String formatImc = conversor.format(peso / (converterAltura * converterAltura));
+        double imcFormatado = Double.parseDouble(formatImc);
+        return imcFormatado + "%";
+    }
 }

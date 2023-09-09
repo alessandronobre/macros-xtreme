@@ -1,51 +1,32 @@
 package br.com.macrosxtreme.service;
 
-import br.com.macrosxtreme.client.MsEmailClient;
 import br.com.macrosxtreme.dto.EmailDTO;
-import br.com.macrosxtreme.exception.EmailException;
-import br.com.macrosxtreme.model.HistoricoEmail;
-import br.com.macrosxtreme.repository.EmailRepository;
-import com.google.gson.Gson;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-@Service
+@Slf4j
 @RequiredArgsConstructor
+@Service
 public class EmailService {
 
-    private final EmailRepository emailRepository;
+    private final JavaMailSender mailSender;
 
-    private final MsEmailClient msEmailClient;
-
-    public void enviarEmail(EmailDTO email) {
-        Gson gson = new Gson();
-        String json = gson.toJson(email);
-
-        try {
-            msEmailClient.enviar(json);
-        } catch (Exception e) {
-            throw new EmailException("Erro ao enviar email: ", e.getMessage());
+    public void enviarEmailAnexo(EmailDTO email) throws MessagingException{
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setTo(email.getDestinatario());
+        mimeMessageHelper.setSubject(email.getTitulo());
+        mimeMessageHelper.setText(email.getConteudo(), true);
+        if (email.getAnexo() != null) {
+            mimeMessageHelper.addAttachment(email.getNomeAnexo(), new ByteArrayResource(email.getAnexo()));
         }
+        mailSender.send(mimeMessage);
+        log.info("Enviando email...");
     }
-
-    public List<EmailDTO> findEmailUsuario(Long codUsuario) {
-        List<HistoricoEmail> histEmail = emailRepository.findEmailUsuario(codUsuario);
-        List<EmailDTO> historico = new ArrayList<>();
-
-        if (!histEmail.isEmpty()) {
-            histEmail.forEach(histMacro -> historico.add(new EmailDTO(histMacro)));
-
-        }
-        return historico;
-    }
-
-    public void salvarHistoricoEmail(EmailDTO email) {
-        HistoricoEmail historico = new HistoricoEmail(email);
-        emailRepository.save(historico);
-    }
-
 }

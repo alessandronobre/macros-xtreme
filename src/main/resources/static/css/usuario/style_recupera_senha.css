@@ -49,6 +49,10 @@ form {
     animation: dark-to-light-background 0.3s ease-in-out;
 }
 
+p {
+    color: var(--color-dark-50);
+}
+
 /* Inputs */
 #inputs {
     display: flex;
@@ -75,7 +79,7 @@ form {
 .input-field i {
     font-size: 18px;
     cursor: text;
-    color: var(--color-dark-900);
+    color: var(--color-dark-50);
 } 
 
 .input-field input {
@@ -97,35 +101,14 @@ form {
 	color: red;
 }
 
-.buttons {
-	display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Login Button */
-button {
-    background: black;
-    padding: 5px;
-    border-radius: 5px;
-    color: var(--color-light-50);
-    font-size: 15px;
-    width: 100px;
-    cursor: pointer;
-}
-
-button:hover {
-    transform: scale(1.01);
-}
-
 #cancelar_button {
 	text-decoration: none;
-    color: var(--color-dark-900);
+    color: var(--color-dark-50);
     font-size: 15px;
     cursor: pointer;
 }
 
 #cancelar_button:hover {
-	color: var(--color-orage);
+	color: blue;
     transform: scale(1.01);
 }

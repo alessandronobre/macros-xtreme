@@ -15,12 +15,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(authInterceptor)
 				.addPathPatterns("/**")
-				.excludePathPatterns("/css/login/**")
-				.excludePathPatterns("/img/**")
+				.excludePathPatterns("/css/bootstrap.min.css")
+				.excludePathPatterns("/css/usuario/**")
 				.excludePathPatterns("/js/**")
-				.excludePathPatterns("/api/login")
-				.excludePathPatterns("/api/criar")
-				.excludePathPatterns("/api/recupera/senha");
+				.excludePathPatterns("/api/usuario/autenticacao")
+				.excludePathPatterns("/api/usuario/cadastrar")
+				.excludePathPatterns("/api/usuario/recupera/senha");
 	}
-
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <title>Lista de Pacientes</title>
+    <style>
+        .no-underline {
+            text-decoration: none !important;
+        }
+    </style>
+
+</head>
+<body>
+<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+<main class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Lista de Pacientes</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <a th:href="@{/api/paciente/cadastrar}" class="btn btn-primary">Cadastrar Paciente</a>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h5 th:if="${#lists.isEmpty(lista)}">Nenhum paciente cadastrado</h5>
+
+            <table class="table table-bordered" th:if="${not #lists.isEmpty(lista)}">
+                <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Ações</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr th:each="paciente : ${lista}">
+                    <td>
+                        <a class="no-underline" th:text="${paciente.nome}" th:href="@{/api/paciente/perfil/{id} (id=${paciente.id})}"></a>
+                    </td>
+                    <td th:text="${paciente.email}"></td>
+                    <td>
+                        <a th:href="@{/api/paciente/editar(id=${paciente.id})}" class="btn btn-warning"> Editar </a>
+                        <a th:href="@{/api/paciente/deletar(id=${paciente.id})}" class="btn btn-danger"> Excluir </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -12,8 +12,6 @@ public class DataMapper {
 		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		LocalDateTime dataHoraAtual = LocalDateTime.now();
 		String dataHoraFormatada = dataHoraAtual.format(formatador);
-
 		return dataHoraFormatada;
-
 	}
 }

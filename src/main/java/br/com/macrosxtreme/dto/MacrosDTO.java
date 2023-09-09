@@ -1,17 +1,21 @@
 package br.com.macrosxtreme.dto;
 
+import br.com.macrosxtreme.enums.AtividadeFisica;
+import br.com.macrosxtreme.enums.Objetivo;
 import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.model.Paciente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 public class MacrosDTO {
 	
 	private Long id;
-	private transient Paciente paciente;
-	private String nome;
+	private Objetivo objetivo;
+	private AtividadeFisica atividadeFisica;
 	private String dataCalculo;
 	private String imc;
 	private Integer tmb;
@@ -26,23 +30,26 @@ public class MacrosDTO {
 	private Integer carboidratoDescanso;
 	private Integer gorduraDescanso;
 	private Integer fibraDescanso;
+	private PacienteDTO paciente;
 	
-	public MacrosDTO(Macros historico) {
-		this.id = historico.getId();
-		this.paciente = historico.getPaciente();
-		this.dataCalculo = historico.getDataCalculo();
-		this.imc = historico.getImc();
-		this.tmb = historico.getTmb();
-		this.gastoCaloricoTotal = historico.getGastoCaloricoTotal();
-		this.caloriasTreino = historico.getCaloriasTreino();
-		this.proteinaTreino = historico.getProteinaTreino();
-		this.carboidratoTreino = historico.getCarboidratoTreino();
-		this.gorduraTreino = historico.getGorduraTreino();
-		this.fibraTreino = historico.getFibraTreino();
-		this.caloriasDescanso = historico.getCaloriasDescanso();
-		this.proteinaDescanso = historico.getProteinaDescanso();
-		this.carboidratoDescanso = historico.getCarboidratoDescanso();
-		this.gorduraDescanso = historico.getGorduraDescanso();
-		this.fibraDescanso = historico.getFibraDescanso();
+	public MacrosDTO(Macros macros) {
+		this.id = macros.getId();
+		this.objetivo = macros.getObjetivo();
+		this.atividadeFisica = macros.getAtividadeFisica();
+		this.dataCalculo = macros.getDataCalculo();
+		this.imc = macros.getImc();
+		this.tmb = macros.getTmb();
+		this.gastoCaloricoTotal = macros.getGastoCaloricoTotal();
+		this.caloriasTreino = macros.getCaloriasTreino();
+		this.proteinaTreino = macros.getProteinaTreino();
+		this.carboidratoTreino = macros.getCarboidratoTreino();
+		this.gorduraTreino = macros.getGorduraTreino();
+		this.fibraTreino = macros.getFibraTreino();
+		this.caloriasDescanso = macros.getCaloriasDescanso();
+		this.proteinaDescanso = macros.getProteinaDescanso();
+		this.carboidratoDescanso = macros.getCarboidratoDescanso();
+		this.gorduraDescanso = macros.getGorduraDescanso();
+		this.fibraDescanso = macros.getFibraDescanso();
+		this.paciente = new PacienteDTO(macros.getPaciente());
 	}
 }

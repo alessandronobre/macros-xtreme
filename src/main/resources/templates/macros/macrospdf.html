@@ -2,105 +2,188 @@
 <html lang="pt-br">
 
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
+    <title>MacrosXtreme</title>
+    <style>
+        body {
+            margin-left: 20px;
+            background-color: white;
+        }
 
-	<title>MacrosXtreme</title>
-	<style>
-		body {
-			margin-left: 20px;
-			background-color: rgb(201, 224, 250);;
-		}
+        h1,
+        h2,
+        h3 {
+            text-align: center;
+            color: #333;
+        }
 
-		h1,
-		h2 {
-			text-align: center;
-			text-decoration: underline;
-			color: #333;
-		}
+        p {
+            font-size: 20px;
+            color: #333;
+        }
 
-		h3 {
-			text-decoration: underline;
-		}
+        th {
+            text-align: center;
+            font-size: 20px;
+            color: #333;
+        }
 
-		p {
-			font-size: 20px;
-			color: #333;
-		}
+        div {
+            text-align: center;
+        }
 
-		th {
-			text-align: center;
-			font-size: 20px;
-			color: #333;
-		}
+        table {
+            margin: 0 auto;
+        }
 
-		div {
-			text-align: center;
-		}
+        /* Estilos da tabela */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+        }
 
-		table {
-			margin: 0 auto;
-		}
-	</style>
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilos adicionais para a tabela de treino e descanso */
+        .table-group-divider {
+            border-bottom: 2px solid #333;
+        }
+
+        .table-group-divider:last-child {
+            border-bottom: none;
+        }
+
+        /* Estilos para a tabela de treino e descanso */
+        .table-treino-descanso {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+        }
+
+        .table-treino-descanso th,
+        .table-treino-descanso td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-treino-descanso th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
 </head>
 
 <body>
-	<h1>Macros Xtreme</h1>
+<h1>Macros Xtreme</h1>
 
-	<h2 th:text="'Paciente: ' + ' ' + ${macros.paciente.nome}"></h2><br>
-
-	<h3>Percentual de Gordura (IMC):</h3>
-	<p th:text="${macros.imc}"></p>
-
-
-	<h3>Gasto Energetico:</h3>
-	<p th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${macros.tmb} + ' kcal'"></p>
-	<p th:text="'Gasto Calorico Total: ' + ' ' + ${macros.gastoCaloricoTotal} + ' kcal'"></p>
-
-	<h3>Metas de Calorias:</h3>
-	<p th:text="'Dias de Treino: ' + ' ' + ${macros.caloriasTreino} + ' kcal'"></p>
-	<p th:text="'Dias de Descanso: ' + ' ' + ${macros.caloriasDescanso} + ' kcal'"></p><br>
-
-	<div>
-		<h3>Macros de Treino:</h3>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Proteina</th>
-					<th>Carboidrato</th>
-					<th>Gordura</th>
-					<th>Fibra</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${macros.proteinaTreino}"></td>
-					<td th:text="${macros.carboidratoTreino}"></td>
-					<td th:text="${macros.gorduraTreino}"></td>
-					<td th:text="${macros.fibraTreino}"></td>
-				</tr>
-			</tbody>
-		</table><br><br>
-
-		<h3>Macros de Descanso:</h3>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Proteina</th>
-					<th>Carboidrato</th>
-					<th>Gordura</th>
-					<th>Fibra</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td th:text="${macros.proteinaDescanso}"></td>
-					<td th:text="${macros.carboidratoDescanso}"></td>
-					<td th:text="${macros.gorduraDescanso}"></td>
-					<td th:text="${macros.fibraDescanso}"></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+<h2 th:text="'Paciente: ' + ' ' + ${anexo.paciente.nome}">Nome do Paciente</h2><br>
+<div id="macrosAtual">
+    <div class="row">
+        <!--  INFOS ADICIONAIS  ==============================================================================-->
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table-treino-descanso">
+                    <thead>
+                    <tr>
+                        <th scope="col"> IMC</th>
+                        <th scope="col"> Taxa Metabólica Basal</th>
+                        <th scope="col"> Gasto Calorico Total</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <tr>
+                        <td th:text="${anexo.imc}">
+                        </td>
+                        <td th:text="${anexo.tmb} + ' kcal'">
+                        </td>
+                        <td th:text="${anexo.gastoCaloricoTotal} + ' kcal'">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--    MACROS  ====================================================================================-->
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Treino</h4>
+                </div>
+            </div>
+            <table class="table-treino-descanso">
+                <thead>
+                <tr>
+                    <th scope="col"> Calorias</th>
+                    <th scope="col"> Proteina</th>
+                    <th scope="col"> Carbo</th>
+                    <th scope="col"> Gordura</th>
+                    <th scope="col"> Fibra</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td th:text="${anexo.caloriasTreino} + ' kcal'">
+                    </td>
+                    <td th:text="${anexo.proteinaTreino}">
+                    </td>
+                    <td th:text="${anexo.carboidratoTreino}">
+                    </td>
+                    <td th:text="${anexo.gorduraTreino}">
+                    </td>
+                    <td th:text="${anexo.fibraTreino}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Descanso</h4>
+                </div>
+            </div>
+            <table class="table-treino-descanso">
+                <thead>
+                <tr>
+                    <th scope="col"> Calorias</th>
+                    <th scope="col"> Proteina</th>
+                    <th scope="col"> Carbo</th>
+                    <th scope="col"> Gordura</th>
+                    <th scope="col"> Fibra</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td th:text="${anexo.caloriasDescanso} + ' kcal'">
+                    </td>
+                    <td th:text="${anexo.proteinaDescanso}">
+                    </td>
+                    <td th:text="${anexo.carboidratoDescanso}">
+                    </td>
+                    <td th:text="${anexo.gorduraDescanso}">
+                    </td>
+                    <td th:text="${anexo.fibraDescanso}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 
 </html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+  <title th:text="${paciente.id == null ? 'Cadastrar Paciente' : 'Editar Paciente'}"></title>
+</head>
+<body>
+<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+  <main class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 th:text="${paciente.id == null ? 'Cadastrar Paciente' : 'Editar Paciente'}"></h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <form method="POST" th:object="${paciente}">
+          <input type="hidden" th:field="*{id}">
+
+          <div th:replace="~{fragments/_bootstrap-fields :: input ('nome', 'Nome', 'text', 'Digite seu nome..')}"></div>
+
+          <div th:replace="~{fragments/_bootstrap-fields :: input ('email', 'Email', 'email', 'Digite seu email..')}"></div>
+
+          <div th:if="${msg != null}" class="alert alert-warning alert-dismissible fade show" role="alert">
+            Email ja cadastrado.
+            <a th:href="@{/api/paciente/cadastrar}" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+          </div>
+
+          <div class="mb-3">
+            <label for="genero" class="form-label fw-bold">Gênero</label>
+            <select th:field="*{genero}" class="form-select" id="genero" required>
+              <option value="" selected disabled>Selecione..</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMININO">Feminino</option>
+            </select>
+          </div>
+
+          <div th:replace="~{fragments/_bootstrap-fields :: input ('idade', 'Idade', 'number', 'Digite sua idade..')}"></div>
+
+          <div th:replace="~{fragments/_bootstrap-fields :: input ('altura', 'Altura', 'number', 'Digite sua altura sem ponto e virgula..')}"></div>
+
+          <div th:replace="~{fragments/_bootstrap-fields :: input ('peso', 'Peso', 'number', 'Digite seu peso sem ponto e virgula....')}"></div>
+
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <a th:href="${paciente.id == null ? '/api/paciente/lista' : '/api/paciente/perfil/' + paciente.id}" class="btn btn-danger">Cancelar</a>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

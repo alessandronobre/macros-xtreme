@@ -1,120 +1,220 @@
-<!DOCTYPE HTML>
-<html lang="pt-br">
-
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/css/macros/style_macros.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fragments/style_nav.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
-	<title>Macros</title>
+    <title>Macros Paciente</title>
 </head>
-
 <body>
-	<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
-	<div class="container" th:if="${macros.dataCalculo == null}">
-		<h2>Você ainda não possui informações nutricionais para esse Paciente</h2>
-	</div>
-	<div class="container" th:if="${macros.dataCalculo != null}">
-		<h2>Informações Nutricionais do Paciente</h2>
+<nav th:replace="~{/fragments/_navbar :: nav}"></nav>
+<main class="container">
+    <h5 th:if="${macrosAtual == null}">Paciente ainda não possui histórico de macros</h5>
 
-		<div class="d-flex">
-			<div>
-				<table class="table table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col">Informações Basicas</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="table-secondary" th:text="'IMC: ' + ' ' + ${macros.imc}"></td>
-						</tr>
-						<tr>
-							<td class="table-secondary"
-								th:text="'Taxa Metabolica Basal (TMB): ' + ' ' + ${macros.tmb} + ' kcal'"></td>
-						</tr>
-						<tr>
-							<td class="table-secondary"
-								th:text="'Gasto Calorico Total: ' + ' ' + ${macros.gastoCaloricoTotal} + ' kcal'">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div>
-				<table class="table table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col">Macros - Treino</th>
-							<th scope="col">Macros - Descanso</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${macros.proteinaTreino} + 'g'">
-							</td>
-							<td class="table-secondary" th:text="'Proteina: ' + ' ' + ${macros.proteinaDescanso} + 'g'">
-							</td>
-						</tr>
-						<tr>
-							<td class="table-secondary"
-								th:text="'Carboidrato: ' + ' ' + ${macros.carboidratoTreino} + 'g'"></td>
-							<td class="table-secondary"
-								th:text="'Carboidrato: ' + ' ' + ${macros.carboidratoDescanso} + 'g'"></td>
-						</tr>
-						<tr>
-							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${macros.gorduraTreino} + 'g'">
-							</td>
-							<td class="table-secondary" th:text="'Gordura: ' + ' ' + ${macros.gorduraDescanso} + 'g'">
-							</td>
-						</tr>
-						<tr>
-							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${macros.fibraTreino} + 'g'"></td>
-							<td class="table-secondary" th:text="'Fibras: ' + ' ' + ${macros.fibraDescanso} + 'g'"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div>
-				<table class="table table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col">Metas de Calorias</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="table-secondary"
-								th:text="'Dias de Treino: ' + ' ' + ${macros.caloriasTreino} + ' kcal'"></td>
-						</tr>
-						<tr>
-							<td class="table-secondary"
-								th:text="'Dias de Descanso: ' + ' ' + ${macros.caloriasDescanso} + ' kcal'"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<!-- ALERTAS -->
-		<div class="alert alert-success" role="alert" th:if="${status != null && status == 200}">
-			<a th:text="${msg}"></a>
-		</div>
-		<div class="alert alert-danger" role="alert" th:if="${status != null && status == 503}">
-			<a th:text="${msg}"></a>
-		</div>
-		<div class="alert alert-danger" role="alert" th:if="${status != null && status == 500}">
-			<a th:text="${msg}"></a>
-		</div>
+    <!--  MACROS ATUAL  ==============================================================================-->
+    <div id="macrosAtual" th:if="${macrosAtual != null}">
+    <div class="row">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Macros Atual</h3>
+            </div>
+        </div>
+<!--  INFOS ADICIONAIS  ==============================================================================-->
+        <div class="row">
+        <div class="col-md-6">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col"> Taxa Metabólica Basal</th>
+                    <th scope="col"> Gasto Calorico Total</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td th:text="${macrosAtual.tmb} + ' kcal'" >
+                    </td>
+                    <td th:text="${macrosAtual.gastoCaloricoTotal} + ' kcal'">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+<!--    MACROS  ====================================================================================-->
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Treino</h4>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col"> Calorias</th>
+                    <th scope="col"> Proteina</th>
+                    <th scope="col"> Carbo</th>
+                    <th scope="col"> Gordura</th>
+                    <th scope="col"> Fibra</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td th:text="${macrosAtual.caloriasTreino} + ' kcal'">
+                    </td>
+                    <td th:text="${macrosAtual.proteinaTreino}">
+                    </td>
+                    <td th:text="${macrosAtual.carboidratoTreino}">
+                    </td>
+                    <td th:text="${macrosAtual.gorduraTreino}">
+                    </td>
+                    <td th:text="${macrosAtual.fibraTreino}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Descanso</h4>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col"> Calorias</th>
+                    <th scope="col"> Proteina</th>
+                    <th scope="col"> Carbo</th>
+                    <th scope="col"> Gordura</th>
+                    <th scope="col"> Fibra</th>
+                    <th scope="col"> IMC</th>
+                    <th scope="col"> Data</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr>
+                    <td th:text="${macrosAtual.caloriasDescanso} + ' kcal'">
+                    </td>
+                    <td th:text="${macrosAtual.proteinaDescanso}">
+                    </td>
+                    <td th:text="${macrosAtual.carboidratoDescanso}">
+                    </td>
+                    <td th:text="${macrosAtual.gorduraDescanso}">
+                    </td>
+                    <td th:text="${macrosAtual.fibraDescanso}">
+                    </td>
+                    <td th:text="${macrosAtual.imc}">
+                    </td>
+                    <td th:text="${macrosAtual.dataCalculo}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a th:href="@{/api/macros/download(id=${macrosAtual.id})}" class="btn btn-primary">Download</a>
+                <a th:href="@{/api/macros/enviar(id=${macrosAtual.paciente.id})}" class="btn btn-primary">Enviar por Email</a><br><br>
+            </div>
+<!--=========== Alerts ==================-->
+            <div th:if="${msg == 'sucesso'}" class="alert alert-secondary alert-dismissible fade show" role="alert">
+                Email enviado com sucesso.
+                <a th:href="@{/api/macros/historico(id=${pacienteId},msg=null)}" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+            </div>
+            <div th:if="${msg == 'erro'}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                Falha no envio do email, tente novamente mais tarde.
+                <a th:href="@{/api/macros/historico(id=${pacienteId},msg=null)}" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br>
+    <br>
 
-		<a type="button" class="btn btn-outline-secondary"
-			th:href="@{/api/download/macros(pacienteId=${macros.paciente.id})}">Download</a>
-		<a type="button" class="btn btn-outline-secondary"
-			th:href="@{/api/enviar/macros(pacienteId=${macros.paciente.id})}">Enviar por
-			email</a>
-		<div>
+    <!--  HISTORICO  ==============================================================================-->
+    <div class="row" th:if="${not #lists.isEmpty(macrosPaciente)}">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Histórico</h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Treino</h4>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col"> Calorias</th>
+                    <th scope="col"> Proteina</th>
+                    <th scope="col"> Carbo</th>
+                    <th scope="col"> Gordura</th>
+                    <th scope="col"> Fibra</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr th:each="macros : ${macrosPaciente}">
+                    <td th:text="${macros.caloriasTreino} + ' kcal'">
+                    </td>
+                    <td th:text="${macros.proteinaTreino}">
+                    </td>
+                    <td th:text="${macros.carboidratoTreino}">
+                    </td>
+                    <td th:text="${macros.gorduraTreino}">
+                    </td>
+                    <td th:text="${macros.fibraTreino}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h4>Descanso</h4>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col"> Calorias</th>
+                    <th scope="col"> Proteina</th>
+                    <th scope="col"> Carbo</th>
+                    <th scope="col"> Gordura</th>
+                    <th scope="col"> Fibra</th>
+                    <th scope="col"> IMC</th>
+                    <th scope="col"> Data</th>
+                </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <tr th:each="macros : ${macrosPaciente}">
+                    <td th:text="${macros.caloriasDescanso} + ' kcal'">
+                    </td>
+                    <td th:text="${macros.proteinaDescanso}">
+                    </td>
+                    <td th:text="${macros.carboidratoDescanso}">
+                    </td>
+                    <td th:text="${macros.gorduraDescanso}">
+                    </td>
+                    <td th:text="${macros.fibraDescanso}">
+                    </td>
+                    <td th:text="${macros.imc}">
+                    </td>
+                    <td th:text="${macros.dataCalculo}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <a th:href="@{/api/paciente/perfil/{id} (id=${pacienteId})}" class="btn btn-primary">Voltar</a>
+            <a th:if="${macrosAtual != null}" th:href="@{/api/macros/deletar(id=${pacienteId})}" class="btn btn-danger">Excluir Macros</a>
+        </div>
+    </div>
+</main>
 </body>
-
 </html>
