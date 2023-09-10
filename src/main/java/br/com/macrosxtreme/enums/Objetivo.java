@@ -4,15 +4,27 @@ public enum Objetivo {
     EMAGRECIMENTO(1){
         @Override
         public double calcularCaloriasTreino(double gastoTotalCalorias) {
-            double objetivoCaloriasTreino = gastoTotalCalorias - (25 * gastoTotalCalorias / 100);
-            return objetivoCaloriasTreino;
+            double caloriasTreino = gastoTotalCalorias - (25 * gastoTotalCalorias / 100);
+            return caloriasTreino;
+        }
+
+        @Override
+        public double calcularCaloriasDescanso(int caloriasTreino) {
+            double caloriasDescanso = caloriasTreino - (10 * caloriasTreino / 100);
+            return caloriasDescanso;
         }
     },
     GANHO(2) {
         @Override
         public double calcularCaloriasTreino(double gastoTotalCalorias) {
-            double objetivoCaloriasTreino = gastoTotalCalorias + 200;
-            return objetivoCaloriasTreino;
+            double caloriasTreino = gastoTotalCalorias + 200;
+            return caloriasTreino;
+        }
+
+        @Override
+        public double calcularCaloriasDescanso(int caloriasTreino) {
+            double caloriasDescanso = caloriasTreino - (10 * caloriasTreino / 100);
+            return caloriasDescanso;
         }
     };
 
@@ -27,5 +39,6 @@ public enum Objetivo {
     }
 
     public abstract double calcularCaloriasTreino(double gastoTotalCalorias);
+    public abstract double calcularCaloriasDescanso(int caloriasTreino);
 
 }

@@ -81,7 +81,7 @@ public class MacrosService {
 		Integer tmb = calcularTaxaMetabolicaBasal(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso());
 		Integer gastoCaloricoTotal = calcularGastoTotalCalorias(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getAtividadeFisica());
 		Integer objetivoTreino = calcularCaloriasTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
-		Integer objetivoDescanso = objetivoDescanso(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
+		Integer objetivoDescanso = calcularCaloriasDescanso(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		List<Integer> macrosTreino = macrosTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		List<Integer> macrosDescanso = macrosDescanso(paciente.getGenero(), paciente.getIdade(),paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 
@@ -137,11 +137,11 @@ public class MacrosService {
         return caloriasTreino;
     }
 
-    private Integer objetivoDescanso(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
-        int objetivoTreino = calcularCaloriasTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
-        double objetivoOff = objetivoTreino - (10 * objetivoTreino / 100);
-        int objetivoDescanso = (int) Math.round(objetivoOff);
-        return objetivoDescanso;
+    private Integer calcularCaloriasDescanso(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
+        int caloriasDescanso = (int) Math.round(objetivo.calcularCaloriasDescanso(
+                calcularCaloriasTreino(genero, idade, altura, peso, objetivo, nivelAtividade)));
+
+        return caloriasDescanso;
     }
 
     private List<Integer> macrosTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
