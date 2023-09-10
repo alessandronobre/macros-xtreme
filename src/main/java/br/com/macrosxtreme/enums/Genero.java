@@ -2,23 +2,33 @@ package br.com.macrosxtreme.enums;
 
 public enum Genero {
 
-    MASCULINO(1, "Masculino"),
-    FEMININO(2, "Feminino");
+    MASCULINO(1){
+        @Override
+        public int calcularTaxaMetabolicaBasal(int idade, int altura, int peso) {
+            double taxaMetabolicaBasal = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
+            int taxaMetabolicaBasalMasculina = (int) Math.round(taxaMetabolicaBasal);
+            return taxaMetabolicaBasalMasculina;
+        }
+    },
+    FEMININO(2) {
+        @Override
+        public int calcularTaxaMetabolicaBasal(int idade, int altura, int peso) {
+            double taxaMetabolicaBasal = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
+            int taxaMetabolicaBasalFeminino = (int) Math.round(taxaMetabolicaBasal);
+            return taxaMetabolicaBasalFeminino;
+        }
+    };
 
     private final int valor;
-    private final String significado;
 
-    Genero(int valor, String significado) {
+    Genero(int valor) {
         this.valor = valor;
-        this.significado = significado;
     }
 
     public int getValor() {
         return valor;
     }
 
-    public String getSignificado() {
-        return significado;
-    }
+    public abstract int calcularTaxaMetabolicaBasal(int idade, int altura, int peso);
 
 }
