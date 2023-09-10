@@ -21,7 +21,7 @@ public class EmailController {
 	@GetMapping("/macros")
 	public HttpStatus enviarEmail(EmailDTO email) {
 		try {
-			emailService.enviarEmailAnexo(email);
+			emailService.enviarEmail(email);
 			return HttpStatus.OK;
 		} catch (MessagingException e) {
 			log.error("Erro ao enviar email: " + e.getMessage());
