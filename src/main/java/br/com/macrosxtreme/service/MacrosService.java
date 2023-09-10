@@ -80,7 +80,7 @@ public class MacrosService {
 		String imc = imc(paciente.getAltura(), paciente.getPeso());
 		Integer tmb = calcularTaxaMetabolicaBasal(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso());
 		Integer gastoCaloricoTotal = calcularGastoTotalCalorias(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getAtividadeFisica());
-		Integer objetivoTreino = objetivoTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
+		Integer objetivoTreino = calcularCaloriasTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		Integer objetivoDescanso = objetivoDescanso(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		List<Integer> macrosTreino = macrosTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		List<Integer> macrosDescanso = macrosDescanso(paciente.getGenero(), paciente.getIdade(),paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
@@ -130,27 +130,22 @@ public class MacrosService {
         return gastoTotalCalorias;
     }
 
-    private Integer objetivoTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
-        double i = 0, gastoTotal;
-        gastoTotal = calcularGastoTotalCalorias(genero, idade, altura, peso, nivelAtividade);
-        if (objetivo.equals(Objetivo.EMAGRECIMENTO)) {
-            i = gastoTotal - (25 * gastoTotal / 100);
-        } else {
-            i = gastoTotal + 200;
-        }
-        int objetivoTreino = (int) Math.round(i);
-        return objetivoTreino;
+    private Integer calcularCaloriasTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
+        int caloriasTreino = (int) Math.round(objetivo.calcularCaloriasTreino(
+                calcularGastoTotalCalorias(genero, idade, altura, peso, nivelAtividade)));
+
+        return caloriasTreino;
     }
 
     private Integer objetivoDescanso(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
-        int objetivoTreino = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
+        int objetivoTreino = calcularCaloriasTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
         double objetivoOff = objetivoTreino - (10 * objetivoTreino / 100);
         int objetivoDescanso = (int) Math.round(objetivoOff);
         return objetivoDescanso;
     }
 
     private List<Integer> macrosTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
-        int objtivo = objetivoTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
+        int objtivo = calcularCaloriasTreino(genero, idade, altura, peso, objetivo, nivelAtividade);
         int proteina, gordura, carboidatro, fibras = 0;
         double p = peso * 2.240;
         double g = peso * 0.760;
