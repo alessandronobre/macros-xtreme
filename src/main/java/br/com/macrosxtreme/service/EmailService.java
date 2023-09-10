@@ -17,7 +17,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    public void enviarEmailAnexo(EmailDTO email) throws MessagingException{
+    public void enviarEmail(EmailDTO email) throws MessagingException{
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setTo(email.getDestinatario());
@@ -27,6 +27,6 @@ public class EmailService {
             mimeMessageHelper.addAttachment(email.getNomeAnexo(), new ByteArrayResource(email.getAnexo()));
         }
         mailSender.send(mimeMessage);
-        log.info("Enviando email...");
+        log.info("Enviando email para: " + email.getDestinatario() + " ...");
     }
 }

@@ -43,9 +43,9 @@ public class UsuarioService {
 		return false;
 	}
 
-	public String validaUsuario(UsuarioDTO usuario) {
+	public String verificaExistenciaUsuarioAndEmail(UsuarioDTO usuario) {
 		Usuario user = usuarioRepository.buscarUsuario(usuario.getUsuario());
-		String mail = validaEmail(usuario.getEmail());
+		String mail = verificaExistenciaEmail(usuario.getEmail());
 		if (user != null) {
 			return USUARIO_CADASTRADO;
 		} else if (mail != null) {
@@ -54,7 +54,7 @@ public class UsuarioService {
 		return null;
 	}
 
-	public String validaEmail(String email) {
+	public String verificaExistenciaEmail(String email) {
 		String mail = usuarioRepository.buscarEmailUsuario(email);
 		if (mail != null) {
 			return EMAIL_CADASTRADO;

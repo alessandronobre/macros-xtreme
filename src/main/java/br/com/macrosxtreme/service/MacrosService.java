@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class MacrosService {
 
     private final MacrosRepository macrosRepository;
     private final PacienteRepository pacienteRepository;
-	private final TemplateEngine templateEngine;
 	private final DataMapper dataMapper;
     private final GerarItensEmailMapper gerarItensEmailMapper;
     private final FormatacaoStringMapper formatacaoStringMapper;

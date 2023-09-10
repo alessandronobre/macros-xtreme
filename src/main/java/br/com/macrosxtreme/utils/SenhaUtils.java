@@ -8,6 +8,5 @@ public class SenhaUtils {
 	public static PasswordEncoder passwordEncoder() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder;
-
 	}
 }

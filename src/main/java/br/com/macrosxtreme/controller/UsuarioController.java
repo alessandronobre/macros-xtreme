@@ -61,7 +61,7 @@ public class UsuarioController {
 
 	@PostMapping("/cadastrar")
 	public ModelAndView cadastrar(UsuarioDTO usuario) {
-		String msg = usuarioService.validaUsuario(usuario);
+		String msg = usuarioService.verificaExistenciaUsuarioAndEmail(usuario);
 		if (msg != null) {
 			return cadastrar(msg);
 		}
@@ -78,7 +78,7 @@ public class UsuarioController {
 
 	@PostMapping("/recupera/senha")
 	public ModelAndView recuperaSenha(String email) {
-		String msg = usuarioService.validaEmail(email);
+		String msg = usuarioService.verificaExistenciaEmail(email);
 		if (msg == null) {
 			return recuperarSenha("emailNull");
 		}
