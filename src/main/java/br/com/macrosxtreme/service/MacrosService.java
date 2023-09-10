@@ -79,7 +79,7 @@ public class MacrosService {
         Paciente paciente = pacienteRepository.buscaPacientePorId(id);
 		String imc = imc(paciente.getAltura(), paciente.getPeso());
 		Integer tmb = calcularTaxaMetabolicaBasal(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso());
-		Integer gastoCaloricoTotal = calcularGastoTotal(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getAtividadeFisica());
+		Integer gastoCaloricoTotal = calcularGastoTotalCalorias(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getAtividadeFisica());
 		Integer objetivoTreino = objetivoTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		Integer objetivoDescanso = objetivoDescanso(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
 		List<Integer> macrosTreino = macrosTreino(paciente.getGenero(), paciente.getIdade(), paciente.getAltura(), paciente.getPeso(), dadosMacros.getObjetivo(), dadosMacros.getAtividadeFisica());
@@ -123,62 +123,17 @@ public class MacrosService {
         }
     }
 
-    private Integer calcularGastoTotal(Genero genero, int idade, int altura, int peso, AtividadeFisica nivelAtividade) {
-        double tmb = calcularTaxaMetabolicaBasal(genero, idade, altura, peso);
-        double i = 0;
-        if (genero.equals(Genero.MASCULINO)) {
-            switch (nivelAtividade.getValor()) {
-                case 1: {
-                    i = tmb * 1.2;
-                }
-                break;
-                case 2: {
-                    i = tmb * 1.375;
-                }
-                break;
-                case 3: {
-                    i = tmb * 1.55;
-                }
-                break;
-                case 4: {
-                    i = tmb * 1.725;
-                }
-                break;
-                case 5: {
-                    i = tmb * 1.9;
-                }
-            }
+    private Integer calcularGastoTotalCalorias(Genero genero, int idade, int altura, int peso, AtividadeFisica nivelAtividade) {
+        double gastoTotal = nivelAtividade.calcularGastoTotalCalorias(
+                calcularTaxaMetabolicaBasal(genero, idade, altura, peso));
 
-        } else {
-            switch (nivelAtividade.getValor()) {
-                case 1: {
-                    i = tmb * 1.2;
-                }
-                break;
-                case 2: {
-                    i = tmb * 1.375;
-                }
-                break;
-                case 3: {
-                    i = tmb * 1.55;
-                }
-                break;
-                case 4: {
-                    i = tmb * 1.725;
-                }
-                break;
-                case 5: {
-                    i = tmb * 1.9;
-                }
-            }
-        }
-        int gastoTotal = (int) Math.round(i);
-        return gastoTotal;
+        int gastoTotalCalorias = (int) Math.round(gastoTotal);
+        return gastoTotalCalorias;
     }
 
     private Integer objetivoTreino(Genero genero, int idade, int altura, int peso, Objetivo objetivo, AtividadeFisica nivelAtividade) {
         double i = 0, gastoTotal;
-        gastoTotal = calcularGastoTotal(genero, idade, altura, peso, nivelAtividade);
+        gastoTotal = calcularGastoTotalCalorias(genero, idade, altura, peso, nivelAtividade);
         if (objetivo.equals(Objetivo.EMAGRECIMENTO)) {
             i = gastoTotal - (25 * gastoTotal / 100);
         } else {
