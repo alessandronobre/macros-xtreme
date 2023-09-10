@@ -6,20 +6,18 @@ import br.com.macrosxtreme.enums.AtividadeFisica;
 import br.com.macrosxtreme.enums.Genero;
 import br.com.macrosxtreme.enums.Objetivo;
 import br.com.macrosxtreme.mapper.DataMapper;
-import br.com.macrosxtreme.mapper.GerarAnexoEmailMapper;
+import br.com.macrosxtreme.mapper.FormatacaoStringMapper;
+import br.com.macrosxtreme.mapper.GerarItensEmailMapper;
 import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.model.Paciente;
 import br.com.macrosxtreme.repository.MacrosRepository;
 import br.com.macrosxtreme.repository.PacienteRepository;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.io.source.ByteArrayOutputStream;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,48 +31,30 @@ public class MacrosService {
     private final PacienteRepository pacienteRepository;
 	private final TemplateEngine templateEngine;
 	private final DataMapper dataMapper;
-    private final GerarAnexoEmailMapper gerarAnexoEmailMapper;
+    private final GerarItensEmailMapper gerarItensEmailMapper;
+    private final FormatacaoStringMapper formatacaoStringMapper;
 
     private static final String TEMPLATE_PDF = "macros/macrospdf.html";
 
     public EmailDTO gerarEmailMacros(Long id) {
         Macros macros = macrosRepository.buscarMacrosAtualPorIdPaciente(id);
-        String nomePaciente = null;
-        if (macros.getPaciente().getNome().contains(" ")) {
-            int indice = macros.getPaciente().getNome().indexOf(' ');
-            nomePaciente =  macros.getPaciente().getNome().substring(0, indice);
-        } else {
-            nomePaciente = macros.getPaciente().getNome();
-        }
 
-        Context context = new Context();
-        context.setVariable("paciente", nomePaciente);
-        String html = templateEngine.process("macros/macros_template_email.html", context);
-
-        EmailDTO email = new EmailDTO();
-        email.setDestinatario(macros.getPaciente().getEmail());
-        email.setTitulo("Obá, chegaram seus macros!");
-        email.setConteudo(html);
-        email.setNomeAnexo("Macros.pdf");
-        email.setAnexo(gerarAnexoEmailMapper.gerarAnexoPdf(TEMPLATE_PDF, macros));
-        return email;
+        return gerarItensEmailMapper.instanciaEmailDtoComAnexoPdf(macros.getPaciente().getEmail(),
+                "Obá, chegaram seus macros!",
+                gerarItensEmailMapper.processarTemplateHtml("macros/macros_template_email.html",
+                        formatacaoStringMapper.obterPrimeiraPalavra(macros.getPaciente().getNome())),
+                macros,
+                "Macros.pdf",
+                TEMPLATE_PDF);
     }
 
     public ResponseEntity<?> downloadPDF(Long id) {
         MacrosDTO macros = new MacrosDTO(macrosRepository.buscarMacrosAtual(id));
-        int indice = macros.getPaciente().getNome().indexOf(' ');
-        String nomePaciente = macros.getPaciente().getNome().substring(0, indice);
 
-        Context context = new Context();
-        context.setVariable("anexo", macros);
-
-        String html = templateEngine.process(TEMPLATE_PDF, context);
-
-        ByteArrayOutputStream pdfStream = new ByteArrayOutputStream();
-        HtmlConverter.convertToPdf(html, pdfStream);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Macros_" + nomePaciente + ".pdf")
-                .body(pdfStream.toByteArray());
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Macros_" +
+                        formatacaoStringMapper.obterPrimeiraPalavra(macros.getPaciente().getNome()) + ".pdf")
+                .body(gerarItensEmailMapper.gerarPdf(TEMPLATE_PDF, macros));
     }
 
     public List<MacrosDTO> buscarMacrosPaciente(Long id) {

@@ -90,7 +90,7 @@
 <body>
 <h1>Macros Xtreme</h1>
 
-<h2 th:text="'Paciente: ' + ' ' + ${anexo.paciente.nome}">Nome do Paciente</h2><br>
+<h2 th:text="'Paciente: ' + ' ' + ${itens.paciente.nome}">Nome do Paciente</h2><br>
 <div id="macrosAtual">
     <div class="row">
         <!--  INFOS ADICIONAIS  ==============================================================================-->
@@ -106,11 +106,11 @@
                     </thead>
                     <tbody class="table-group-divider">
                     <tr>
-                        <td th:text="${anexo.imc}">
+                        <td th:text="${itens.imc}">
                         </td>
-                        <td th:text="${anexo.tmb} + ' kcal'">
+                        <td th:text="${itens.tmb} + ' kcal'">
                         </td>
-                        <td th:text="${anexo.gastoCaloricoTotal} + ' kcal'">
+                        <td th:text="${itens.gastoCaloricoTotal} + ' kcal'">
                         </td>
                     </tr>
                     </tbody>
@@ -136,15 +136,15 @@
                 </thead>
                 <tbody class="table-group-divider">
                 <tr>
-                    <td th:text="${anexo.caloriasTreino} + ' kcal'">
+                    <td th:text="${itens.caloriasTreino} + ' kcal'">
                     </td>
-                    <td th:text="${anexo.proteinaTreino}">
+                    <td th:text="${itens.proteinaTreino}">
                     </td>
-                    <td th:text="${anexo.carboidratoTreino}">
+                    <td th:text="${itens.carboidratoTreino}">
                     </td>
-                    <td th:text="${anexo.gorduraTreino}">
+                    <td th:text="${itens.gorduraTreino}">
                     </td>
-                    <td th:text="${anexo.fibraTreino}">
+                    <td th:text="${itens.fibraTreino}">
                     </td>
                 </tr>
                 </tbody>
@@ -168,15 +168,15 @@
                 </thead>
                 <tbody class="table-group-divider">
                 <tr>
-                    <td th:text="${anexo.caloriasDescanso} + ' kcal'">
+                    <td th:text="${itens.caloriasDescanso} + ' kcal'">
                     </td>
-                    <td th:text="${anexo.proteinaDescanso}">
+                    <td th:text="${itens.proteinaDescanso}">
                     </td>
-                    <td th:text="${anexo.carboidratoDescanso}">
+                    <td th:text="${itens.carboidratoDescanso}">
                     </td>
-                    <td th:text="${anexo.gorduraDescanso}">
+                    <td th:text="${itens.gorduraDescanso}">
                     </td>
-                    <td th:text="${anexo.fibraDescanso}">
+                    <td th:text="${itens.fibraDescanso}">
                     </td>
                 </tr>
                 </tbody>
