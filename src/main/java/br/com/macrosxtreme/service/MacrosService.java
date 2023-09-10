@@ -124,10 +124,9 @@ public class MacrosService {
     }
 
     private Integer calcularGastoTotalCalorias(Genero genero, int idade, int altura, int peso, AtividadeFisica nivelAtividade) {
-        double gastoTotal = nivelAtividade.calcularGastoTotalCalorias(
-                calcularTaxaMetabolicaBasal(genero, idade, altura, peso));
+        int gastoTotalCalorias = (int) Math.round(nivelAtividade.calcularGastoTotalCalorias(
+                calcularTaxaMetabolicaBasal(genero, idade, altura, peso)));
 
-        int gastoTotalCalorias = (int) Math.round(gastoTotal);
         return gastoTotalCalorias;
     }
 
