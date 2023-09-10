@@ -2,7 +2,6 @@ package br.com.macrosxtreme.controller;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
 import br.com.macrosxtreme.service.MacrosService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/macros")
 public class MacrosController {
 
-	private final MacrosService macrosService;
+    private final MacrosService macrosService;
     private final EmailController emailController;
 
     @GetMapping("/gerar")
@@ -33,7 +32,7 @@ public class MacrosController {
     }
 
     @PostMapping("/gerar")
-    public RedirectView  gerar(@RequestParam("id") Long id, MacrosDTO macros) {
+    public RedirectView gerar(@RequestParam("id") Long id, MacrosDTO macros) {
         macrosService.salvarMacros(macros, id);
         return new RedirectView("/api/macros/historico?id=" + id + "&msg=");
 
@@ -58,10 +57,10 @@ public class MacrosController {
         return new RedirectView("/api/paciente/perfil/" + id);
     }
 
-	@GetMapping(value = "/download", produces = MediaType.APPLICATION_PDF_VALUE)
-	public ResponseEntity<?> downloadPDF(@RequestParam("id") Long id) throws IOException {
-		return macrosService.downloadPDF(id);
-	}
+    @GetMapping(value = "/download", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<?> downloadPDF(@RequestParam("id") Long id) throws IOException {
+        return macrosService.downloadPDF(id);
+    }
 
     @GetMapping("/enviar")
     public RedirectView enviarMacrosEmail(@RequestParam("id") Long id) {

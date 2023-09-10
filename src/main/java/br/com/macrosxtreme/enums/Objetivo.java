@@ -1,23 +1,17 @@
 package br.com.macrosxtreme.enums;
 
 public enum Objetivo {
-    EMAGRECIMENTO(1, "Emagrecimento"),
-    GANHO(2, "Ganho de Massa");
+    EMAGRECIMENTO(1),
+    GANHO(2);
 
     private final int valor;
-    private final String significado;
 
-    Objetivo(int valor, String significado) {
+    Objetivo(int valor) {
         this.valor = valor;
-        this.significado = significado;
     }
 
     public int getValor() {
         return valor;
-    }
-
-    public String getSignificado() {
-        return significado;
     }
 
 }

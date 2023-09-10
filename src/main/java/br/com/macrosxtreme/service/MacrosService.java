@@ -116,17 +116,11 @@ public class MacrosService {
     }
 
     private Integer calcularTaxaMetabolicaBasal(Genero genero, int idade, int altura, int peso) {
-        int tmb = 0;
         if (genero.equals(Genero.MASCULINO)) {
-            double i = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
-            tmb = (int) Math.round(i);
-            return tmb;
-        } else if (genero.equals(Genero.FEMININO)) {
-            double i = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
-            tmb = (int) Math.round(i);
-            return tmb;
+            return Genero.MASCULINO.calcularTaxaMetabolicaBasal(idade, altura, peso);
+        } else {
+            return Genero.FEMININO.calcularTaxaMetabolicaBasal(idade, altura, peso);
         }
-        return tmb;
     }
 
     private Integer calcularGastoTotal(Genero genero, int idade, int altura, int peso, AtividadeFisica nivelAtividade) {
