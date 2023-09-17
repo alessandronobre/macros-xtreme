@@ -1,7 +1,7 @@
 package br.com.macrosxtreme.model;
 
 import br.com.macrosxtreme.dto.MacrosDTO;
-import br.com.macrosxtreme.enums.AtividadeFisica;
+import br.com.macrosxtreme.enums.NivelAtividadeFisica;
 import br.com.macrosxtreme.enums.Objetivo;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,7 +24,7 @@ public class Macros {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private AtividadeFisica atividadeFisica;
+	private NivelAtividadeFisica nivelAtividadeFisica;
 	
 	@Column(name="data_calculo", nullable = false)
 	private String dataCalculo;
@@ -68,14 +68,14 @@ public class Macros {
 	@Column(name="fibra_descanso", nullable = false)
 	private Integer fibraDescanso;
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="cod_paciente_fk", nullable = false)
 	private Paciente paciente;
 	
 	public Macros(MacrosDTO historico) {
 		this.id = historico.getId();
 		this.objetivo = historico.getObjetivo();
-		this.atividadeFisica = historico.getAtividadeFisica();
+		this.nivelAtividadeFisica = historico.getNivelAtividadeFisica();
 		this.dataCalculo = historico.getDataCalculo();
 		this.imc = historico.getImc();
 		this.tmb = historico.getTmb();

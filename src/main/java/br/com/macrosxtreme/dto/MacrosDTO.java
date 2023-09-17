@@ -1,13 +1,10 @@
 package br.com.macrosxtreme.dto;
 
-import br.com.macrosxtreme.enums.AtividadeFisica;
+import br.com.macrosxtreme.enums.NivelAtividadeFisica;
 import br.com.macrosxtreme.enums.Objetivo;
 import br.com.macrosxtreme.model.Macros;
-import br.com.macrosxtreme.model.Paciente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +12,7 @@ public class MacrosDTO {
 	
 	private Long id;
 	private Objetivo objetivo;
-	private AtividadeFisica atividadeFisica;
+	private NivelAtividadeFisica nivelAtividadeFisica;
 	private String dataCalculo;
 	private String imc;
 	private Integer tmb;
@@ -35,7 +32,7 @@ public class MacrosDTO {
 	public MacrosDTO(Macros macros) {
 		this.id = macros.getId();
 		this.objetivo = macros.getObjetivo();
-		this.atividadeFisica = macros.getAtividadeFisica();
+		this.nivelAtividadeFisica = macros.getNivelAtividadeFisica();
 		this.dataCalculo = macros.getDataCalculo();
 		this.imc = macros.getImc();
 		this.tmb = macros.getTmb();

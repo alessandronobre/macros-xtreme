@@ -2,6 +2,7 @@ package br.com.macrosxtreme.mapper;
 
 import br.com.macrosxtreme.dto.EmailDTO;
 import com.itextpdf.html2pdf.HtmlConverter;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;

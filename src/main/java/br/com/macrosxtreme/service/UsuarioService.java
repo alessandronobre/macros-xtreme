@@ -23,9 +23,12 @@ public class UsuarioService {
 	private static final String EMAIL_CADASTRADO = "emailCadastrado";
 	private static final String USUARIO_CADASTRADO = "usuarioCadastrado";
 
+	public UsuarioDTO buscarUsuarioPorUsuario(String user) {
+		return new UsuarioDTO(usuarioRepository.buscarUsuarioPorUsuario(user));
+	}
+
 	public EmailDTO gerarEmailRecuperarSenha(String email) {
 		Usuario usuario = usuarioRepository.buscarUsuarioPorEmail(email);
-
 		return gerarItensEmailMapper.instanciaEmailDtoComConteudoHtml(usuario.getEmail(),
 				"Recuperação de senha",
 				formatacaoStringMapper.obterPrimeiraPalavra(usuario.getNome()),
@@ -33,7 +36,7 @@ public class UsuarioService {
 	}
 
 	public Boolean autenticacao(UsuarioDTO usuario) {
-		Usuario user = usuarioRepository.buscarUsuario(usuario.getUsuario());
+		Usuario user = usuarioRepository.buscarUsuarioPorUsuario(usuario.getUsuario());
 		if (user != null) {
 			Boolean validaSenha = SenhaUtils.passwordEncoder().matches(usuario.getSenha(), user.getSenha());
 			if (validaSenha) {
@@ -44,7 +47,7 @@ public class UsuarioService {
 	}
 
 	public String verificaExistenciaUsuarioAndEmail(UsuarioDTO usuario) {
-		Usuario user = usuarioRepository.buscarUsuario(usuario.getUsuario());
+		Usuario user = usuarioRepository.buscarUsuarioPorUsuario(usuario.getUsuario());
 		String mail = verificaExistenciaEmail(usuario.getEmail());
 		if (user != null) {
 			return USUARIO_CADASTRADO;

@@ -1,7 +1,11 @@
 package br.com.macrosxtreme.controller;
 
 import br.com.macrosxtreme.dto.PacienteDTO;
+import br.com.macrosxtreme.dto.UsuarioDTO;
+import br.com.macrosxtreme.repository.UsuarioRepository;
 import br.com.macrosxtreme.service.PacienteService;
+import br.com.macrosxtreme.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,11 +18,14 @@ import java.util.List;
 public class PacienteController {
 
 	private final PacienteService pacienteService;
+	private final UsuarioService usuarioService;
 
 	@GetMapping("/lista")
-	public ModelAndView listarPacientes() {
+	public ModelAndView listarPacientes(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("paciente/listar");
-		List<PacienteDTO> lista = pacienteService.buscarTodosPacientes();
+		UsuarioDTO usuarioLogado = (UsuarioDTO) request.getSession().getAttribute("user");
+		List<PacienteDTO> lista = pacienteService.buscarTodosPacientes(
+				usuarioService.buscarUsuarioPorUsuario(usuarioLogado.getUsuario()).getId());
 		if (!lista.isEmpty()) {
 			modelAndView.addObject("lista", lista);
 			return modelAndView;
@@ -44,7 +51,7 @@ public class PacienteController {
 
 	@PostMapping("/editar")
 	public ModelAndView editar(PacienteDTO paciente) {
-		pacienteService.salvar(paciente);
+		pacienteService.editarPaciente(paciente);
 		return perfil(paciente.getId());
 	}
 
@@ -58,18 +65,19 @@ public class PacienteController {
 	}
 
 	@PostMapping("/cadastrar")
-	public ModelAndView cadastrar(PacienteDTO paciente) {
+	public ModelAndView cadastrar(HttpServletRequest request, PacienteDTO paciente) {
 		if (pacienteService.validaEmail(paciente.getEmail())) {
 			return cadastrar("erro");
 		}
-		pacienteService.salvar(paciente);
-		return listarPacientes();
+		UsuarioDTO usuarioLogado = (UsuarioDTO) request.getSession().getAttribute("user");
+		pacienteService.salvarPaciente(paciente, usuarioLogado);
+		return listarPacientes(request);
 
 	}
 
 	@GetMapping("/deletar")
-	public ModelAndView deletar(@RequestParam("id") Long id) {
-		pacienteService.deletar(id);
-		return listarPacientes();
+	public ModelAndView deletarPaciente(HttpServletRequest request, @RequestParam("id") Long id) {
+		pacienteService.deletarPaciente(id);
+		return listarPacientes(request);
 	}
 }
