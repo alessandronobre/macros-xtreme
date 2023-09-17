@@ -27,6 +27,8 @@ public class Usuario {
 	private String email;
 	@Column(nullable = false)
 	private String senha;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Paciente> pacientes;
 
 	public Usuario(UsuarioDTO usuario) {
 		this.id = usuario.getId();

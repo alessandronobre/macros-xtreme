@@ -41,6 +41,10 @@ public class Paciente {
 	@OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Macros> historicoMacros;
 
+	@ManyToOne
+	@JoinColumn(name="cod_usuario_fk", nullable = false)
+	private Usuario usuario;
+
 	public Paciente(PacienteDTO paciente) {
 		this.id = paciente.getId();
 		this.nome = paciente.getNome();
@@ -49,6 +53,5 @@ public class Paciente {
 		this.idade = paciente.getIdade();
 		this.altura = paciente.getAltura();
 		this.peso = paciente.getPeso();
-
 	}
 }

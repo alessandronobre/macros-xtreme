@@ -68,7 +68,7 @@ public class Macros {
 	@Column(name="fibra_descanso", nullable = false)
 	private Integer fibraDescanso;
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="cod_paciente_fk", nullable = false)
 	private Paciente paciente;
 	

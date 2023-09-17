@@ -17,6 +17,9 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 	@Query(value = "SELECT EMAIL FROM PACIENTE WHERE EMAIL = ?", nativeQuery = true)
 	String buscarEmailPaciente(String email);
 
-	@Query(value = "SELECT * FROM PACIENTE ORDER BY NOME", nativeQuery = true)
-	List<Paciente> buscarTodosPacientes();
+	@Query(value = "SELECT * " +
+			"FROM PACIENTE " +
+			"WHERE COD_USUARIO_FK = ? " +
+			"ORDER BY NOME", nativeQuery = true)
+	List<Paciente> buscarTodosPacientes(Long id);
 }
