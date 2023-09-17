@@ -1,9 +1,7 @@
 package br.com.macrosxtreme.model;
 
 import br.com.macrosxtreme.dto.PacienteDTO;
-import br.com.macrosxtreme.enums.AtividadeFisica;
 import br.com.macrosxtreme.enums.Genero;
-import br.com.macrosxtreme.enums.Objetivo;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

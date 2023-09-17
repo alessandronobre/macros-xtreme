@@ -3,28 +3,24 @@ package br.com.macrosxtreme.enums;
 public enum Objetivo {
     EMAGRECIMENTO(1){
         @Override
-        public double calcularCaloriasTreino(double gastoTotalCalorias) {
-            double caloriasTreino = gastoTotalCalorias - (25 * gastoTotalCalorias / 100);
-            return caloriasTreino;
+        public Integer calcularCaloriasTreino(Integer gastoTotalCalorias) {
+            return Math.round(gastoTotalCalorias - (25 * gastoTotalCalorias / 100));
         }
 
         @Override
-        public double calcularCaloriasDescanso(int caloriasTreino) {
-            double caloriasDescanso = caloriasTreino - (10 * caloriasTreino / 100);
-            return caloriasDescanso;
+        public Integer calcularCaloriasDescanso(Integer caloriasTreino) {
+            return Math.round(caloriasTreino - (10 * caloriasTreino / 100));
         }
     },
     GANHO(2) {
         @Override
-        public double calcularCaloriasTreino(double gastoTotalCalorias) {
-            double caloriasTreino = gastoTotalCalorias + 200;
-            return caloriasTreino;
+        public Integer calcularCaloriasTreino(Integer gastoTotalCalorias) {
+            return Math.round(gastoTotalCalorias + 200);
         }
 
         @Override
-        public double calcularCaloriasDescanso(int caloriasTreino) {
-            double caloriasDescanso = caloriasTreino - (10 * caloriasTreino / 100);
-            return caloriasDescanso;
+        public Integer calcularCaloriasDescanso(Integer caloriasTreino) {
+            return Math.round(caloriasTreino - (10 * caloriasTreino / 100));
         }
     };
 
@@ -38,7 +34,7 @@ public enum Objetivo {
         return valor;
     }
 
-    public abstract double calcularCaloriasTreino(double gastoTotalCalorias);
-    public abstract double calcularCaloriasDescanso(int caloriasTreino);
+    public abstract Integer calcularCaloriasTreino(Integer gastoTotalCalorias);
+    public abstract Integer calcularCaloriasDescanso(Integer caloriasTreino);
 
 }

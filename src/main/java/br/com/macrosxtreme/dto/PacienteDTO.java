@@ -1,14 +1,11 @@
 package br.com.macrosxtreme.dto;
 
-import br.com.macrosxtreme.enums.AtividadeFisica;
 import br.com.macrosxtreme.enums.Genero;
-import br.com.macrosxtreme.enums.Objetivo;
 import br.com.macrosxtreme.model.Macros;
 import br.com.macrosxtreme.model.Paciente;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

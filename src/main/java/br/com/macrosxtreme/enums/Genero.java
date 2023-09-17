@@ -4,18 +4,16 @@ public enum Genero {
 
     MASCULINO(1){
         @Override
-        public int calcularTaxaMetabolicaBasal(int idade, int altura, int peso) {
+        public Integer calcularTaxaMetabolicaBasal(int idade, int altura, int peso) {
             double taxaMetabolicaBasal = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
-            int taxaMetabolicaBasalMasculina = (int) Math.round(taxaMetabolicaBasal);
-            return taxaMetabolicaBasalMasculina;
+            return (int) Math.round(taxaMetabolicaBasal);
         }
     },
     FEMININO(2) {
         @Override
-        public int calcularTaxaMetabolicaBasal(int idade, int altura, int peso) {
+        public Integer calcularTaxaMetabolicaBasal(int idade, int altura, int peso) {
             double taxaMetabolicaBasal = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
-            int taxaMetabolicaBasalFeminino = (int) Math.round(taxaMetabolicaBasal);
-            return taxaMetabolicaBasalFeminino;
+            return (int) Math.round(taxaMetabolicaBasal);
         }
     };
 
@@ -29,6 +27,6 @@ public enum Genero {
         return valor;
     }
 
-    public abstract int calcularTaxaMetabolicaBasal(int idade, int altura, int peso);
+    public abstract Integer calcularTaxaMetabolicaBasal(int idade, int altura, int peso);
 
 }
